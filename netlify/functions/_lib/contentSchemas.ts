@@ -35,6 +35,7 @@ export const ProfileSchema = z.object({
   phone: z.string(),
   email: z.string(),
   avatarAlt: z.string(),
+  avatarUrl: z.string().optional(),
   resumeUrl: z.string(),
   stats: z.array(ProfileStatSchema),
   social: SocialLinksSchema,

@@ -2,6 +2,7 @@ import type { FormEvent } from "react";
 import type { Profile } from "../../../types";
 import { useContentEditor } from "../../../hooks/useContentEditor";
 import { SaveStatusIndicator } from "../SaveStatusIndicator";
+import { ImagePickerField } from "../ImagePickerField";
 import { Button } from "../../ui/Button";
 import { TextField, TextAreaField } from "./fields";
 
@@ -36,6 +37,12 @@ export function ProfileForm() {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-2xl">
+      <ImagePickerField
+        label="Photo"
+        hint="shown on the homepage — leave empty to keep the generated placeholder"
+        value={draft.avatarUrl ?? ""}
+        onChange={(url) => update("avatarUrl", url)}
+      />
       <TextField
         label="Name"
         htmlFor="profile-name"

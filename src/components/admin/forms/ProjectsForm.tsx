@@ -5,6 +5,8 @@ import { SaveStatusIndicator } from "../SaveStatusIndicator";
 import { ReorderableList } from "../ReorderableList";
 import { Button } from "../../ui/Button";
 import { TextField, TextAreaField } from "./fields";
+import { GalleryEditor } from "./GalleryEditor";
+import { tagGallery, type GalleryEntry } from "./galleryEntry";
 
 const STATUS_OPTIONS: ProjectStatus[] = ["live", "in-progress", "archived"];
 
@@ -24,26 +26,26 @@ function emptyProject(): Project {
   };
 }
 
-function galleryDraftsFrom(projects: Project[]): Record<string, string> {
-  const drafts: Record<string, string> = {};
-  for (const p of projects) drafts[p.slug] = JSON.stringify(p.gallery, null, 2);
-  return drafts;
+function galleryEntriesFrom(projects: Project[]): Record<string, GalleryEntry[]> {
+  const map: Record<string, GalleryEntry[]> = {};
+  for (const p of projects) map[p.slug] = tagGallery(p.gallery);
+  return map;
 }
 
 export function ProjectsForm() {
   const editor = useContentEditor<Project[]>("projects");
   const { draft, setDraft } = editor;
-  const [galleryDrafts, setGalleryDrafts] = useState<Record<string, string>>({});
-  const [galleryErrors, setGalleryErrors] = useState<Record<string, string>>({});
+  const [galleryEntries, setGalleryEntries] = useState<Record<string, GalleryEntry[]>>({});
   const [syncedSavedData, setSyncedSavedData] = useState<Project[] | null>(null);
 
-  // Re-derive the gallery JSON textareas whenever the server-loaded/saved
+  // Re-derive the gallery editors' entries whenever the server-loaded/saved
   // snapshot changes (initial load, manual reload, or a successful save) —
   // same render-time-sync approach useContentEditor uses for `draft` itself.
+  // Keyed off `savedData`, not `draft`, so a keystroke elsewhere never
+  // regenerates entry ids out from under an in-progress gallery edit.
   if (editor.savedData !== syncedSavedData) {
     setSyncedSavedData(editor.savedData);
-    setGalleryDrafts(editor.savedData ? galleryDraftsFrom(editor.savedData) : {});
-    setGalleryErrors({});
+    setGalleryEntries(editor.savedData ? galleryEntriesFrom(editor.savedData) : {});
   }
 
   if (editor.loading) return <p className="text-sm text-muted">Loading projects...</p>;
@@ -54,32 +56,29 @@ export function ProjectsForm() {
     setDraft((prev) => prev && prev.map((p) => (p.slug === slug ? { ...p, ...patch } : p)));
   }
 
+  function setGalleryForProject(slug: string, entries: GalleryEntry[]) {
+    setGalleryEntries((prev) => ({ ...prev, [slug]: entries }));
+    update(slug, { gallery: entries.map((e) => e.item) });
+  }
+
   function removeProject(slug: string) {
     setDraft((prev) => prev && prev.filter((p) => p.slug !== slug));
+    setGalleryEntries((prev) => {
+      const next = { ...prev };
+      delete next[slug];
+      return next;
+    });
   }
 
   function addProject() {
     const p = emptyProject();
     setDraft((prev) => [p, ...(prev ?? [])]);
-    setGalleryDrafts((prev) => ({ ...prev, [p.slug]: "[]" }));
+    setGalleryEntries((prev) => ({ ...prev, [p.slug]: [] }));
   }
-
-  function handleGalleryChange(slug: string, text: string) {
-    setGalleryDrafts((prev) => ({ ...prev, [slug]: text }));
-    try {
-      const parsed = JSON.parse(text);
-      update(slug, { gallery: parsed });
-      setGalleryErrors((prev) => ({ ...prev, [slug]: "" }));
-    } catch {
-      setGalleryErrors((prev) => ({ ...prev, [slug]: "Invalid JSON — not saved yet" }));
-    }
-  }
-
-  const hasGalleryError = Object.values(galleryErrors).some(Boolean);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    if (!draft || hasGalleryError) return;
+    if (!draft) return;
     await editor.save(draft);
   }
 
@@ -204,24 +203,16 @@ export function ProjectsForm() {
               onChange={(e) => update(project.slug, { links: { ...project.links, codeUrl: e.target.value || undefined } })}
             />
 
-            <TextAreaField
-              label="Gallery"
-              htmlFor={`proj-gallery-${project.slug}`}
-              hint="raw JSON for now — a proper image picker is coming in a later phase"
-              rows={8}
-              value={galleryDrafts[project.slug] ?? "[]"}
-              onChange={(e) => handleGalleryChange(project.slug, e.target.value)}
-              className="font-mono text-xs"
+            <GalleryEditor
+              entries={galleryEntries[project.slug] ?? []}
+              onChange={(entries) => setGalleryForProject(project.slug, entries)}
             />
-            {galleryErrors[project.slug] && (
-              <p className="-mt-3 mb-4 text-sm text-accent-2">{galleryErrors[project.slug]}</p>
-            )}
           </div>
         )}
       />
 
       <div className="mt-2 flex items-center gap-3">
-        <Button type="submit" disabled={editor.saving || hasGalleryError}>
+        <Button type="submit" disabled={editor.saving}>
           {editor.saving ? "Saving..." : "Save"}
         </Button>
         <Button
@@ -229,15 +220,13 @@ export function ProjectsForm() {
           variant="secondary"
           onClick={() => {
             editor.discard();
-            if (editor.savedData) setGalleryDrafts(galleryDraftsFrom(editor.savedData));
-            setGalleryErrors({});
+            if (editor.savedData) setGalleryEntries(galleryEntriesFrom(editor.savedData));
           }}
           disabled={editor.saving}
         >
           Discard changes
         </Button>
       </div>
-      {hasGalleryError && <p className="mt-3 text-sm text-accent-2">Fix the invalid gallery JSON above before saving.</p>}
       {editor.saveError && <p className="mt-3 text-sm text-accent-2">{editor.saveError}</p>}
       <div className="mt-3">
         <SaveStatusIndicator {...editor.deployStatus} />

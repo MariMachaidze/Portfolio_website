@@ -72,7 +72,15 @@ export function Hero() {
         </div>
 
         <div className="mx-auto w-48 sm:w-64">
-          <AvatarPlaceholder name={profile.name} className="w-full drop-shadow-lg" />
+          {profile.avatarUrl ? (
+            <img
+              src={profile.avatarUrl}
+              alt={profile.avatarAlt}
+              className="aspect-square w-full rounded-full object-cover drop-shadow-lg"
+            />
+          ) : (
+            <AvatarPlaceholder name={profile.name} className="w-full drop-shadow-lg" />
+          )}
         </div>
       </Container>
     </section>

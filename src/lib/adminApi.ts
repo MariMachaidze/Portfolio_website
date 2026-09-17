@@ -65,3 +65,26 @@ export async function getDeployStatus(commitSha: string): Promise<DeployStatus> 
   });
   return handleResponse(res);
 }
+
+export interface UploadedImage {
+  key: string;
+  url: string;
+  size: number;
+  uploadedAt: string | null;
+}
+
+export async function listImages(): Promise<UploadedImage[]> {
+  const res = await fetch(`${BASE}/list-images`, { credentials: "include" });
+  const data = await handleResponse<{ images: UploadedImage[] }>(res);
+  return data.images;
+}
+
+export async function uploadImage(contentType: string, dataBase64: string): Promise<UploadedImage> {
+  const res = await fetch(`${BASE}/upload-image`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ contentType, dataBase64 }),
+  });
+  return handleResponse(res);
+}

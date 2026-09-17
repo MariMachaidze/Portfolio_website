@@ -34,6 +34,8 @@ export interface Profile {
   phone: string;
   email: string;
   avatarAlt: string;
+  /** Uploaded photo URL; falls back to a generated placeholder avatar when empty. */
+  avatarUrl?: string;
   /** Path to a downloadable resume PDF under /public, e.g. "/resume.pdf" */
   resumeUrl: string;
   stats: ProfileStat[];
