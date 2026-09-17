@@ -1,6 +1,6 @@
 {
   "name": "Mariam Machaidze",
-  "role": "Full-Stack Software Engineer",
+  "role": "Junior Full-Stack Software Engineer",
   "yearsExperience": 4,
   "badge": "Available for new opportunities",
   "heading": "Building thoughtful, performant web experiences.",
@@ -11,10 +11,22 @@
   "avatarAlt": "Portrait of Mariam Machaidze",
   "resumeUrl": "/resume.pdf",
   "stats": [
-    { "label": "Years Experience", "value": "4+" },
-    { "label": "Projects Shipped", "value": "25+" },
-    { "label": "Happy Clients", "value": "12" },
-    { "label": "Coffee Cups", "value": "∞" }
+    {
+      "label": "Years Experience",
+      "value": "4+"
+    },
+    {
+      "label": "Projects Shipped",
+      "value": "25+"
+    },
+    {
+      "label": "Happy Clients",
+      "value": "12"
+    },
+    {
+      "label": "Coffee Cups",
+      "value": "∞"
+    }
   ],
   "social": {
     "github": "https://github.com/alexrivera-dev",
