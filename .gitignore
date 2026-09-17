@@ -12,6 +12,14 @@ dist
 dist-ssr
 *.local
 
+# Environment variables (secrets) — real values live only in Netlify's dashboard
+.env
+.env.local
+
+# Netlify CLI local state
+.netlify
+deno.lock
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
