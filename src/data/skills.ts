@@ -1,0 +1,56 @@
+import type { SkillCategory } from "../types";
+
+// EDIT ME: adjust categories, icons (see src/lib/icons.ts for valid keys), and items.
+export const skills: SkillCategory[] = [
+  {
+    id: "languages",
+    title: "Languages & Frameworks",
+    icon: "code",
+    items: [
+      { name: "TypeScript" },
+      { name: "JavaScript (ES2023)" },
+      { name: "React" },
+      { name: "Next.js" },
+      { name: "Node.js" },
+      { name: "Python" },
+    ],
+  },
+  {
+    id: "backend",
+    title: "Backend & Data",
+    icon: "database",
+    items: [
+      { name: "PostgreSQL" },
+      { name: "Prisma" },
+      { name: "REST APIs" },
+      { name: "GraphQL" },
+      { name: "Redis" },
+      { name: "Docker" },
+    ],
+  },
+  {
+    id: "design",
+    title: "Design & UX",
+    icon: "palette",
+    items: [
+      { name: "Tailwind CSS" },
+      { name: "Figma" },
+      { name: "Design Systems" },
+      { name: "Accessibility (a11y)" },
+      { name: "Framer Motion" },
+    ],
+  },
+  {
+    id: "tools",
+    title: "Tools & Platforms",
+    icon: "cloud",
+    items: [
+      { name: "Git" },
+      { name: "GitHub Actions" },
+      { name: "Netlify" },
+      { name: "AWS" },
+      { name: "Vite" },
+      { name: "Vitest" },
+    ],
+  },
+];

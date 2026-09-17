@@ -1,0 +1,30 @@
+import type { Profile } from "../types";
+
+// EDIT ME: replace every field below with your real information.
+export const profile: Profile = {
+  name: "Alex Rivera",
+  role: "Full-Stack Software Engineer",
+  yearsExperience: 4,
+  badge: "Available for new opportunities",
+  heading: "Building thoughtful, performant web experiences.",
+  blurb:
+    "I'm a full-stack engineer who enjoys turning complex problems into simple, elegant interfaces. Based in Austin, TX, I've spent the last 4 years shipping products across fintech and developer tools.",
+  location: "Austin, TX",
+  phone: "+1 (512) 555-0182",
+  email: "alex.rivera.dev@example.com",
+  avatarAlt: "Portrait of Alex Rivera",
+  resumeUrl: "/resume.pdf",
+  stats: [
+    { label: "Years Experience", value: "4+" },
+    { label: "Projects Shipped", value: "25+" },
+    { label: "Happy Clients", value: "12" },
+    { label: "Coffee Cups", value: "∞" },
+  ],
+  social: {
+    github: "https://github.com/alexrivera-dev",
+    linkedin: "https://linkedin.com/in/alexrivera-dev",
+    twitter: "https://x.com/alexrivera_dev",
+    twitterHandle: "alexrivera_dev",
+    email: "alex.rivera.dev@example.com",
+  },
+};

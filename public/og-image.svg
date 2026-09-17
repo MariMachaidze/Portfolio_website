@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#146B5D" />
+      <stop offset="100%" stop-color="#0E4F44" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g)" />
+  <g fill="#FAF6EF" fill-opacity="0.08">
+    <circle cx="1020" cy="120" r="220" />
+    <circle cx="120" cy="560" r="180" />
+  </g>
+  <circle cx="120" cy="120" r="56" fill="#E8873A" />
+  <text x="120" y="132" text-anchor="middle" font-family="Georgia, serif" font-size="40" font-weight="600" fill="#FAF6EF">AR</text>
+  <text x="120" y="240" font-family="Georgia, serif" font-size="56" font-weight="600" fill="#FAF6EF">Alex Rivera</text>
+  <text x="120" y="290" font-family="sans-serif" font-size="28" fill="#F3EFE6" fill-opacity="0.85">Full-Stack Software Engineer</text>
+</svg>
