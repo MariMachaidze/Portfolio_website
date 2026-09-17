@@ -1,0 +1,116 @@
+import { z } from "zod";
+
+const IconKeySchema = z.enum([
+  "code",
+  "server",
+  "palette",
+  "database",
+  "cloud",
+  "wrench",
+  "terminal",
+  "layout",
+]);
+
+const SocialLinksSchema = z.object({
+  github: z.string(),
+  linkedin: z.string(),
+  twitter: z.string(),
+  twitterHandle: z.string(),
+  email: z.string(),
+});
+
+const ProfileStatSchema = z.object({
+  label: z.string(),
+  value: z.string(),
+});
+
+export const ProfileSchema = z.object({
+  name: z.string().min(1),
+  role: z.string().min(1),
+  yearsExperience: z.number(),
+  badge: z.string(),
+  heading: z.string(),
+  blurb: z.string(),
+  location: z.string(),
+  phone: z.string(),
+  email: z.string(),
+  avatarAlt: z.string(),
+  resumeUrl: z.string(),
+  stats: z.array(ProfileStatSchema),
+  social: SocialLinksSchema,
+});
+
+const SkillItemSchema = z.object({ name: z.string().min(1) });
+
+export const SkillsSchema = z.array(
+  z.object({
+    id: z.string().min(1),
+    title: z.string().min(1),
+    icon: IconKeySchema,
+    description: z.string().optional(),
+    items: z.array(SkillItemSchema),
+  }),
+);
+
+export const ExperienceSchema = z.array(
+  z.object({
+    id: z.string().min(1),
+    role: z.string().min(1),
+    company: z.string().min(1),
+    companyUrl: z.string().optional(),
+    startDate: z.string(),
+    endDate: z.string(),
+    location: z.string(),
+    locationType: z.enum(["Remote", "Hybrid", "On-site"]).optional(),
+    summary: z.string(),
+    bullets: z.array(z.string()),
+    tech: z.array(z.string()),
+  }),
+);
+
+const MediaItemSchema = z.discriminatedUnion("type", [
+  z.object({ type: z.literal("image"), src: z.string().min(1), alt: z.string() }),
+  z.object({
+    type: z.literal("video"),
+    src: z.string().min(1),
+    poster: z.string().optional(),
+    caption: z.string().optional(),
+  }),
+  z.object({ type: z.literal("youtube"), id: z.string().min(1), caption: z.string().optional() }),
+  z.object({ type: z.literal("vimeo"), id: z.string().min(1), caption: z.string().optional() }),
+]);
+
+const ProjectLinksSchema = z.object({
+  demoUrl: z.string().optional(),
+  codeUrl: z.string().optional(),
+});
+
+export const ProjectsSchema = z
+  .array(
+    z.object({
+      slug: z
+        .string()
+        .min(1)
+        .regex(/^[a-z0-9-]+$/, "slug must be lowercase letters, numbers, and hyphens only"),
+      title: z.string().min(1),
+      summary: z.string(),
+      description: z.string(),
+      coverSeed: z.string(),
+      status: z.enum(["live", "in-progress", "archived"]),
+      tech: z.array(z.string()),
+      highlights: z.array(z.string()),
+      links: ProjectLinksSchema,
+      gallery: z.array(MediaItemSchema),
+      featured: z.boolean().optional(),
+    }),
+  )
+  .refine((projects) => new Set(projects.map((p) => p.slug)).size === projects.length, {
+    message: "Project slugs must be unique",
+  });
+
+export const CONTENT_SCHEMAS = {
+  profile: ProfileSchema,
+  skills: SkillsSchema,
+  experience: ExperienceSchema,
+  projects: ProjectsSchema,
+} as const;
