@@ -1,0 +1,95 @@
+[
+  {
+    "slug": "pulseboard",
+    "title": "Pulseboard",
+    "summary": "Real-time analytics dashboard for subscription businesses.",
+    "description": "Pulseboard gives subscription businesses a live view of MRR, churn, and cohort retention. It streams events over WebSockets and renders updates without a page refresh, so teams can watch the impact of a pricing change or an outage as it happens.",
+    "coverSeed": "pulseboard",
+    "status": "live",
+    "featured": true,
+    "tech": ["React", "TypeScript", "WebSockets", "PostgreSQL"],
+    "highlights": [
+      "Sub-second update latency for live metric tiles via a WebSocket event bus.",
+      "Cohort retention charts with drill-down into individual customer timelines.",
+      "Role-based access control so finance and support see different views of the same data."
+    ],
+    "links": {
+      "demoUrl": "https://example.com/pulseboard",
+      "codeUrl": "https://github.com/alexrivera-dev/pulseboard"
+    },
+    "gallery": [
+      { "type": "image", "src": "/projects/pulseboard/cover-1.svg", "alt": "Pulseboard dashboard overview" },
+      { "type": "image", "src": "/projects/pulseboard/cover-2.svg", "alt": "Pulseboard cohort retention chart" },
+      { "type": "video", "src": "/projects/pulseboard/demo.mp4", "caption": "Walkthrough of the live dashboard" },
+      { "type": "youtube", "id": "REPLACE_WITH_YOUTUBE_ID", "caption": "Product demo on YouTube" }
+    ]
+  },
+  {
+    "slug": "recipe-radar",
+    "title": "Recipe Radar",
+    "summary": "AI-assisted recipe recommendations from what's already in your pantry.",
+    "description": "Recipe Radar takes a photo or a typed list of pantry ingredients and suggests recipes ranked by how few extra items you'd need to buy. It's currently in active development, with a focus on getting ingredient recognition accuracy up before opening a public beta.",
+    "coverSeed": "recipe-radar",
+    "status": "in-progress",
+    "tech": ["Next.js", "OpenAI API", "Prisma", "Tailwind CSS"],
+    "highlights": [
+      "Pantry-to-recipe matching that ranks results by minimal missing ingredients.",
+      "Ingredient recognition from photos using a vision-capable LLM.",
+      "Weekly meal planning view that reuses overlapping ingredients across recipes."
+    ],
+    "links": {
+      "codeUrl": "https://github.com/alexrivera-dev/recipe-radar"
+    },
+    "gallery": [
+      { "type": "image", "src": "/projects/recipe-radar/cover-1.svg", "alt": "Recipe Radar pantry input screen" },
+      { "type": "image", "src": "/projects/recipe-radar/cover-2.svg", "alt": "Recipe Radar recommended recipes list" },
+      { "type": "video", "src": "/projects/recipe-radar/demo.mp4", "caption": "Early prototype walkthrough" },
+      { "type": "youtube", "id": "REPLACE_WITH_YOUTUBE_ID", "caption": "Progress update on YouTube" }
+    ]
+  },
+  {
+    "slug": "trailmate",
+    "title": "TrailMate",
+    "summary": "Offline-first hiking companion with GPS tracking and trail maps.",
+    "description": "TrailMate is a progressive web app for hikers who lose signal on the trail. Maps, GPS tracks, and trail notes are all cached locally so the app works fully offline, then syncs back up once you're within range of a network again.",
+    "coverSeed": "trailmate",
+    "status": "live",
+    "tech": ["React", "Service Workers", "Mapbox", "IndexedDB"],
+    "highlights": [
+      "Fully offline trail tracking backed by a service worker and IndexedDB cache.",
+      "Custom Mapbox styling tuned for readability in direct sunlight.",
+      "Background sync reconciles GPS tracks recorded offline once connectivity returns."
+    ],
+    "links": {
+      "demoUrl": "https://example.com/trailmate",
+      "codeUrl": "https://github.com/alexrivera-dev/trailmate"
+    },
+    "gallery": [
+      { "type": "image", "src": "/projects/trailmate/cover-1.svg", "alt": "TrailMate offline map view" },
+      { "type": "image", "src": "/projects/trailmate/cover-2.svg", "alt": "TrailMate GPS track summary" },
+      { "type": "video", "src": "/projects/trailmate/demo.mp4", "caption": "Offline mode demonstration" },
+      { "type": "vimeo", "id": "REPLACE_WITH_VIMEO_ID", "caption": "Field test recording" }
+    ]
+  },
+  {
+    "slug": "task-forge",
+    "title": "TaskForge",
+    "summary": "An early Kanban tool for small teams, since sunset in favor of Pulseboard.",
+    "description": "TaskForge was a lightweight Kanban board built for small teams who found tools like Jira too heavyweight. It's since been archived as the team consolidated around Pulseboard, but the codebase is kept public as a reference implementation of a drag-and-drop board built without a heavy framework.",
+    "coverSeed": "task-forge",
+    "status": "archived",
+    "tech": ["Vue.js", "Firebase", "Vuetify"],
+    "highlights": [
+      "Custom drag-and-drop board implementation without an external DnD library.",
+      "Realtime multi-user sync backed by Firebase Firestore.",
+      "Simple enough for a team to onboard in under five minutes."
+    ],
+    "links": {
+      "codeUrl": "https://github.com/alexrivera-dev/task-forge"
+    },
+    "gallery": [
+      { "type": "image", "src": "/projects/task-forge/cover-1.svg", "alt": "TaskForge Kanban board" },
+      { "type": "image", "src": "/projects/task-forge/cover-2.svg", "alt": "TaskForge task detail view" }
+    ]
+  }
+]
