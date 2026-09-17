@@ -65,7 +65,7 @@ export async function putContentFile(
   content: unknown,
   expectedSha: string | undefined,
   message: string,
-): Promise<{ commitSha: string; dryRun: boolean }> {
+): Promise<{ commitSha: string; contentSha: string; dryRun: boolean }> {
   const octokit = getOctokit();
   const { owner, repo, branch } = getRepoConfig();
   const path = CONTENT_FILES[key];
@@ -81,7 +81,7 @@ export async function putContentFile(
 
   if (shouldDryRun()) {
     console.log(`[content-save dry run] would commit ${path} — "${message}"`);
-    return { commitSha: `dryrun-${Date.now()}`, dryRun: true };
+    return { commitSha: `dryrun-${Date.now()}`, contentSha: currentSha, dryRun: true };
   }
 
   const body = JSON.stringify(content, null, 2) + "\n";
@@ -96,6 +96,7 @@ export async function putContentFile(
   });
 
   const commitSha = res.data.commit.sha;
-  if (!commitSha) throw new Error("GitHub did not return a commit sha");
-  return { commitSha, dryRun: false };
+  const contentSha = res.data.content?.sha;
+  if (!commitSha || !contentSha) throw new Error("GitHub did not return the expected sha fields");
+  return { commitSha, contentSha, dryRun: false };
 }

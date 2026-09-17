@@ -39,13 +39,13 @@ export const handler: Handler = async (event) => {
   }
 
   try {
-    const { commitSha, dryRun } = await putContentFile(
+    const { commitSha, contentSha, dryRun } = await putContentFile(
       key,
       parsed.data,
       expectedSha,
       `Update ${key} via admin panel`,
     );
-    return jsonResponse(200, { commitSha, dryRun });
+    return jsonResponse(200, { commitSha, contentSha, dryRun });
   } catch (err) {
     if (err instanceof ContentConflictError) {
       return jsonResponse(409, { error: "Content changed since you loaded it. Reload and try again." });
