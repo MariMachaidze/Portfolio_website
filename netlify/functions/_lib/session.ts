@@ -26,23 +26,25 @@ export function clearSessionCookie(): string {
 
 function parseCookies(header: string | undefined): Record<string, string> {
   if (!header) return {};
-  return Object.fromEntries(
-    header
-      .split(";")
-      .map((pair) => pair.trim())
-      .filter(Boolean)
-      .map((pair) => {
-        const eq = pair.indexOf("=");
-        return [pair.slice(0, eq), decodeURIComponent(pair.slice(eq + 1))];
-      }),
-  );
+  const cookies: Record<string, string> = {};
+  for (const pair of header.split(";").map((p) => p.trim()).filter(Boolean)) {
+    const eq = pair.indexOf("=");
+    if (eq === -1) continue;
+    try {
+      cookies[pair.slice(0, eq)] = decodeURIComponent(pair.slice(eq + 1));
+    } catch {
+      // Skip a malformed cookie (invalid percent-encoding) rather than
+      // letting it take down parsing of every other cookie on the request.
+    }
+  }
+  return cookies;
 }
 
 export async function verifySession(event: HandlerEvent): Promise<boolean> {
-  const cookies = parseCookies(event.headers.cookie);
-  const token = cookies[COOKIE_NAME];
-  if (!token) return false;
   try {
+    const cookies = parseCookies(event.headers.cookie);
+    const token = cookies[COOKIE_NAME];
+    if (!token) return false;
     await jwtVerify(token, getSecretKey());
     return true;
   } catch {

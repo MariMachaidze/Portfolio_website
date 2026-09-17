@@ -19,10 +19,10 @@ export function AdminLoginPage() {
     event.preventDefault();
     setError(null);
     setSubmitting(true);
-    const ok = await login(password, totpCode);
+    const result = await login(password, totpCode);
     setSubmitting(false);
-    if (!ok) {
-      setError("Invalid credentials.");
+    if (!result.ok) {
+      setError(result.error || "Invalid credentials.");
       setTotpCode("");
     }
   }

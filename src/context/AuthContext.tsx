@@ -20,9 +20,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ password, totpCode }),
     });
-    const ok = res.ok;
-    setAuthenticated(ok);
-    return ok;
+    setAuthenticated(res.ok);
+    if (res.ok) return { ok: true };
+
+    const data = await res.json().catch(() => null);
+    return { ok: false, error: data?.error as string | undefined };
   }, []);
 
   const logout = useCallback(async () => {
