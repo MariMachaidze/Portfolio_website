@@ -32,5 +32,3 @@ export function loadTwitterWidget(): Promise<void> {
     document.body.appendChild(script);
   });
 }
-
-export {};
