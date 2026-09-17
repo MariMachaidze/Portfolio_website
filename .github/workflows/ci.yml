@@ -25,7 +25,7 @@ jobs:
   deploy:
     name: Deploy to Netlify
     needs: build-and-lint
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -42,7 +42,7 @@ jobs:
         uses: nwtgck/actions-netlify@v3
         with:
           publish-dir: "./dist"
-          production-branch: main
+          production-branch: master
           production-deploy: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "Deploy from GitHub Actions (${{ github.sha }})"

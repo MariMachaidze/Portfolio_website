@@ -52,7 +52,7 @@ Use this if you'd rather control deploys entirely from GitHub Actions instead of
    - `NETLIFY_AUTH_TOKEN`: Netlify **User settings → Applications → Personal access tokens → New access token**.
    - `NETLIFY_SITE_ID`: Netlify **Site settings → General → Site details → Site ID**.
 3. In your GitHub repo: **Settings → Secrets and variables → Actions**, add both as repository secrets.
-4. Push to `main` — the `deploy` job in `.github/workflows/ci.yml` builds the site and deploys it to Netlify using those secrets. The `build-and-lint` job runs lint + build on every push and pull request regardless of which method you choose.
+4. Push to `master` — the `deploy` job in `.github/workflows/ci.yml` builds the site and deploys it to Netlify using those secrets. The `build-and-lint` job runs lint + build on every push and pull request regardless of which method you choose.
 
 ## Notes on runtime network dependencies
 
