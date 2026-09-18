@@ -44,7 +44,7 @@ function WidgetContent({ widget }: { widget: ShowcaseWidget }) {
 
 export function ShowcaseGrid({ showcase }: { showcase: ProjectShowcase }) {
   const { widgets, stickers } = showcase;
-  if (widgets.length === 0) return null;
+  if (widgets.length === 0 && stickers.length === 0) return null;
 
   const sortedForMobile = [...widgets].sort((a, b) => a.y - b.y || a.x - b.x);
 

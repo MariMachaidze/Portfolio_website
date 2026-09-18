@@ -59,7 +59,7 @@ export function ProjectDetailPage() {
 
         <MediaGallery items={project.gallery} />
 
-        {project.showcase && project.showcase.widgets.length > 0 && (
+        {project.showcase && (project.showcase.widgets.length > 0 || project.showcase.stickers.length > 0) && (
           <div className="mt-10">
             <h2 className="mb-4 text-xl font-semibold text-text">Showcase</h2>
             <ShowcaseGrid showcase={project.showcase} />
