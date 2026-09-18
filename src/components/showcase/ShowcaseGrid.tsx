@@ -1,5 +1,9 @@
+import { ExternalLink } from "lucide-react";
 import type { ProjectShowcase, ShowcaseWidget } from "../../types";
 import { BUILTIN_STICKERS } from "../../data/stickers";
+import { GithubIcon } from "../icons/GithubIcon";
+import { Badge } from "../ui/Badge";
+import { Button } from "../ui/Button";
 
 const GRID_COLUMNS = 6;
 
@@ -38,6 +42,43 @@ function WidgetContent({ widget }: { widget: ShowcaseWidget }) {
           allow="autoplay; fullscreen; picture-in-picture"
           allowFullScreen
         />
+      );
+    case "highlights":
+      return (
+        <div className="h-full overflow-auto p-4">
+          <h3 className="mb-3 text-lg font-semibold text-text">{widget.heading ?? "Key Highlights"}</h3>
+          <ul className="list-disc space-y-2 pl-5 text-sm text-muted">
+            {widget.items.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      );
+    case "tech":
+      return (
+        <div className="h-full overflow-auto p-4">
+          <h3 className="mb-3 text-lg font-semibold text-text">{widget.heading ?? "Built With"}</h3>
+          <div className="flex flex-wrap gap-2">
+            {widget.items.map((item) => (
+              <Badge key={item}>{item}</Badge>
+            ))}
+          </div>
+        </div>
+      );
+    case "links":
+      return (
+        <div className="flex h-full flex-wrap items-center gap-3 p-4">
+          {widget.demoUrl && (
+            <Button as="a" href={widget.demoUrl} target="_blank" rel="noreferrer">
+              <ExternalLink size={16} /> Live Demo
+            </Button>
+          )}
+          {widget.codeUrl && (
+            <Button as="a" href={widget.codeUrl} target="_blank" rel="noreferrer" variant="secondary">
+              <GithubIcon size={16} /> View Code
+            </Button>
+          )}
+        </div>
       );
   }
 }

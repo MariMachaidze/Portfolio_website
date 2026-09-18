@@ -112,6 +112,24 @@ const ShowcaseWidgetSchema = z.discriminatedUnion("type", [
   }),
   z.object({ ...ShowcasePositionSchema, type: z.literal("youtube"), ytId: z.string().min(1), caption: z.string().optional() }),
   z.object({ ...ShowcasePositionSchema, type: z.literal("vimeo"), vimeoId: z.string().min(1), caption: z.string().optional() }),
+  z.object({
+    ...ShowcasePositionSchema,
+    type: z.literal("highlights"),
+    heading: z.string().optional(),
+    items: z.array(z.string()),
+  }),
+  z.object({
+    ...ShowcasePositionSchema,
+    type: z.literal("tech"),
+    heading: z.string().optional(),
+    items: z.array(z.string()),
+  }),
+  z.object({
+    ...ShowcasePositionSchema,
+    type: z.literal("links"),
+    demoUrl: z.string().optional(),
+    codeUrl: z.string().optional(),
+  }),
 ]);
 
 const ShowcaseStickerSchema = z.object({

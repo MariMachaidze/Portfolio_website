@@ -107,7 +107,10 @@ export type ShowcaseWidget =
       caption?: string;
     }
   | { id: string; x: number; y: number; w: number; h: number; type: "youtube"; ytId: string; caption?: string }
-  | { id: string; x: number; y: number; w: number; h: number; type: "vimeo"; vimeoId: string; caption?: string };
+  | { id: string; x: number; y: number; w: number; h: number; type: "vimeo"; vimeoId: string; caption?: string }
+  | { id: string; x: number; y: number; w: number; h: number; type: "highlights"; heading?: string; items: string[] }
+  | { id: string; x: number; y: number; w: number; h: number; type: "tech"; heading?: string; items: string[] }
+  | { id: string; x: number; y: number; w: number; h: number; type: "links"; demoUrl?: string; codeUrl?: string };
 
 export interface ShowcaseSticker {
   id: string;

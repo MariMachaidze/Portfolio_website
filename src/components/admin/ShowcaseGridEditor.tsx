@@ -13,7 +13,7 @@ const GRID_COLUMNS = 6;
 const ROW_HEIGHT = 90;
 
 type WidgetKind = ShowcaseWidget["type"];
-const WIDGET_TYPES: WidgetKind[] = ["text", "image", "video", "youtube", "vimeo"];
+const WIDGET_TYPES: WidgetKind[] = ["text", "image", "video", "youtube", "vimeo", "highlights", "tech", "links"];
 
 function emptyWidget(type: WidgetKind, y: number): ShowcaseWidget {
   const base = { id: crypto.randomUUID(), x: 0, y, w: 2, h: 2 };
@@ -28,11 +28,29 @@ function emptyWidget(type: WidgetKind, y: number): ShowcaseWidget {
       return { ...base, type: "youtube", ytId: "" };
     case "vimeo":
       return { ...base, type: "vimeo", vimeoId: "" };
+    case "highlights":
+      return { ...base, type: "highlights", items: [] };
+    case "tech":
+      return { ...base, type: "tech", items: [] };
+    case "links":
+      return { ...base, type: "links" };
   }
 }
 
 function bottomOf(items: { y: number; h: number }[]): number {
   return items.reduce((max, item) => Math.max(max, item.y + item.h), 0);
+}
+
+function widgetPreviewText(widget: ShowcaseWidget): string {
+  switch (widget.type) {
+    case "text":
+      return widget.body || "Text block";
+    case "highlights":
+    case "tech":
+      return widget.items.length > 0 ? widget.items.join(", ") : `${widget.type} (empty)`;
+    default:
+      return `${widget.type} preview`;
+  }
 }
 
 interface ShowcaseGridEditorProps {
@@ -130,7 +148,7 @@ export function ShowcaseGridEditor({ showcase, onChange }: ShowcaseGridEditorPro
                 </button>
               </div>
               <div className="flex h-[calc(100%-24px)] items-center justify-center overflow-hidden p-2 text-center text-xs text-muted">
-                {widget.type === "text" ? widget.body || "Text block" : `${widget.type} preview`}
+                {widgetPreviewText(widget)}
               </div>
             </div>
           ))}
@@ -291,6 +309,70 @@ export function ShowcaseGridEditor({ showcase, onChange }: ShowcaseGridEditorPro
                     htmlFor={`showcase-caption-${widget.id}`}
                     value={widget.caption ?? ""}
                     onChange={(e) => replaceWidget(widget.id, { ...widget, caption: e.target.value || undefined })}
+                  />
+                </>
+              )}
+
+              {widget.type === "highlights" && (
+                <>
+                  <TextField
+                    label="Heading"
+                    htmlFor={`showcase-heading-${widget.id}`}
+                    value={widget.heading ?? ""}
+                    onChange={(e) => replaceWidget(widget.id, { ...widget, heading: e.target.value || undefined })}
+                  />
+                  <TextAreaField
+                    label="Highlights"
+                    htmlFor={`showcase-items-${widget.id}`}
+                    hint="one per line"
+                    rows={4}
+                    value={widget.items.join("\n")}
+                    onChange={(e) =>
+                      replaceWidget(widget.id, {
+                        ...widget,
+                        items: e.target.value.split("\n").map((line) => line.trim()).filter(Boolean),
+                      })
+                    }
+                  />
+                </>
+              )}
+
+              {widget.type === "tech" && (
+                <>
+                  <TextField
+                    label="Heading"
+                    htmlFor={`showcase-heading-${widget.id}`}
+                    value={widget.heading ?? ""}
+                    onChange={(e) => replaceWidget(widget.id, { ...widget, heading: e.target.value || undefined })}
+                  />
+                  <TextField
+                    label="Tech"
+                    htmlFor={`showcase-items-${widget.id}`}
+                    hint="comma separated"
+                    value={widget.items.join(", ")}
+                    onChange={(e) =>
+                      replaceWidget(widget.id, {
+                        ...widget,
+                        items: e.target.value.split(",").map((t) => t.trim()).filter(Boolean),
+                      })
+                    }
+                  />
+                </>
+              )}
+
+              {widget.type === "links" && (
+                <>
+                  <TextField
+                    label="Demo URL"
+                    htmlFor={`showcase-demoUrl-${widget.id}`}
+                    value={widget.demoUrl ?? ""}
+                    onChange={(e) => replaceWidget(widget.id, { ...widget, demoUrl: e.target.value || undefined })}
+                  />
+                  <TextField
+                    label="Code URL"
+                    htmlFor={`showcase-codeUrl-${widget.id}`}
+                    value={widget.codeUrl ?? ""}
+                    onChange={(e) => replaceWidget(widget.id, { ...widget, codeUrl: e.target.value || undefined })}
                   />
                 </>
               )}
