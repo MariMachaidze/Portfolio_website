@@ -1,4 +1,5 @@
 import type { FormEvent } from "react";
+import { X } from "lucide-react";
 import type { Profile } from "../../../types";
 import { useContentEditor } from "../../../hooks/useContentEditor";
 import { SaveStatusIndicator } from "../SaveStatusIndicator";
@@ -24,6 +25,14 @@ export function ProfileForm() {
       const stats = prev.stats.map((s, i) => (i === index ? { ...s, [key]: value } : s));
       return { ...prev, stats };
     });
+  }
+
+  function addStat() {
+    setDraft((prev) => (prev ? { ...prev, stats: [...prev.stats, { label: "", value: "" }] } : prev));
+  }
+
+  function removeStat(index: number) {
+    setDraft((prev) => (prev ? { ...prev, stats: prev.stats.filter((_, i) => i !== index) } : prev));
   }
 
   function updateSocial<K extends keyof Profile["social"]>(key: K, value: string) {
@@ -114,9 +123,17 @@ export function ProfileForm() {
       />
 
       <h3 className="mb-2 mt-6 text-sm font-semibold text-text">Stats</h3>
-      <div className="mb-4 grid grid-cols-2 gap-3">
+      <div className="mb-3 grid grid-cols-2 gap-3">
         {draft.stats.map((stat, i) => (
-          <div key={i} className="rounded-lg border border-border p-3">
+          <div key={i} className="relative rounded-lg border border-border p-3">
+            <button
+              type="button"
+              onClick={() => removeStat(i)}
+              aria-label="Remove stat"
+              className="absolute right-2 top-2 text-muted transition-colors duration-200 hover:text-accent-2"
+            >
+              <X size={16} />
+            </button>
             <TextField
               label="Label"
               htmlFor={`stat-label-${i}`}
@@ -132,6 +149,9 @@ export function ProfileForm() {
           </div>
         ))}
       </div>
+      <Button type="button" variant="secondary" onClick={addStat} className="mb-4">
+        + Add stat
+      </Button>
 
       <h3 className="mb-2 mt-6 text-sm font-semibold text-text">Social links</h3>
       <TextField
