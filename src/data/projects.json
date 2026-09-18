@@ -6,8 +6,12 @@
     "description": "Pulseboard gives subscription businesses a live view of MRR, churn, and cohort retention. It streams events over WebSockets and renders updates without a page refresh, so teams can watch the impact of a pricing change or an outage as it happens.",
     "coverSeed": "pulseboard",
     "status": "live",
-    "featured": true,
-    "tech": ["React", "TypeScript", "WebSockets", "PostgreSQL"],
+    "tech": [
+      "React",
+      "TypeScript",
+      "WebSockets",
+      "PostgreSQL"
+    ],
     "highlights": [
       "Sub-second update latency for live metric tiles via a WebSocket event bus.",
       "Cohort retention charts with drill-down into individual customer timelines.",
@@ -18,11 +22,45 @@
       "codeUrl": "https://github.com/alexrivera-dev/pulseboard"
     },
     "gallery": [
-      { "type": "image", "src": "/projects/pulseboard/cover-1.svg", "alt": "Pulseboard dashboard overview" },
-      { "type": "image", "src": "/projects/pulseboard/cover-2.svg", "alt": "Pulseboard cohort retention chart" },
-      { "type": "video", "src": "/projects/pulseboard/demo.mp4", "caption": "Walkthrough of the live dashboard" },
-      { "type": "youtube", "id": "REPLACE_WITH_YOUTUBE_ID", "caption": "Product demo on YouTube" }
-    ]
+      {
+        "type": "image",
+        "src": "/projects/pulseboard/cover-1.svg",
+        "alt": "Pulseboard dashboard overview"
+      },
+      {
+        "type": "image",
+        "src": "/projects/pulseboard/cover-2.svg",
+        "alt": "Pulseboard cohort retention chart"
+      },
+      {
+        "type": "video",
+        "src": "/projects/pulseboard/demo.mp4",
+        "caption": "Walkthrough of the live dashboard"
+      },
+      {
+        "type": "youtube",
+        "id": "REPLACE_WITH_YOUTUBE_ID",
+        "caption": "Product demo on YouTube"
+      }
+    ],
+    "featured": true,
+    "showcase": {
+      "widgets": [],
+      "stickers": [
+        {
+          "id": "f971460a-ba10-4de8-9f55-6150cb91e2b3",
+          "x": 0,
+          "y": 1,
+          "stickerKey": "star"
+        },
+        {
+          "id": "3a887df1-3f24-46be-bd89-4f8b1300bfd3",
+          "x": 3,
+          "y": 0,
+          "stickerKey": "rocket"
+        }
+      ]
+    }
   },
   {
     "slug": "recipe-radar",
@@ -31,7 +69,12 @@
     "description": "Recipe Radar takes a photo or a typed list of pantry ingredients and suggests recipes ranked by how few extra items you'd need to buy. It's currently in active development, with a focus on getting ingredient recognition accuracy up before opening a public beta.",
     "coverSeed": "recipe-radar",
     "status": "in-progress",
-    "tech": ["Next.js", "OpenAI API", "Prisma", "Tailwind CSS"],
+    "tech": [
+      "Next.js",
+      "OpenAI API",
+      "Prisma",
+      "Tailwind CSS"
+    ],
     "highlights": [
       "Pantry-to-recipe matching that ranks results by minimal missing ingredients.",
       "Ingredient recognition from photos using a vision-capable LLM.",
@@ -41,10 +84,26 @@
       "codeUrl": "https://github.com/alexrivera-dev/recipe-radar"
     },
     "gallery": [
-      { "type": "image", "src": "/projects/recipe-radar/cover-1.svg", "alt": "Recipe Radar pantry input screen" },
-      { "type": "image", "src": "/projects/recipe-radar/cover-2.svg", "alt": "Recipe Radar recommended recipes list" },
-      { "type": "video", "src": "/projects/recipe-radar/demo.mp4", "caption": "Early prototype walkthrough" },
-      { "type": "youtube", "id": "REPLACE_WITH_YOUTUBE_ID", "caption": "Progress update on YouTube" }
+      {
+        "type": "image",
+        "src": "/projects/recipe-radar/cover-1.svg",
+        "alt": "Recipe Radar pantry input screen"
+      },
+      {
+        "type": "image",
+        "src": "/projects/recipe-radar/cover-2.svg",
+        "alt": "Recipe Radar recommended recipes list"
+      },
+      {
+        "type": "video",
+        "src": "/projects/recipe-radar/demo.mp4",
+        "caption": "Early prototype walkthrough"
+      },
+      {
+        "type": "youtube",
+        "id": "REPLACE_WITH_YOUTUBE_ID",
+        "caption": "Progress update on YouTube"
+      }
     ]
   },
   {
@@ -54,7 +113,12 @@
     "description": "TrailMate is a progressive web app for hikers who lose signal on the trail. Maps, GPS tracks, and trail notes are all cached locally so the app works fully offline, then syncs back up once you're within range of a network again.",
     "coverSeed": "trailmate",
     "status": "live",
-    "tech": ["React", "Service Workers", "Mapbox", "IndexedDB"],
+    "tech": [
+      "React",
+      "Service Workers",
+      "Mapbox",
+      "IndexedDB"
+    ],
     "highlights": [
       "Fully offline trail tracking backed by a service worker and IndexedDB cache.",
       "Custom Mapbox styling tuned for readability in direct sunlight.",
@@ -65,10 +129,26 @@
       "codeUrl": "https://github.com/alexrivera-dev/trailmate"
     },
     "gallery": [
-      { "type": "image", "src": "/projects/trailmate/cover-1.svg", "alt": "TrailMate offline map view" },
-      { "type": "image", "src": "/projects/trailmate/cover-2.svg", "alt": "TrailMate GPS track summary" },
-      { "type": "video", "src": "/projects/trailmate/demo.mp4", "caption": "Offline mode demonstration" },
-      { "type": "vimeo", "id": "REPLACE_WITH_VIMEO_ID", "caption": "Field test recording" }
+      {
+        "type": "image",
+        "src": "/projects/trailmate/cover-1.svg",
+        "alt": "TrailMate offline map view"
+      },
+      {
+        "type": "image",
+        "src": "/projects/trailmate/cover-2.svg",
+        "alt": "TrailMate GPS track summary"
+      },
+      {
+        "type": "video",
+        "src": "/projects/trailmate/demo.mp4",
+        "caption": "Offline mode demonstration"
+      },
+      {
+        "type": "vimeo",
+        "id": "REPLACE_WITH_VIMEO_ID",
+        "caption": "Field test recording"
+      }
     ]
   },
   {
@@ -78,7 +158,11 @@
     "description": "TaskForge was a lightweight Kanban board built for small teams who found tools like Jira too heavyweight. It's since been archived as the team consolidated around Pulseboard, but the codebase is kept public as a reference implementation of a drag-and-drop board built without a heavy framework.",
     "coverSeed": "task-forge",
     "status": "archived",
-    "tech": ["Vue.js", "Firebase", "Vuetify"],
+    "tech": [
+      "Vue.js",
+      "Firebase",
+      "Vuetify"
+    ],
     "highlights": [
       "Custom drag-and-drop board implementation without an external DnD library.",
       "Realtime multi-user sync backed by Firebase Firestore.",
@@ -88,8 +172,16 @@
       "codeUrl": "https://github.com/alexrivera-dev/task-forge"
     },
     "gallery": [
-      { "type": "image", "src": "/projects/task-forge/cover-1.svg", "alt": "TaskForge Kanban board" },
-      { "type": "image", "src": "/projects/task-forge/cover-2.svg", "alt": "TaskForge task detail view" }
+      {
+        "type": "image",
+        "src": "/projects/task-forge/cover-1.svg",
+        "alt": "TaskForge Kanban board"
+      },
+      {
+        "type": "image",
+        "src": "/projects/task-forge/cover-2.svg",
+        "alt": "TaskForge task detail view"
+      }
     ]
   }
 ]
