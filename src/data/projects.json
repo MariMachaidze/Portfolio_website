@@ -45,7 +45,18 @@
     ],
     "featured": true,
     "showcase": {
-      "widgets": [],
+      "widgets": [
+        {
+          "id": "e441db76-8886-44bd-a5d4-47b6732b5b94",
+          "x": 4,
+          "y": 2,
+          "w": 2,
+          "h": 2,
+          "type": "image",
+          "src": "https://portfolio-uploads-2026.s3.us-east-1.amazonaws.com/uploads/3454ca83-312f-4c67-a04e-d458541e4e0c.png",
+          "alt": ""
+        }
+      ],
       "stickers": [
         {
           "id": "f971460a-ba10-4de8-9f55-6150cb91e2b3",
