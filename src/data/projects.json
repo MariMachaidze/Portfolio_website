@@ -48,10 +48,10 @@
       "widgets": [
         {
           "id": "e441db76-8886-44bd-a5d4-47b6732b5b94",
-          "x": 4,
-          "y": 2,
-          "w": 2,
-          "h": 2,
+          "x": 5,
+          "y": 1,
+          "w": 1,
+          "h": 1,
           "type": "image",
           "src": "https://portfolio-uploads-2026.s3.us-east-1.amazonaws.com/uploads/3454ca83-312f-4c67-a04e-d458541e4e0c.png",
           "alt": ""
@@ -69,6 +69,18 @@
           "x": 3,
           "y": 0,
           "stickerKey": "rocket"
+        },
+        {
+          "id": "e326bd36-dd38-457e-aa57-fd52666eca84",
+          "x": 2,
+          "y": 2,
+          "stickerKey": "star"
+        },
+        {
+          "id": "6ed10737-f53b-48f2-8785-8b57d9758208",
+          "x": 1,
+          "y": 0,
+          "stickerKey": "sparkle"
         }
       ]
     }
@@ -95,11 +107,6 @@
       "codeUrl": "https://github.com/alexrivera-dev/recipe-radar"
     },
     "gallery": [
-      {
-        "type": "image",
-        "src": "/projects/recipe-radar/cover-1.svg",
-        "alt": "Recipe Radar pantry input screen"
-      },
       {
         "type": "image",
         "src": "/projects/recipe-radar/cover-2.svg",
