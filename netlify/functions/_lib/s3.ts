@@ -26,10 +26,13 @@ let cachedClient: S3Client | null = null;
 function getS3Client(): S3Client {
   if (cachedClient) return cachedClient;
   const region = process.env.AWS_S3_REGION;
-  const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-  const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+  // Not named AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY: Netlify Functions run on
+  // AWS Lambda, which injects its own variables under those exact names for
+  // internal use, so Netlify reserves them and refuses to let a site override them.
+  const accessKeyId = process.env.S3_ACCESS_KEY_ID;
+  const secretAccessKey = process.env.S3_SECRET_ACCESS_KEY;
   if (!region || !accessKeyId || !secretAccessKey) {
-    throw new Error("AWS_S3_REGION/AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY is not set");
+    throw new Error("AWS_S3_REGION/S3_ACCESS_KEY_ID/S3_SECRET_ACCESS_KEY is not set");
   }
   cachedClient = new S3Client({ region, credentials: { accessKeyId, secretAccessKey } });
   return cachedClient;
