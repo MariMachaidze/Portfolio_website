@@ -20,13 +20,13 @@ export function Hero() {
   return (
     <section id="hero" className="scroll-mt-16 py-20 sm:py-28">
       <Container className="grid items-center gap-12 md:grid-cols-[1.2fr_0.8fr]">
-        <div>
+        <div className="@container">
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
             <span className="h-2 w-2 rounded-full bg-primary" />
             {profile.badge}
           </span>
 
-          <h1 className="mt-6 text-4xl font-semibold leading-tight text-text sm:text-5xl">
+          <h1 className="mt-6 whitespace-nowrap text-[clamp(1.5rem,7cqw,3rem)] font-semibold leading-tight text-text">
             Hello, I&apos;m {profile.name}
           </h1>
 
@@ -58,15 +58,6 @@ export function Hero() {
               >
                 <Icon size={18} />
               </a>
-            ))}
-          </div>
-
-          <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4">
-            {profile.stats.map((stat) => (
-              <div key={stat.label}>
-                <p className="font-heading text-2xl font-semibold text-text">{stat.value}</p>
-                <p className="text-sm text-muted">{stat.label}</p>
-              </div>
             ))}
           </div>
         </div>

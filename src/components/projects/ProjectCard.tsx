@@ -1,4 +1,4 @@
-import { ArrowRight, ExternalLink } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { Project } from "../../types";
 import { GithubIcon } from "../icons/GithubIcon";
@@ -37,16 +37,6 @@ export function ProjectCard({ project }: { project: Project }) {
               className="inline-flex items-center gap-1.5 text-sm font-medium text-muted transition-colors duration-200 hover:text-primary"
             >
               <GithubIcon size={16} /> Code
-            </a>
-          )}
-          {project.links.demoUrl && (
-            <a
-              href={project.links.demoUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-muted transition-colors duration-200 hover:text-primary"
-            >
-              <ExternalLink size={16} /> Demo
             </a>
           )}
           <Link
