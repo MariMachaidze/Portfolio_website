@@ -86,6 +86,47 @@ const ProjectLinksSchema = z.object({
   codeUrl: z.string().optional(),
 });
 
+const ShowcasePositionSchema = {
+  id: z.string().min(1),
+  x: z.number().int().min(0),
+  y: z.number().int().min(0),
+  w: z.number().int().min(1),
+  h: z.number().int().min(1),
+};
+
+const ShowcaseWidgetSchema = z.discriminatedUnion("type", [
+  z.object({ ...ShowcasePositionSchema, type: z.literal("text"), heading: z.string().optional(), body: z.string() }),
+  z.object({
+    ...ShowcasePositionSchema,
+    type: z.literal("image"),
+    src: z.string().min(1),
+    alt: z.string(),
+    caption: z.string().optional(),
+  }),
+  z.object({
+    ...ShowcasePositionSchema,
+    type: z.literal("video"),
+    src: z.string().min(1),
+    poster: z.string().optional(),
+    caption: z.string().optional(),
+  }),
+  z.object({ ...ShowcasePositionSchema, type: z.literal("youtube"), ytId: z.string().min(1), caption: z.string().optional() }),
+  z.object({ ...ShowcasePositionSchema, type: z.literal("vimeo"), vimeoId: z.string().min(1), caption: z.string().optional() }),
+]);
+
+const ShowcaseStickerSchema = z.object({
+  id: z.string().min(1),
+  x: z.number().int().min(0),
+  y: z.number().int().min(0),
+  stickerKey: z.string().min(1),
+  customSrc: z.string().optional(),
+});
+
+const ProjectShowcaseSchema = z.object({
+  widgets: z.array(ShowcaseWidgetSchema),
+  stickers: z.array(ShowcaseStickerSchema),
+});
+
 export const ProjectsSchema = z
   .array(
     z.object({
@@ -103,6 +144,7 @@ export const ProjectsSchema = z
       links: ProjectLinksSchema,
       gallery: z.array(MediaItemSchema),
       featured: z.boolean().optional(),
+      showcase: ProjectShowcaseSchema.optional(),
     }),
   )
   .refine((projects) => new Set(projects.map((p) => p.slug)).size === projects.length, {

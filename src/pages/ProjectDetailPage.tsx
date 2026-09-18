@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { GithubIcon } from "../components/icons/GithubIcon";
 import { MediaGallery } from "../components/projects/MediaGallery";
 import { StatusBadge } from "../components/projects/StatusBadge";
+import { ShowcaseGrid } from "../components/showcase/ShowcaseGrid";
 import { Badge } from "../components/ui/Badge";
 import { Button } from "../components/ui/Button";
 import { Container } from "../components/ui/Container";
@@ -57,6 +58,13 @@ export function ProjectDetailPage() {
         </div>
 
         <MediaGallery items={project.gallery} />
+
+        {project.showcase && project.showcase.widgets.length > 0 && (
+          <div className="mt-10">
+            <h2 className="mb-4 text-xl font-semibold text-text">Showcase</h2>
+            <ShowcaseGrid showcase={project.showcase} />
+          </div>
+        )}
 
         <div className="mt-10 grid gap-10 sm:grid-cols-[1fr_0.6fr]">
           <div>

@@ -82,6 +82,48 @@ export interface ProjectLinks {
   codeUrl?: string;
 }
 
+export type ShowcaseWidget =
+  | { id: string; x: number; y: number; w: number; h: number; type: "text"; heading?: string; body: string }
+  | {
+      id: string;
+      x: number;
+      y: number;
+      w: number;
+      h: number;
+      type: "image";
+      src: string;
+      alt: string;
+      caption?: string;
+    }
+  | {
+      id: string;
+      x: number;
+      y: number;
+      w: number;
+      h: number;
+      type: "video";
+      src: string;
+      poster?: string;
+      caption?: string;
+    }
+  | { id: string; x: number; y: number; w: number; h: number; type: "youtube"; ytId: string; caption?: string }
+  | { id: string; x: number; y: number; w: number; h: number; type: "vimeo"; vimeoId: string; caption?: string };
+
+export interface ShowcaseSticker {
+  id: string;
+  x: number;
+  y: number;
+  /** Built-in library key (see src/data/stickers.ts), or "custom" for an uploaded image */
+  stickerKey: string;
+  /** Required when stickerKey === "custom" */
+  customSrc?: string;
+}
+
+export interface ProjectShowcase {
+  widgets: ShowcaseWidget[];
+  stickers: ShowcaseSticker[];
+}
+
 export interface Project {
   slug: string;
   title: string;
@@ -95,4 +137,6 @@ export interface Project {
   links: ProjectLinks;
   gallery: MediaItem[];
   featured?: boolean;
+  /** Optional bento-grid showcase rendered on the project's own page only. */
+  showcase?: ProjectShowcase;
 }

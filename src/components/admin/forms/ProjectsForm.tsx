@@ -7,8 +7,10 @@ import { Button } from "../../ui/Button";
 import { TextField, TextAreaField } from "./fields";
 import { GalleryEditor } from "./GalleryEditor";
 import { tagGallery, type GalleryEntry } from "./galleryEntry";
+import { ShowcaseGridEditor } from "../ShowcaseGridEditor";
 
 const STATUS_OPTIONS: ProjectStatus[] = ["live", "in-progress", "archived"];
+const EMPTY_SHOWCASE = { widgets: [], stickers: [] };
 
 function emptyProject(): Project {
   const seed = `new-project-${Date.now()}`;
@@ -23,6 +25,7 @@ function emptyProject(): Project {
     highlights: [],
     links: {},
     gallery: [],
+    showcase: { widgets: [], stickers: [] },
   };
 }
 
@@ -206,6 +209,14 @@ export function ProjectsForm() {
             <GalleryEditor
               entries={galleryEntries[project.slug] ?? []}
               onChange={(entries) => setGalleryForProject(project.slug, entries)}
+            />
+
+            <h4 className="mb-2 mt-4 text-sm font-semibold text-text">
+              Showcase grid <span className="font-normal text-muted">(shown on this project's own page)</span>
+            </h4>
+            <ShowcaseGridEditor
+              showcase={project.showcase ?? EMPTY_SHOWCASE}
+              onChange={(showcase) => update(project.slug, { showcase })}
             />
           </div>
         )}
