@@ -1,5 +1,6 @@
 import { Contact } from "../components/sections/Contact";
 import { Experience } from "../components/sections/Experience";
+import { GithubActivity } from "../components/sections/GithubActivity";
 import { Hero } from "../components/sections/Hero";
 import { Projects } from "../components/sections/Projects";
 import { Skills } from "../components/sections/Skills";
@@ -15,6 +16,7 @@ export function HomePage() {
       <Skills />
       <Experience />
       <Projects />
+      <GithubActivity />
       <XFeed />
       <Contact />
     </>
