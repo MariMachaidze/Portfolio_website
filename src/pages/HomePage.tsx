@@ -16,8 +16,8 @@ export function HomePage() {
       <Skills />
       <Experience />
       <Projects />
-      <GithubActivity />
       <XFeed />
+      <GithubActivity />
       <Contact />
     </>
   );

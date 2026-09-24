@@ -1,15 +1,13 @@
-import { useState, type FormEvent } from "react";
+import type { FormEvent } from "react";
 import type { Project, ProjectStatus } from "../../../types";
 import { useContentEditor } from "../../../hooks/useContentEditor";
 import { SaveStatusIndicator } from "../SaveStatusIndicator";
 import { ReorderableList } from "../ReorderableList";
 import { Button } from "../../ui/Button";
-import { TextField, TextAreaField } from "./fields";
-import { GalleryEditor } from "./GalleryEditor";
-import { tagGallery, type GalleryEntry } from "./galleryEntry";
+import { TextField } from "./fields";
 import { ShowcaseGridEditor } from "../ShowcaseGridEditor";
 
-const STATUS_OPTIONS: ProjectStatus[] = ["live", "in-progress", "archived"];
+const STATUS_OPTIONS: ProjectStatus[] = ["in-progress", "finished", "paused"];
 const EMPTY_SHOWCASE = { widgets: [], stickers: [] };
 
 function emptyProject(): Project {
@@ -18,38 +16,19 @@ function emptyProject(): Project {
     slug: seed,
     title: "New project",
     summary: "",
-    description: "",
     coverSeed: seed,
     status: "in-progress",
+    startDate: "",
+    endDate: "Present",
     tech: [],
-    highlights: [],
     links: {},
-    gallery: [],
     showcase: { widgets: [], stickers: [] },
   };
-}
-
-function galleryEntriesFrom(projects: Project[]): Record<string, GalleryEntry[]> {
-  const map: Record<string, GalleryEntry[]> = {};
-  for (const p of projects) map[p.slug] = tagGallery(p.gallery);
-  return map;
 }
 
 export function ProjectsForm() {
   const editor = useContentEditor<Project[]>("projects");
   const { draft, setDraft } = editor;
-  const [galleryEntries, setGalleryEntries] = useState<Record<string, GalleryEntry[]>>({});
-  const [syncedSavedData, setSyncedSavedData] = useState<Project[] | null>(null);
-
-  // Re-derive the gallery editors' entries whenever the server-loaded/saved
-  // snapshot changes (initial load, manual reload, or a successful save) —
-  // same render-time-sync approach useContentEditor uses for `draft` itself.
-  // Keyed off `savedData`, not `draft`, so a keystroke elsewhere never
-  // regenerates entry ids out from under an in-progress gallery edit.
-  if (editor.savedData !== syncedSavedData) {
-    setSyncedSavedData(editor.savedData);
-    setGalleryEntries(editor.savedData ? galleryEntriesFrom(editor.savedData) : {});
-  }
 
   if (editor.loading) return <p className="text-sm text-muted">Loading projects...</p>;
   if (editor.loadError) return <p className="text-sm text-accent-2">{editor.loadError}</p>;
@@ -59,24 +38,12 @@ export function ProjectsForm() {
     setDraft((prev) => prev && prev.map((p) => (p.slug === slug ? { ...p, ...patch } : p)));
   }
 
-  function setGalleryForProject(slug: string, entries: GalleryEntry[]) {
-    setGalleryEntries((prev) => ({ ...prev, [slug]: entries }));
-    update(slug, { gallery: entries.map((e) => e.item) });
-  }
-
   function removeProject(slug: string) {
     setDraft((prev) => prev && prev.filter((p) => p.slug !== slug));
-    setGalleryEntries((prev) => {
-      const next = { ...prev };
-      delete next[slug];
-      return next;
-    });
   }
 
   function addProject() {
-    const p = emptyProject();
-    setDraft((prev) => [p, ...(prev ?? [])]);
-    setGalleryEntries((prev) => ({ ...prev, [p.slug]: [] }));
+    setDraft((prev) => [emptyProject(), ...(prev ?? [])]);
   }
 
   async function handleSubmit(event: FormEvent) {
@@ -86,7 +53,7 @@ export function ProjectsForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-2xl">
+    <form onSubmit={handleSubmit} className="max-w-4xl">
       <Button type="button" variant="secondary" onClick={addProject} className="mb-4">
         + Add project
       </Button>
@@ -115,19 +82,11 @@ export function ProjectsForm() {
               value={project.title}
               onChange={(e) => update(project.slug, { title: e.target.value })}
             />
-            <TextAreaField
+            <TextField
               label="Summary"
               htmlFor={`proj-summary-${project.slug}`}
-              rows={2}
               value={project.summary}
               onChange={(e) => update(project.slug, { summary: e.target.value })}
-            />
-            <TextAreaField
-              label="Description"
-              htmlFor={`proj-description-${project.slug}`}
-              rows={4}
-              value={project.description}
-              onChange={(e) => update(project.slug, { description: e.target.value })}
             />
             <TextField
               label="Cover seed"
@@ -155,14 +114,22 @@ export function ProjectsForm() {
               </select>
             </div>
 
-            <label className="mb-4 flex items-center gap-2 text-sm text-text">
-              <input
-                type="checkbox"
-                checked={Boolean(project.featured)}
-                onChange={(e) => update(project.slug, { featured: e.target.checked })}
+            <div className="grid grid-cols-2 gap-3">
+              <TextField
+                label="Start date"
+                htmlFor={`proj-start-${project.slug}`}
+                hint="YYYY-MM"
+                value={project.startDate}
+                onChange={(e) => update(project.slug, { startDate: e.target.value })}
               />
-              Featured
-            </label>
+              <TextField
+                label="End date"
+                htmlFor={`proj-end-${project.slug}`}
+                hint='YYYY-MM or "Present"'
+                value={project.endDate}
+                onChange={(e) => update(project.slug, { endDate: e.target.value })}
+              />
+            </div>
 
             <TextField
               label="Tech"
@@ -178,37 +145,11 @@ export function ProjectsForm() {
                 })
               }
             />
-            <TextAreaField
-              label="Highlights"
-              htmlFor={`proj-highlights-${project.slug}`}
-              hint="one per line"
-              rows={3}
-              value={project.highlights.join("\n")}
-              onChange={(e) =>
-                update(project.slug, {
-                  highlights: e.target.value
-                    .split("\n")
-                    .map((h) => h.trim())
-                    .filter(Boolean),
-                })
-              }
-            />
-            <TextField
-              label="Demo URL"
-              htmlFor={`proj-demoUrl-${project.slug}`}
-              value={project.links.demoUrl ?? ""}
-              onChange={(e) => update(project.slug, { links: { ...project.links, demoUrl: e.target.value || undefined } })}
-            />
             <TextField
               label="Code URL"
               htmlFor={`proj-codeUrl-${project.slug}`}
               value={project.links.codeUrl ?? ""}
-              onChange={(e) => update(project.slug, { links: { ...project.links, codeUrl: e.target.value || undefined } })}
-            />
-
-            <GalleryEditor
-              entries={galleryEntries[project.slug] ?? []}
-              onChange={(entries) => setGalleryForProject(project.slug, entries)}
+              onChange={(e) => update(project.slug, { links: { codeUrl: e.target.value || undefined } })}
             />
 
             <h4 className="mb-2 mt-4 text-sm font-semibold text-text">
@@ -226,15 +167,7 @@ export function ProjectsForm() {
         <Button type="submit" disabled={editor.saving}>
           {editor.saving ? "Saving..." : "Save"}
         </Button>
-        <Button
-          type="button"
-          variant="secondary"
-          onClick={() => {
-            editor.discard();
-            if (editor.savedData) setGalleryEntries(galleryEntriesFrom(editor.savedData));
-          }}
-          disabled={editor.saving}
-        >
+        <Button type="button" variant="secondary" onClick={editor.discard} disabled={editor.saving}>
           Discard changes
         </Button>
       </div>

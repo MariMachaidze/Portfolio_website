@@ -67,15 +67,17 @@ export function ProfileForm() {
       <TextField
         label="Years of experience"
         htmlFor="profile-years"
+        hint="not currently shown on the site"
         type="number"
-        value={draft.yearsExperience}
-        onChange={(e) => update("yearsExperience", Number(e.target.value))}
+        value={draft.yearsExperience ?? ""}
+        onChange={(e) => update("yearsExperience", e.target.value === "" ? undefined : Number(e.target.value))}
       />
       <TextField
         label="Badge"
         htmlFor="profile-badge"
-        value={draft.badge}
-        onChange={(e) => update("badge", e.target.value)}
+        hint="not currently shown on the site"
+        value={draft.badge ?? ""}
+        onChange={(e) => update("badge", e.target.value || undefined)}
       />
       <TextField
         label="Heading"
@@ -114,12 +116,6 @@ export function ProfileForm() {
         htmlFor="profile-avatarAlt"
         value={draft.avatarAlt}
         onChange={(e) => update("avatarAlt", e.target.value)}
-      />
-      <TextField
-        label="Resume URL"
-        htmlFor="profile-resumeUrl"
-        value={draft.resumeUrl}
-        onChange={(e) => update("resumeUrl", e.target.value)}
       />
 
       <h3 className="mb-2 mt-6 text-sm font-semibold text-text">Stats</h3>

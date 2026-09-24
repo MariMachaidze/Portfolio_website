@@ -26,8 +26,10 @@ export interface ProfileStat {
 export interface Profile {
   name: string;
   role: string;
-  yearsExperience: number;
-  badge: string;
+  /** Not currently displayed on the site; kept editable for your own reference. */
+  yearsExperience?: number;
+  /** Not currently displayed on the site; kept editable for your own reference. */
+  badge?: string;
   heading: string;
   blurb: string;
   location: string;
@@ -36,8 +38,6 @@ export interface Profile {
   avatarAlt: string;
   /** Uploaded photo URL; falls back to a generated placeholder avatar when empty. */
   avatarUrl?: string;
-  /** Path to a downloadable resume PDF under /public, e.g. "/resume.pdf" */
-  resumeUrl: string;
   stats: ProfileStat[];
   social: SocialLinks;
 }
@@ -69,16 +69,9 @@ export interface ExperienceEntry {
   tech: string[];
 }
 
-export type ProjectStatus = "live" | "in-progress" | "archived";
-
-export type MediaItem =
-  | { type: "image"; src: string; alt: string }
-  | { type: "video"; src: string; poster?: string; caption?: string }
-  | { type: "youtube"; id: string; caption?: string }
-  | { type: "vimeo"; id: string; caption?: string };
+export type ProjectStatus = "in-progress" | "finished" | "paused";
 
 export interface ProjectLinks {
-  demoUrl?: string;
   codeUrl?: string;
 }
 
@@ -131,15 +124,14 @@ export interface Project {
   slug: string;
   title: string;
   summary: string;
-  description: string;
   /** Seed used to deterministically generate the placeholder cover art */
   coverSeed: string;
   status: ProjectStatus;
+  /** "2023-03" style */
+  startDate: string;
+  endDate: string | "Present";
   tech: string[];
-  highlights: string[];
   links: ProjectLinks;
-  gallery: MediaItem[];
-  featured?: boolean;
   /** Optional bento-grid showcase rendered on the project's own page only. */
   showcase?: ProjectShowcase;
 }

@@ -4,54 +4,12 @@ import "react-resizable/css/styles.css";
 import { ReactGridLayout as GridLayoutBase, WidthProvider, type Layout } from "react-grid-layout/legacy";
 import type { ProjectShowcase, ShowcaseWidget } from "../../types";
 import { BUILTIN_STICKERS } from "../../data/stickers";
-import { ImagePickerField } from "./ImagePickerField";
+import { GRID_COLUMNS, GRID_GAP_PX, ROW_HEIGHT_PX } from "../../lib/showcaseGridGeometry";
+import { WIDGET_TYPES, bottomOf, emptyWidget, widgetPreviewText, type WidgetKind } from "../../lib/showcaseWidgets";
+import { ShowcaseWidgetEditor } from "./ShowcaseWidgetEditor";
 import { Button } from "../ui/Button";
-import { TextField, TextAreaField } from "./forms/fields";
 
 const GridLayout = WidthProvider(GridLayoutBase);
-const GRID_COLUMNS = 6;
-const ROW_HEIGHT = 90;
-
-type WidgetKind = ShowcaseWidget["type"];
-const WIDGET_TYPES: WidgetKind[] = ["text", "image", "video", "youtube", "vimeo", "highlights", "tech", "links"];
-
-function emptyWidget(type: WidgetKind, y: number): ShowcaseWidget {
-  const base = { id: crypto.randomUUID(), x: 0, y, w: 2, h: 2 };
-  switch (type) {
-    case "text":
-      return { ...base, type: "text", body: "" };
-    case "image":
-      return { ...base, type: "image", src: "", alt: "" };
-    case "video":
-      return { ...base, type: "video", src: "" };
-    case "youtube":
-      return { ...base, type: "youtube", ytId: "" };
-    case "vimeo":
-      return { ...base, type: "vimeo", vimeoId: "" };
-    case "highlights":
-      return { ...base, type: "highlights", items: [] };
-    case "tech":
-      return { ...base, type: "tech", items: [] };
-    case "links":
-      return { ...base, type: "links" };
-  }
-}
-
-function bottomOf(items: { y: number; h: number }[]): number {
-  return items.reduce((max, item) => Math.max(max, item.y + item.h), 0);
-}
-
-function widgetPreviewText(widget: ShowcaseWidget): string {
-  switch (widget.type) {
-    case "text":
-      return widget.body || "Text block";
-    case "highlights":
-    case "tech":
-      return widget.items.length > 0 ? widget.items.join(", ") : `${widget.type} (empty)`;
-    default:
-      return `${widget.type} preview`;
-  }
-}
 
 interface ShowcaseGridEditorProps {
   showcase: ProjectShowcase;
@@ -117,14 +75,20 @@ export function ShowcaseGridEditor({ showcase, onChange }: ShowcaseGridEditorPro
     <div>
       <p className="mb-2 text-xs text-muted">
         Drag to move, drag the bottom-right corner to resize. Widget content (text/images/captions) is edited in the
-        list below the grid.
+        list below the grid. The grid below is sized to match the live project page, so proportions here are what
+        visitors will actually see.
       </p>
 
-      <div className="mb-4 rounded-xl border border-border bg-bg p-2">
+      {/* Matches ProjectDetailPage's <Container className="max-w-4xl"> content width exactly
+          (see src/lib/showcaseGridGeometry.ts), so drag/resize here maps 1:1 to the live page.
+          The border uses `ring` (box-shadow) instead of `border`/padding so it doesn't eat into
+          that width budget. */}
+      <div className="mx-auto mb-4 max-w-4xl px-6">
         <GridLayout
+          className="rounded-xl bg-bg ring-1 ring-inset ring-border"
           cols={GRID_COLUMNS}
-          rowHeight={ROW_HEIGHT}
-          margin={[8, 8]}
+          rowHeight={ROW_HEIGHT_PX}
+          margin={[GRID_GAP_PX, GRID_GAP_PX]}
           layout={layout}
           onLayoutChange={handleLayoutChange}
           compactType={null}
@@ -204,179 +168,12 @@ export function ShowcaseGridEditor({ showcase, onChange }: ShowcaseGridEditorPro
         <div className="space-y-3">
           <h4 className="text-sm font-semibold text-text">Widget content</h4>
           {widgets.map((widget) => (
-            <div key={widget.id} className="rounded-lg border border-border bg-surface p-3">
-              <div className="mb-3 flex items-center justify-between gap-3">
-                <select
-                  value={widget.type}
-                  onChange={(e) => changeWidgetType(widget.id, e.target.value as WidgetKind)}
-                  className="rounded-lg border border-border bg-bg px-3 py-2 text-sm text-text outline-none focus:border-primary"
-                >
-                  {WIDGET_TYPES.map((t) => (
-                    <option key={t} value={t}>
-                      {t}
-                    </option>
-                  ))}
-                </select>
-                <span className="text-xs text-muted">
-                  {widget.w}×{widget.h} grid cells
-                </span>
-              </div>
-
-              {widget.type === "text" && (
-                <>
-                  <TextField
-                    label="Heading"
-                    htmlFor={`showcase-heading-${widget.id}`}
-                    value={widget.heading ?? ""}
-                    onChange={(e) => replaceWidget(widget.id, { ...widget, heading: e.target.value || undefined })}
-                  />
-                  <TextAreaField
-                    label="Body"
-                    htmlFor={`showcase-body-${widget.id}`}
-                    rows={3}
-                    value={widget.body}
-                    onChange={(e) => replaceWidget(widget.id, { ...widget, body: e.target.value })}
-                  />
-                </>
-              )}
-
-              {widget.type === "image" && (
-                <>
-                  <ImagePickerField
-                    label="Image"
-                    value={widget.src}
-                    onChange={(url) => replaceWidget(widget.id, { ...widget, src: url })}
-                  />
-                  <TextField
-                    label="Alt text"
-                    htmlFor={`showcase-alt-${widget.id}`}
-                    value={widget.alt}
-                    onChange={(e) => replaceWidget(widget.id, { ...widget, alt: e.target.value })}
-                  />
-                  <TextField
-                    label="Caption"
-                    htmlFor={`showcase-caption-${widget.id}`}
-                    value={widget.caption ?? ""}
-                    onChange={(e) => replaceWidget(widget.id, { ...widget, caption: e.target.value || undefined })}
-                  />
-                </>
-              )}
-
-              {widget.type === "video" && (
-                <>
-                  <TextField
-                    label="Video URL"
-                    htmlFor={`showcase-src-${widget.id}`}
-                    value={widget.src}
-                    onChange={(e) => replaceWidget(widget.id, { ...widget, src: e.target.value })}
-                  />
-                  <TextField
-                    label="Caption"
-                    htmlFor={`showcase-caption-${widget.id}`}
-                    value={widget.caption ?? ""}
-                    onChange={(e) => replaceWidget(widget.id, { ...widget, caption: e.target.value || undefined })}
-                  />
-                </>
-              )}
-
-              {widget.type === "youtube" && (
-                <>
-                  <TextField
-                    label="YouTube video ID"
-                    htmlFor={`showcase-id-${widget.id}`}
-                    value={widget.ytId}
-                    onChange={(e) => replaceWidget(widget.id, { ...widget, ytId: e.target.value })}
-                  />
-                  <TextField
-                    label="Caption"
-                    htmlFor={`showcase-caption-${widget.id}`}
-                    value={widget.caption ?? ""}
-                    onChange={(e) => replaceWidget(widget.id, { ...widget, caption: e.target.value || undefined })}
-                  />
-                </>
-              )}
-
-              {widget.type === "vimeo" && (
-                <>
-                  <TextField
-                    label="Vimeo video ID"
-                    htmlFor={`showcase-id-${widget.id}`}
-                    value={widget.vimeoId}
-                    onChange={(e) => replaceWidget(widget.id, { ...widget, vimeoId: e.target.value })}
-                  />
-                  <TextField
-                    label="Caption"
-                    htmlFor={`showcase-caption-${widget.id}`}
-                    value={widget.caption ?? ""}
-                    onChange={(e) => replaceWidget(widget.id, { ...widget, caption: e.target.value || undefined })}
-                  />
-                </>
-              )}
-
-              {widget.type === "highlights" && (
-                <>
-                  <TextField
-                    label="Heading"
-                    htmlFor={`showcase-heading-${widget.id}`}
-                    value={widget.heading ?? ""}
-                    onChange={(e) => replaceWidget(widget.id, { ...widget, heading: e.target.value || undefined })}
-                  />
-                  <TextAreaField
-                    label="Highlights"
-                    htmlFor={`showcase-items-${widget.id}`}
-                    hint="one per line"
-                    rows={4}
-                    value={widget.items.join("\n")}
-                    onChange={(e) =>
-                      replaceWidget(widget.id, {
-                        ...widget,
-                        items: e.target.value.split("\n").map((line) => line.trim()).filter(Boolean),
-                      })
-                    }
-                  />
-                </>
-              )}
-
-              {widget.type === "tech" && (
-                <>
-                  <TextField
-                    label="Heading"
-                    htmlFor={`showcase-heading-${widget.id}`}
-                    value={widget.heading ?? ""}
-                    onChange={(e) => replaceWidget(widget.id, { ...widget, heading: e.target.value || undefined })}
-                  />
-                  <TextField
-                    label="Tech"
-                    htmlFor={`showcase-items-${widget.id}`}
-                    hint="comma separated"
-                    value={widget.items.join(", ")}
-                    onChange={(e) =>
-                      replaceWidget(widget.id, {
-                        ...widget,
-                        items: e.target.value.split(",").map((t) => t.trim()).filter(Boolean),
-                      })
-                    }
-                  />
-                </>
-              )}
-
-              {widget.type === "links" && (
-                <>
-                  <TextField
-                    label="Demo URL"
-                    htmlFor={`showcase-demoUrl-${widget.id}`}
-                    value={widget.demoUrl ?? ""}
-                    onChange={(e) => replaceWidget(widget.id, { ...widget, demoUrl: e.target.value || undefined })}
-                  />
-                  <TextField
-                    label="Code URL"
-                    htmlFor={`showcase-codeUrl-${widget.id}`}
-                    value={widget.codeUrl ?? ""}
-                    onChange={(e) => replaceWidget(widget.id, { ...widget, codeUrl: e.target.value || undefined })}
-                  />
-                </>
-              )}
-            </div>
+            <ShowcaseWidgetEditor
+              key={widget.id}
+              widget={widget}
+              onChange={(next) => replaceWidget(widget.id, next)}
+              onTypeChange={(type) => changeWidgetType(widget.id, type)}
+            />
           ))}
         </div>
       )}

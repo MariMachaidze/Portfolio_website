@@ -1,7 +1,6 @@
-import { Download, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import { profile } from "../../data/profile";
 import { AvatarPlaceholder } from "../placeholders/AvatarPlaceholder";
-import { Button } from "../ui/Button";
 import { Container } from "../ui/Container";
 import { GithubIcon } from "../icons/GithubIcon";
 import { LinkedinIcon } from "../icons/LinkedinIcon";
@@ -21,30 +20,13 @@ export function Hero() {
     <section id="hero" className="scroll-mt-16 py-20 sm:py-28">
       <Container className="grid items-center gap-12 md:grid-cols-[1.2fr_0.8fr]">
         <div className="@container">
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
-            <span className="h-2 w-2 rounded-full bg-primary" />
-            {profile.badge}
-          </span>
-
-          <h1 className="mt-6 whitespace-nowrap text-[clamp(1.5rem,7cqw,3rem)] font-semibold leading-tight text-text">
+          <h1 className="whitespace-nowrap text-[clamp(1.5rem,7cqw,3rem)] font-semibold leading-tight text-text">
             Hello, I&apos;m {profile.name}
           </h1>
 
-          <p className="mt-3 text-lg text-muted">
-            {profile.role} &middot; {profile.yearsExperience}+ years of experience
-          </p>
+          <p className="mt-3 text-lg text-muted">{profile.role}</p>
 
           <p className="mt-5 max-w-xl text-muted">{profile.blurb}</p>
-
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Button as="a" href={profile.resumeUrl} download>
-              <Download size={16} />
-              Download Resume
-            </Button>
-            <Button as="a" href="#projects" variant="secondary">
-              View My Work
-            </Button>
-          </div>
 
           <div className="mt-8 flex items-center gap-4">
             {socialLinks.map(({ href, label, icon: Icon }) => (

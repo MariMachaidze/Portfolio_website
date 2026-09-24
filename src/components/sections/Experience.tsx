@@ -1,18 +1,9 @@
 import { experience } from "../../data/experience";
+import { formatDateRange } from "../../lib/dateRange";
 import { Badge } from "../ui/Badge";
 import { Card } from "../ui/Card";
 import { Container } from "../ui/Container";
 import { SectionHeading } from "../ui/SectionHeading";
-
-function formatRange(start: string, end: string) {
-  const format = (value: string) => {
-    if (value === "Present") return value;
-    const [year, month] = value.split("-");
-    const date = new Date(Number(year), Number(month) - 1);
-    return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
-  };
-  return `${format(start)} – ${format(end)}`;
-}
 
 export function Experience() {
   return (
@@ -32,7 +23,7 @@ export function Experience() {
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <h3 className="text-lg font-semibold text-text">{entry.role}</h3>
                 <span className="font-mono text-xs text-muted">
-                  {formatRange(entry.startDate, entry.endDate)}
+                  {formatDateRange(entry.startDate, entry.endDate)}
                 </span>
               </div>
 

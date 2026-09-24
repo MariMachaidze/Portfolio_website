@@ -27,8 +27,8 @@ const ProfileStatSchema = z.object({
 export const ProfileSchema = z.object({
   name: z.string().min(1),
   role: z.string().min(1),
-  yearsExperience: z.number(),
-  badge: z.string(),
+  yearsExperience: z.number().optional(),
+  badge: z.string().optional(),
   heading: z.string(),
   blurb: z.string(),
   location: z.string(),
@@ -36,7 +36,6 @@ export const ProfileSchema = z.object({
   email: z.string(),
   avatarAlt: z.string(),
   avatarUrl: z.string().optional(),
-  resumeUrl: z.string(),
   stats: z.array(ProfileStatSchema),
   social: SocialLinksSchema,
 });
@@ -69,20 +68,7 @@ export const ExperienceSchema = z.array(
   }),
 );
 
-const MediaItemSchema = z.discriminatedUnion("type", [
-  z.object({ type: z.literal("image"), src: z.string().min(1), alt: z.string() }),
-  z.object({
-    type: z.literal("video"),
-    src: z.string().min(1),
-    poster: z.string().optional(),
-    caption: z.string().optional(),
-  }),
-  z.object({ type: z.literal("youtube"), id: z.string().min(1), caption: z.string().optional() }),
-  z.object({ type: z.literal("vimeo"), id: z.string().min(1), caption: z.string().optional() }),
-]);
-
 const ProjectLinksSchema = z.object({
-  demoUrl: z.string().optional(),
   codeUrl: z.string().optional(),
 });
 
@@ -154,14 +140,12 @@ export const ProjectsSchema = z
         .regex(/^[a-z0-9-]+$/, "slug must be lowercase letters, numbers, and hyphens only"),
       title: z.string().min(1),
       summary: z.string(),
-      description: z.string(),
       coverSeed: z.string(),
-      status: z.enum(["live", "in-progress", "archived"]),
+      status: z.enum(["in-progress", "finished", "paused"]),
+      startDate: z.string(),
+      endDate: z.string(),
       tech: z.array(z.string()),
-      highlights: z.array(z.string()),
       links: ProjectLinksSchema,
-      gallery: z.array(MediaItemSchema),
-      featured: z.boolean().optional(),
       showcase: ProjectShowcaseSchema.optional(),
     }),
   )

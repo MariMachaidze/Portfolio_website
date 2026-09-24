@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { Project } from "../../types";
+import { formatDateRange } from "../../lib/dateRange";
 import { GithubIcon } from "../icons/GithubIcon";
 import { ProjectCoverPlaceholder } from "../placeholders/ProjectCoverPlaceholder";
 import { Badge } from "../ui/Badge";
@@ -19,6 +20,12 @@ export function ProjectCard({ project }: { project: Project }) {
           <h3 className="text-lg font-semibold text-text">{project.title}</h3>
           <StatusBadge status={project.status} />
         </div>
+
+        {project.startDate && (
+          <p className="mb-2 font-mono text-xs text-muted">
+            {formatDateRange(project.startDate, project.endDate)}
+          </p>
+        )}
 
         <p className="mb-4 flex-1 text-sm text-muted">{project.summary}</p>
 

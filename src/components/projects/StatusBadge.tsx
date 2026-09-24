@@ -1,15 +1,15 @@
 import type { ProjectStatus } from "../../types";
 
 const STATUS_LABEL: Record<ProjectStatus, string> = {
-  live: "Live",
   "in-progress": "In Progress",
-  archived: "Archived",
+  finished: "Finished",
+  paused: "Paused",
 };
 
 const STATUS_COLOR: Record<ProjectStatus, string> = {
-  live: "bg-success",
   "in-progress": "bg-accent",
-  archived: "bg-archived",
+  finished: "bg-success",
+  paused: "bg-archived",
 };
 
 export function StatusBadge({ status }: { status: ProjectStatus }) {

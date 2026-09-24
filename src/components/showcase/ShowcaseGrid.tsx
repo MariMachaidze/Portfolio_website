@@ -1,11 +1,10 @@
 import { ExternalLink } from "lucide-react";
 import type { ProjectShowcase, ShowcaseWidget } from "../../types";
 import { BUILTIN_STICKERS } from "../../data/stickers";
+import { GRID_COLUMNS, ROW_HEIGHT_PX } from "../../lib/showcaseGridGeometry";
 import { GithubIcon } from "../icons/GithubIcon";
 import { Badge } from "../ui/Badge";
 import { Button } from "../ui/Button";
-
-const GRID_COLUMNS = 6;
 
 function WidgetContent({ widget }: { widget: ShowcaseWidget }) {
   switch (widget.type) {
@@ -107,7 +106,7 @@ export function ShowcaseGrid({ showcase }: { showcase: ProjectShowcase }) {
       {/* sm and up: the real bento grid, with stickers overlaid on top. */}
       <div
         className="relative hidden gap-4 sm:grid"
-        style={{ gridTemplateColumns: `repeat(${GRID_COLUMNS}, 1fr)`, gridAutoRows: "110px" }}
+        style={{ gridTemplateColumns: `repeat(${GRID_COLUMNS}, 1fr)`, gridAutoRows: `${ROW_HEIGHT_PX}px` }}
       >
         {widgets.map((widget) => (
           <div
