@@ -3,7 +3,7 @@
   "role": "Software Engineer, AI/ML  and Robotics",
   "yearsExperience": 1,
   "badge": "Available for new opportunities",
-  "heading": "Building thoughtful, performant web experiences.",
+  "heading": "",
   "blurb": "I'm a full-stack engineer who enjoys turning complex problems into simple, elegant interfaces. Based in Austin, TX, I've spent the last 4 years shipping products across fintech and developer tools.",
   "location": "Germany",
   "phone": "+49 1525 2955038",
@@ -29,10 +29,10 @@
     }
   ],
   "social": {
-    "github": "https://github.com/alexrivera-dev",
-    "linkedin": "https://linkedin.com/in/alexrivera-dev",
-    "twitter": "https://x.com/alexrivera_dev",
-    "twitterHandle": "alexrivera_dev",
-    "email": "alex.rivera.dev@example.com"
+    "github": "https://github.com/MariMachaidze/",
+    "linkedin": "https://www.linkedin.com/in/mariammachaidze30/",
+    "twitter": "https://x.com/MMariam30",
+    "twitterHandle": "MMariam30",
+    "email": "marimachaidze30@gmail.com"
   }
 }
