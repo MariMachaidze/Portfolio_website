@@ -3,6 +3,7 @@ import type { Profile } from "../../../types";
 import { useContentEditor } from "../../../hooks/useContentEditor";
 import { SaveStatusIndicator } from "../SaveStatusIndicator";
 import { ImagePickerField } from "../ImagePickerField";
+import { SaveIssuesList } from "../SaveIssuesList";
 import { Button } from "../../ui/Button";
 import { TextField, TextAreaField } from "./fields";
 
@@ -153,6 +154,7 @@ export function ProfileForm() {
       </div>
 
       {editor.saveError && <p className="mt-3 text-sm text-accent-2">{editor.saveError}</p>}
+      <SaveIssuesList issues={editor.saveIssues} />
       <div className="mt-3">
         <SaveStatusIndicator {...editor.deployStatus} />
       </div>

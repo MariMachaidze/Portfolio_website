@@ -5,6 +5,7 @@ import { SaveStatusIndicator } from "../SaveStatusIndicator";
 import { ReorderableList } from "../ReorderableList";
 import { Button } from "../../ui/Button";
 import { TextField } from "./fields";
+import { SaveIssuesList } from "../SaveIssuesList";
 
 const ICON_OPTIONS: IconKey[] = [
   "code",
@@ -143,6 +144,7 @@ export function SkillsForm() {
         </Button>
       </div>
       {editor.saveError && <p className="mt-3 text-sm text-accent-2">{editor.saveError}</p>}
+      <SaveIssuesList issues={editor.saveIssues} />
       <div className="mt-3">
         <SaveStatusIndicator {...editor.deployStatus} />
       </div>
