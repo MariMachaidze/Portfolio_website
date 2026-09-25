@@ -19,11 +19,6 @@ const SocialLinksSchema = z.object({
   email: z.string(),
 });
 
-const ProfileStatSchema = z.object({
-  label: z.string(),
-  value: z.string(),
-});
-
 export const ProfileSchema = z.object({
   name: z.string().min(1),
   role: z.string().min(1),
@@ -36,7 +31,6 @@ export const ProfileSchema = z.object({
   email: z.string(),
   avatarAlt: z.string(),
   avatarUrl: z.string().optional(),
-  stats: z.array(ProfileStatSchema),
   social: SocialLinksSchema,
 });
 

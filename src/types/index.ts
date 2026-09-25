@@ -18,11 +18,6 @@ export interface SocialLinks {
   email: string;
 }
 
-export interface ProfileStat {
-  label: string;
-  value: string;
-}
-
 export interface Profile {
   name: string;
   role: string;
@@ -38,7 +33,6 @@ export interface Profile {
   avatarAlt: string;
   /** Uploaded photo URL; falls back to a generated placeholder avatar when empty. */
   avatarUrl?: string;
-  stats: ProfileStat[];
   social: SocialLinks;
 }
 
