@@ -50,24 +50,32 @@ export function ProfileForm() {
       <TextField
         label="Years of experience"
         htmlFor="profile-years"
-        hint="not currently shown on the site"
         type="number"
         value={draft.yearsExperience ?? ""}
         onChange={(e) => update("yearsExperience", e.target.value === "" ? undefined : Number(e.target.value))}
       />
+      <label className="-mt-3 mb-4 flex items-center gap-2 text-sm text-text">
+        <input
+          type="checkbox"
+          checked={Boolean(draft.showYearsExperience)}
+          onChange={(e) => update("showYearsExperience", e.target.checked)}
+        />
+        Show on site
+      </label>
       <TextField
         label="Badge"
         htmlFor="profile-badge"
-        hint="not currently shown on the site"
         value={draft.badge ?? ""}
         onChange={(e) => update("badge", e.target.value || undefined)}
       />
-      <TextField
-        label="Heading"
-        htmlFor="profile-heading"
-        value={draft.heading}
-        onChange={(e) => update("heading", e.target.value)}
-      />
+      <label className="-mt-3 mb-4 flex items-center gap-2 text-sm text-text">
+        <input
+          type="checkbox"
+          checked={Boolean(draft.showBadge)}
+          onChange={(e) => update("showBadge", e.target.checked)}
+        />
+        Show on site
+      </label>
       <TextAreaField
         label="Blurb"
         htmlFor="profile-blurb"

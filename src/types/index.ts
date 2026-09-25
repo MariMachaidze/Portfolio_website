@@ -21,11 +21,12 @@ export interface SocialLinks {
 export interface Profile {
   name: string;
   role: string;
-  /** Not currently displayed on the site; kept editable for your own reference. */
   yearsExperience?: number;
-  /** Not currently displayed on the site; kept editable for your own reference. */
+  /** Whether the years-of-experience text renders next to the role in the Hero. */
+  showYearsExperience?: boolean;
   badge?: string;
-  heading: string;
+  /** Whether the badge pill renders above the name in the Hero. */
+  showBadge?: boolean;
   blurb: string;
   location: string;
   phone: string;
