@@ -11,7 +11,7 @@
     <circle cx="120" cy="560" r="180" />
   </g>
   <circle cx="120" cy="120" r="56" fill="#E8873A" />
-  <text x="120" y="132" text-anchor="middle" font-family="Georgia, serif" font-size="40" font-weight="600" fill="#FAF6EF">AR</text>
-  <text x="120" y="240" font-family="Georgia, serif" font-size="56" font-weight="600" fill="#FAF6EF">Alex Rivera</text>
-  <text x="120" y="290" font-family="sans-serif" font-size="28" fill="#F3EFE6" fill-opacity="0.85">Full-Stack Software Engineer</text>
+  <text x="120" y="132" text-anchor="middle" font-family="Georgia, serif" font-size="34" font-weight="600" fill="#FAF6EF">MM</text>
+  <text x="120" y="240" font-family="Georgia, serif" font-size="56" font-weight="600" fill="#FAF6EF">Mariam Machaidze</text>
+  <text x="120" y="290" font-family="sans-serif" font-size="28" fill="#F3EFE6" fill-opacity="0.85">Software Engineer, AI/ML and Robotics</text>
 </svg>
