@@ -57,15 +57,24 @@ export function GithubActivity() {
         />
 
         <div className="flex justify-center overflow-x-auto pb-2">
-          <div className="grid grid-flow-col grid-rows-7 gap-1">
+          <div className="grid grid-rows-7 gap-1">
             {data.weeks.map((week, weekIndex) =>
-              week.days.map((day, dayIndex) => (
-                <div
-                  key={`${weekIndex}-${dayIndex}`}
-                  title={`${day.count} contribution${day.count === 1 ? "" : "s"} on ${day.date}`}
-                  className={`h-2.5 w-2.5 rounded-sm ${LEVEL_CLASSES[levelFor(day.count, maxCount)]}`}
-                />
-              )),
+              week.days.map((day) => {
+                // GitHub's edge weeks (the start of the year-long window, and
+                // the current/in-progress week) are often short — fewer than
+                // 7 days. Placing cells by actual day-of-week (rather than
+                // relying on grid-auto-flow to assume every week is a full
+                // 7) keeps every row aligned to its real weekday regardless.
+                const dayOfWeek = new Date(`${day.date}T00:00:00`).getDay();
+                return (
+                  <div
+                    key={day.date}
+                    style={{ gridColumn: weekIndex + 1, gridRow: dayOfWeek + 1 }}
+                    title={`${day.count} contribution${day.count === 1 ? "" : "s"} on ${day.date}`}
+                    className={`h-2.5 w-2.5 rounded-sm ${LEVEL_CLASSES[levelFor(day.count, maxCount)]}`}
+                  />
+                );
+              }),
             )}
           </div>
         </div>
