@@ -4,7 +4,6 @@ import { GithubActivity } from "../components/sections/GithubActivity";
 import { Hero } from "../components/sections/Hero";
 import { Projects } from "../components/sections/Projects";
 import { Skills } from "../components/sections/Skills";
-import { XFeed } from "../components/sections/XFeed";
 import { useHashScroll } from "../hooks/useHashScroll";
 
 export function HomePage() {
@@ -16,7 +15,6 @@ export function HomePage() {
       <Skills />
       <Experience />
       <Projects />
-      <XFeed />
       <GithubActivity />
       <Contact />
     </>
