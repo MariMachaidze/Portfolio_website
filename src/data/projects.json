@@ -1,22 +1,31 @@
 [
   {
     "id": "fc56eab1-4d4f-453a-9ef8-145534b138d3",
-    "slug": "pulseboard",
-    "title": "Pulseboard",
-    "summary": "Real-time analytics dashboard for subscription businesses.",
-    "coverSeed": "pulseboard",
+    "slug": "pointing-based-robot-teleoperation",
+    "title": "Pointing-Based Robot Teleoperation",
+    "summary": "Gesture-Based Teleoperation with Hand Pointing and Sphero BOLT for Bachelor Thesis.",
+    "coverSeed": "RobotTeleoperation",
     "status": "finished",
-    "startDate": "",
-    "endDate": "",
+    "startDate": "2026-02",
+    "endDate": "2006-05",
     "tech": [
-      "React",
-      "TypeScript",
-      "WebSockets",
-      "PostgreSQL"
+      "Python",
+      "ROS",
+      "MediaPipe",
+      "Intel RealSense",
+      "Computer Vision"
     ],
     "links": {
-      "codeUrl": "https://github.com/alexrivera-dev/pulseboard"
+      "codeUrl": "https://github.com/MariMachaidze/Thesis"
     },
+    "description": "Designed intuitively interactive system to control the robots which opens up more research opportunities in Human Robot Intersection research. This thesis project investigates whether natural pointing gestures can provide an accessible and effective way for people to control a mobile robot without requiring conventional controllers. A gesture-driven interaction system was developed that allows users to direct\na robot simply by pointing toward a target location. The system was evaluated through experimental testing focusing on interaction accuracy, responsiveness, and navigation reliability. The results demonstrated that the robot consistently responded to user gestures with high navigation reliability while maintaining responsive real-time behavior. The system achieved accurate target selection and stable robot movement across the evaluated interaction scenarios, supporting the feasibility of gesture-driven robot control. These findings suggest that natural pointing interaction can provide an intuitive communication method between humans and robots, particularly for entertainment-oriented and educational robotic experiences designed for non-expert users. The work contributes toward creating more accessible and engaging Human Robot Interaction systems that reduce reliance on specialized control devices while supporting more natural forms of interaction.",
+    "gallery": [
+      {
+        "id": "10fbc600-300d-422e-8398-17b819f3df6e",
+        "src": "https://portfolio-uploads-2026.s3.us-east-1.amazonaws.com/uploads/3454ca83-312f-4c67-a04e-d458541e4e0c.png",
+        "alt": ""
+      }
+    ],
     "showcase": {
       "widgets": [
         {
