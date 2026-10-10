@@ -12,7 +12,7 @@ interface UseContentEditorResult<T> {
   saving: boolean;
   saveError: string | null;
   saveIssues: unknown;
-  save: (next: T) => Promise<boolean>;
+  save: (next: T, commitMessage?: string) => Promise<boolean>;
   discard: () => void;
   reload: () => void;
   deployStatus: ReturnType<typeof useDeployStatus>;
@@ -62,13 +62,13 @@ export function useContentEditor<T>(key: ContentKey): UseContentEditorResult<T> 
   }, [key, reloadToken]);
 
   const save = useCallback(
-    async (next: T): Promise<boolean> => {
+    async (next: T, commitMessage?: string): Promise<boolean> => {
       setSaving(true);
       setSaveError(null);
       setSaveIssues(null);
       deployStatus.markSaving();
       try {
-        const result = await saveContent(key, next, sha);
+        const result = await saveContent(key, next, sha, commitMessage);
         setLoadedData(next);
         setSha(result.contentSha);
         deployStatus.trackSave(result);

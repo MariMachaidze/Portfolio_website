@@ -43,12 +43,13 @@ export async function saveContent(
   key: ContentKey,
   content: unknown,
   expectedSha: string | undefined,
+  message: string | undefined,
 ): Promise<SaveContentResult> {
   const res = await fetch(`${BASE}/content-save`, {
     method: "POST",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ key, content, expectedSha }),
+    body: JSON.stringify({ key, content, expectedSha, message }),
   });
   return handleResponse(res);
 }

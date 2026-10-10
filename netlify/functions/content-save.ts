@@ -11,6 +11,13 @@ interface SavePayload {
   key?: string;
   content?: unknown;
   expectedSha?: string;
+  message?: string;
+}
+
+function commitMessageFor(key: string, message: string | undefined): string {
+  const trimmed = message?.replace(/\s+/g, " ").trim();
+  if (trimmed) return trimmed.slice(0, 200);
+  return `Update ${key} via admin panel`;
 }
 
 export const handler: Handler = async (event) => {
@@ -28,7 +35,7 @@ export const handler: Handler = async (event) => {
     return jsonResponse(400, { error: "Invalid request" });
   }
 
-  const { key, content, expectedSha } = payload;
+  const { key, content, expectedSha, message } = payload;
   if (!key || !isContentKey(key)) {
     return jsonResponse(400, { error: `key must be one of: ${Object.keys(CONTENT_FILES).join(", ")}` });
   }
@@ -43,7 +50,7 @@ export const handler: Handler = async (event) => {
       key,
       parsed.data,
       expectedSha,
-      `Update ${key} via admin panel`,
+      commitMessageFor(key, message),
     );
     return jsonResponse(200, { commitSha, contentSha, dryRun });
   } catch (err) {

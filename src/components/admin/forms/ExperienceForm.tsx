@@ -1,4 +1,4 @@
-import type { FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import type { ExperienceEntry } from "../../../types";
 import { useContentEditor } from "../../../hooks/useContentEditor";
 import { SaveStatusIndicator } from "../SaveStatusIndicator";
@@ -6,6 +6,8 @@ import { ReorderableList } from "../ReorderableList";
 import { Button } from "../../ui/Button";
 import { TextField, TextAreaField, DelimitedListField } from "./fields";
 import { SaveIssuesList } from "../SaveIssuesList";
+
+const DEFAULT_COMMIT_MESSAGE = "Update experience";
 
 function emptyEntry(): ExperienceEntry {
   return {
@@ -24,6 +26,7 @@ function emptyEntry(): ExperienceEntry {
 export function ExperienceForm() {
   const editor = useContentEditor<ExperienceEntry[]>("experience");
   const { draft, setDraft } = editor;
+  const [commitMessage, setCommitMessage] = useState(DEFAULT_COMMIT_MESSAGE);
 
   if (editor.loading) return <p className="text-sm text-muted">Loading experience...</p>;
   if (editor.loadError) return <p className="text-sm text-accent-2">{editor.loadError}</p>;
@@ -43,7 +46,9 @@ export function ExperienceForm() {
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    if (draft) await editor.save(draft);
+    if (!draft) return;
+    const ok = await editor.save(draft, commitMessage);
+    if (ok) setCommitMessage(DEFAULT_COMMIT_MESSAGE);
   }
 
   return (
@@ -149,6 +154,14 @@ export function ExperienceForm() {
             />
           </div>
         )}
+      />
+
+      <TextField
+        label="Commit message"
+        htmlFor="experience-commit-message"
+        hint="shown as the commit title on GitHub"
+        value={commitMessage}
+        onChange={(e) => setCommitMessage(e.target.value)}
       />
 
       <div className="mt-2 flex items-center gap-3">

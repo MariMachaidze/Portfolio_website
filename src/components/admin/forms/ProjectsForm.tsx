@@ -1,4 +1,4 @@
-import type { FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import type { Project, ProjectGalleryImage, ProjectStatus, ProjectVideo } from "../../../types";
 import { useContentEditor } from "../../../hooks/useContentEditor";
 import { SaveStatusIndicator } from "../SaveStatusIndicator";
@@ -11,6 +11,7 @@ import { SaveIssuesList } from "../SaveIssuesList";
 
 const STATUS_OPTIONS: ProjectStatus[] = ["in-progress", "finished", "paused"];
 const EMPTY_SHOWCASE = { widgets: [], stickers: [] };
+const DEFAULT_COMMIT_MESSAGE = "Update projects";
 
 type VideoKind = "none" | ProjectVideo["type"];
 
@@ -45,6 +46,7 @@ function emptyProject(): Project {
 export function ProjectsForm() {
   const editor = useContentEditor<Project[]>("projects");
   const { draft, setDraft } = editor;
+  const [commitMessage, setCommitMessage] = useState(DEFAULT_COMMIT_MESSAGE);
 
   if (editor.loading) return <p className="text-sm text-muted">Loading projects...</p>;
   if (editor.loadError) return <p className="text-sm text-accent-2">{editor.loadError}</p>;
@@ -88,7 +90,8 @@ export function ProjectsForm() {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
     if (!draft) return;
-    await editor.save(draft);
+    const ok = await editor.save(draft, commitMessage);
+    if (ok) setCommitMessage(DEFAULT_COMMIT_MESSAGE);
   }
 
   return (
@@ -287,6 +290,14 @@ export function ProjectsForm() {
             />
           </div>
         )}
+      />
+
+      <TextField
+        label="Commit message"
+        htmlFor="projects-commit-message"
+        hint="shown as the commit title on GitHub"
+        value={commitMessage}
+        onChange={(e) => setCommitMessage(e.target.value)}
       />
 
       <div className="mt-2 flex items-center gap-3">

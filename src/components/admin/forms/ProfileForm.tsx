@@ -1,4 +1,4 @@
-import type { FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import type { Profile } from "../../../types";
 import { useContentEditor } from "../../../hooks/useContentEditor";
 import { SaveStatusIndicator } from "../SaveStatusIndicator";
@@ -7,9 +7,12 @@ import { SaveIssuesList } from "../SaveIssuesList";
 import { Button } from "../../ui/Button";
 import { TextField, TextAreaField } from "./fields";
 
+const DEFAULT_COMMIT_MESSAGE = "Update profile";
+
 export function ProfileForm() {
   const editor = useContentEditor<Profile>("profile");
   const { draft, setDraft } = editor;
+  const [commitMessage, setCommitMessage] = useState(DEFAULT_COMMIT_MESSAGE);
 
   if (editor.loading) return <p className="text-sm text-muted">Loading profile...</p>;
   if (editor.loadError) return <p className="text-sm text-accent-2">{editor.loadError}</p>;
@@ -25,7 +28,9 @@ export function ProfileForm() {
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    if (draft) await editor.save(draft);
+    if (!draft) return;
+    const ok = await editor.save(draft, commitMessage);
+    if (ok) setCommitMessage(DEFAULT_COMMIT_MESSAGE);
   }
 
   return (
@@ -142,6 +147,14 @@ export function ProfileForm() {
         type="email"
         value={draft.social.email}
         onChange={(e) => updateSocial("email", e.target.value)}
+      />
+
+      <TextField
+        label="Commit message"
+        htmlFor="profile-commit-message"
+        hint="shown as the commit title on GitHub"
+        value={commitMessage}
+        onChange={(e) => setCommitMessage(e.target.value)}
       />
 
       <div className="mt-6 flex items-center gap-3">
