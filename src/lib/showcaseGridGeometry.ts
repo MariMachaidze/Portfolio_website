@@ -3,9 +3,9 @@
 // so the editor can be sized to match the live page exactly and so image/
 // video size suggestions are computed against real on-page proportions.
 
-export const GRID_COLUMNS = 6;
-export const GRID_GAP_PX = 16; // matches ShowcaseGrid.tsx's `gap-4`
-export const ROW_HEIGHT_PX = 110;
+export const GRID_COLUMNS = 12;
+export const GRID_GAP_PX = 8; // matches ShowcaseGrid.tsx's `gap-2`
+export const ROW_HEIGHT_PX = 56;
 
 // ProjectDetailPage renders the grid inside <Container className="max-w-4xl">
 // (56rem = 896px), whose own px-6 padding (24px each side) leaves this much
@@ -24,7 +24,7 @@ export function suggestGridSize(naturalWidth: number, naturalHeight: number): { 
   let best = { w: 2, h: 2 };
   let bestError = Infinity;
   for (let w = 2; w <= GRID_COLUMNS; w++) {
-    for (let h = 1; h <= 6; h++) {
+    for (let h = 1; h <= GRID_COLUMNS; h++) {
       const boxAspect = (w * colWidthPx) / (h * ROW_HEIGHT_PX);
       const error = Math.abs(Math.log(boxAspect / aspect));
       if (error < bestError) {

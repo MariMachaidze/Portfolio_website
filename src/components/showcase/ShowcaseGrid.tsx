@@ -105,7 +105,7 @@ export function ShowcaseGrid({ showcase }: { showcase: ProjectShowcase }) {
 
       {/* sm and up: the real bento grid, with stickers overlaid on top. */}
       <div
-        className="relative hidden gap-4 sm:grid"
+        className="relative hidden gap-2 sm:grid"
         style={{ gridTemplateColumns: `repeat(${GRID_COLUMNS}, 1fr)`, gridAutoRows: `${ROW_HEIGHT_PX}px` }}
       >
         {widgets.map((widget) => (
