@@ -3,7 +3,7 @@ import type { ShowcaseWidget } from "../../types";
 import { suggestGridSize } from "../../lib/showcaseGridGeometry";
 import { WIDGET_TYPES, type WidgetKind } from "../../lib/showcaseWidgets";
 import { ImagePickerField } from "./ImagePickerField";
-import { TextField, TextAreaField } from "./forms/fields";
+import { TextField, TextAreaField, DelimitedListField } from "./forms/fields";
 
 interface SizeSuggestion {
   w: number;
@@ -209,18 +209,14 @@ export function ShowcaseWidgetEditor({ widget, onChange, onTypeChange }: Showcas
             value={widget.heading ?? ""}
             onChange={(e) => onChange({ ...widget, heading: e.target.value || undefined })}
           />
-          <TextAreaField
+          <DelimitedListField
             label="Highlights"
             htmlFor={`showcase-items-${widget.id}`}
             hint="one per line"
+            delimiter={"\n"}
             rows={4}
-            value={widget.items.join("\n")}
-            onChange={(e) =>
-              onChange({
-                ...widget,
-                items: e.target.value.split("\n").map((line) => line.trim()).filter(Boolean),
-              })
-            }
+            value={widget.items}
+            onChange={(items) => onChange({ ...widget, items })}
           />
         </>
       )}
@@ -233,17 +229,13 @@ export function ShowcaseWidgetEditor({ widget, onChange, onTypeChange }: Showcas
             value={widget.heading ?? ""}
             onChange={(e) => onChange({ ...widget, heading: e.target.value || undefined })}
           />
-          <TextField
+          <DelimitedListField
             label="Tech"
             htmlFor={`showcase-items-${widget.id}`}
             hint="comma separated"
-            value={widget.items.join(", ")}
-            onChange={(e) =>
-              onChange({
-                ...widget,
-                items: e.target.value.split(",").map((t) => t.trim()).filter(Boolean),
-              })
-            }
+            delimiter=","
+            value={widget.items}
+            onChange={(items) => onChange({ ...widget, items })}
           />
         </>
       )}

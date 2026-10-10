@@ -5,7 +5,7 @@ import { SaveStatusIndicator } from "../SaveStatusIndicator";
 import { ReorderableList } from "../ReorderableList";
 import { ImagePickerField } from "../ImagePickerField";
 import { Button } from "../../ui/Button";
-import { TextField, TextAreaField } from "./fields";
+import { TextField, TextAreaField, DelimitedListField } from "./fields";
 import { ShowcaseGridEditor } from "../ShowcaseGridEditor";
 import { SaveIssuesList } from "../SaveIssuesList";
 
@@ -169,19 +169,13 @@ export function ProjectsForm() {
               />
             </div>
 
-            <TextField
+            <DelimitedListField
               label="Tech"
               htmlFor={`proj-tech-${project.slug}`}
               hint="comma separated"
-              value={project.tech.join(", ")}
-              onChange={(e) =>
-                update(project.slug, {
-                  tech: e.target.value
-                    .split(",")
-                    .map((t) => t.trim())
-                    .filter(Boolean),
-                })
-              }
+              delimiter=","
+              value={project.tech}
+              onChange={(tech) => update(project.slug, { tech })}
             />
             <TextField
               label="Code URL"

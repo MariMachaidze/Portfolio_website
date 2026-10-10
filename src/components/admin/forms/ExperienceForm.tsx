@@ -4,7 +4,7 @@ import { useContentEditor } from "../../../hooks/useContentEditor";
 import { SaveStatusIndicator } from "../SaveStatusIndicator";
 import { ReorderableList } from "../ReorderableList";
 import { Button } from "../../ui/Button";
-import { TextField, TextAreaField } from "./fields";
+import { TextField, TextAreaField, DelimitedListField } from "./fields";
 import { SaveIssuesList } from "../SaveIssuesList";
 
 function emptyEntry(): ExperienceEntry {
@@ -130,34 +130,22 @@ export function ExperienceForm() {
               value={entry.summary}
               onChange={(e) => update(entry.id, { summary: e.target.value })}
             />
-            <TextAreaField
+            <DelimitedListField
               label="Bullets"
               htmlFor={`exp-bullets-${entry.id}`}
               hint="one per line"
+              delimiter={"\n"}
               rows={4}
-              value={entry.bullets.join("\n")}
-              onChange={(e) =>
-                update(entry.id, {
-                  bullets: e.target.value
-                    .split("\n")
-                    .map((b) => b.trim())
-                    .filter(Boolean),
-                })
-              }
+              value={entry.bullets}
+              onChange={(bullets) => update(entry.id, { bullets })}
             />
-            <TextField
+            <DelimitedListField
               label="Tech"
               htmlFor={`exp-tech-${entry.id}`}
               hint="comma separated"
-              value={entry.tech.join(", ")}
-              onChange={(e) =>
-                update(entry.id, {
-                  tech: e.target.value
-                    .split(",")
-                    .map((t) => t.trim())
-                    .filter(Boolean),
-                })
-              }
+              delimiter=","
+              value={entry.tech}
+              onChange={(tech) => update(entry.id, { tech })}
             />
           </div>
         )}
