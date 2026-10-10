@@ -43,6 +43,10 @@ export function Footer() {
           &copy; {year} {profile.name}. All rights reserved.
         </p>
       </Container>
+
+      <p className="border-t border-border py-3 text-center text-xs text-muted">
+        🚧 This site is a work in progress — thanks for your patience while I keep building it out.
+      </p>
     </footer>
   );
 }
