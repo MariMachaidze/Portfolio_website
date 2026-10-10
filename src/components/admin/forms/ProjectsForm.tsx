@@ -1,15 +1,29 @@
 import type { FormEvent } from "react";
-import type { Project, ProjectStatus } from "../../../types";
+import type { Project, ProjectGalleryImage, ProjectStatus, ProjectVideo } from "../../../types";
 import { useContentEditor } from "../../../hooks/useContentEditor";
 import { SaveStatusIndicator } from "../SaveStatusIndicator";
 import { ReorderableList } from "../ReorderableList";
+import { ImagePickerField } from "../ImagePickerField";
 import { Button } from "../../ui/Button";
-import { TextField } from "./fields";
+import { TextField, TextAreaField } from "./fields";
 import { ShowcaseGridEditor } from "../ShowcaseGridEditor";
 import { SaveIssuesList } from "../SaveIssuesList";
 
 const STATUS_OPTIONS: ProjectStatus[] = ["in-progress", "finished", "paused"];
 const EMPTY_SHOWCASE = { widgets: [], stickers: [] };
+
+type VideoKind = "none" | ProjectVideo["type"];
+
+function emptyVideo(type: ProjectVideo["type"]): ProjectVideo {
+  switch (type) {
+    case "video":
+      return { type: "video", src: "" };
+    case "youtube":
+      return { type: "youtube", ytId: "" };
+    case "vimeo":
+      return { type: "vimeo", vimeoId: "" };
+  }
+}
 
 function emptyProject(): Project {
   const seed = `new-project-${Date.now()}`;
@@ -41,6 +55,29 @@ export function ProjectsForm() {
 
   function removeProject(slug: string) {
     setDraft((prev) => prev && prev.filter((p) => p.slug !== slug));
+  }
+
+  function setGallery(slug: string, gallery: ProjectGalleryImage[]) {
+    update(slug, { gallery });
+  }
+
+  function addGalleryImage(project: Project) {
+    setGallery(project.slug, [...(project.gallery ?? []), { id: crypto.randomUUID(), src: "", alt: "" }]);
+  }
+
+  function updateGalleryImage(project: Project, id: string, patch: Partial<ProjectGalleryImage>) {
+    setGallery(
+      project.slug,
+      (project.gallery ?? []).map((img) => (img.id === id ? { ...img, ...patch } : img)),
+    );
+  }
+
+  function removeGalleryImage(project: Project, id: string) {
+    setGallery(project.slug, (project.gallery ?? []).filter((img) => img.id !== id));
+  }
+
+  function setVideoKind(slug: string, kind: VideoKind) {
+    update(slug, { video: kind === "none" ? undefined : emptyVideo(kind) });
   }
 
   function addProject() {
@@ -154,7 +191,100 @@ export function ProjectsForm() {
             />
 
             <h4 className="mb-2 mt-4 text-sm font-semibold text-text">
-              Showcase grid <span className="font-normal text-muted">(shown on this project's own page)</span>
+              Project page content <span className="font-normal text-muted">(shown on this project's own page)</span>
+            </h4>
+
+            <TextAreaField
+              label="Description"
+              htmlFor={`proj-description-${project.slug}`}
+              rows={4}
+              value={project.description ?? ""}
+              onChange={(e) => update(project.slug, { description: e.target.value || undefined })}
+            />
+
+            <h5 className="mb-2 text-sm font-medium text-text">Photo gallery</h5>
+            <ReorderableList
+              items={project.gallery ?? []}
+              getId={(img) => img.id}
+              onReorder={(gallery) => setGallery(project.slug, gallery)}
+              className="mb-3 space-y-3"
+              renderItem={(image) => (
+                <div className="rounded-lg border border-border bg-bg p-3">
+                  <ImagePickerField
+                    label="Photo"
+                    value={image.src}
+                    onChange={(url) => updateGalleryImage(project, image.id, { src: url })}
+                  />
+                  <TextField
+                    label="Alt text"
+                    htmlFor={`proj-gallery-alt-${image.id}`}
+                    value={image.alt}
+                    onChange={(e) => updateGalleryImage(project, image.id, { alt: e.target.value })}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeGalleryImage(project, image.id)}
+                    className="text-xs text-muted underline hover:text-accent-2"
+                  >
+                    Remove photo
+                  </button>
+                </div>
+              )}
+            />
+            <Button type="button" variant="secondary" onClick={() => addGalleryImage(project)} className="mb-4">
+              + Add photo
+            </Button>
+
+            <h5 className="mb-2 text-sm font-medium text-text">Video</h5>
+            <div className="mb-4">
+              <label
+                htmlFor={`proj-video-kind-${project.slug}`}
+                className="mb-1.5 block text-sm font-medium text-text"
+              >
+                Video type
+              </label>
+              <select
+                id={`proj-video-kind-${project.slug}`}
+                value={project.video?.type ?? "none"}
+                onChange={(e) => setVideoKind(project.slug, e.target.value as VideoKind)}
+                className="w-full rounded-lg border border-border bg-bg px-3.5 py-2.5 text-sm text-text outline-none focus:border-primary"
+              >
+                <option value="none">None</option>
+                <option value="video">Direct video URL</option>
+                <option value="youtube">YouTube</option>
+                <option value="vimeo">Vimeo</option>
+              </select>
+            </div>
+            {project.video?.type === "video" && (
+              <TextField
+                label="Video URL"
+                htmlFor={`proj-video-src-${project.slug}`}
+                value={project.video.src}
+                onChange={(e) => update(project.slug, { video: { type: "video", src: e.target.value } })}
+              />
+            )}
+            {project.video?.type === "youtube" && (
+              <TextField
+                label="YouTube video ID"
+                htmlFor={`proj-video-yt-${project.slug}`}
+                value={project.video.ytId}
+                onChange={(e) => update(project.slug, { video: { type: "youtube", ytId: e.target.value } })}
+              />
+            )}
+            {project.video?.type === "vimeo" && (
+              <TextField
+                label="Vimeo video ID"
+                htmlFor={`proj-video-vimeo-${project.slug}`}
+                value={project.video.vimeoId}
+                onChange={(e) => update(project.slug, { video: { type: "vimeo", vimeoId: e.target.value } })}
+              />
+            )}
+
+            <h4 className="mb-2 mt-6 text-sm font-semibold text-text">
+              Showcase grid{" "}
+              <span className="font-normal text-muted">
+                (paused — not currently shown on the page, replaced by the content above)
+              </span>
             </h4>
             <ShowcaseGridEditor
               showcase={project.showcase ?? EMPTY_SHOWCASE}

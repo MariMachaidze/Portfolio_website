@@ -3,13 +3,17 @@ import { Link, useParams } from "react-router-dom";
 import { formatDateRange } from "../lib/dateRange";
 import { GithubIcon } from "../components/icons/GithubIcon";
 import { StatusBadge } from "../components/projects/StatusBadge";
-import { ShowcaseGrid } from "../components/showcase/ShowcaseGrid";
+import { ProjectStory } from "../components/projects/ProjectStory";
+// Showcase grid is paused in favor of the simpler gallery/description/video
+// layout (ProjectStory) below — kept here, commented, so it's a one-line
+// restore if we go back to it. Nothing about it was deleted.
+// import { ShowcaseGrid } from "../components/showcase/ShowcaseGrid";
 import { Badge } from "../components/ui/Badge";
 import { Container } from "../components/ui/Container";
 import { projects } from "../data/projects";
-import type { ProjectShowcase } from "../types";
+// import type { ProjectShowcase } from "../types";
 
-const EMPTY_SHOWCASE: ProjectShowcase = { widgets: [], stickers: [] };
+// const EMPTY_SHOWCASE: ProjectShowcase = { widgets: [], stickers: [] };
 
 export function ProjectDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -69,7 +73,8 @@ export function ProjectDetailPage() {
           </a>
         )}
 
-        <ShowcaseGrid showcase={project.showcase ?? EMPTY_SHOWCASE} />
+        {/* <ShowcaseGrid showcase={project.showcase ?? EMPTY_SHOWCASE} /> */}
+        <ProjectStory description={project.description} gallery={project.gallery} video={project.video} />
       </Container>
     </div>
   );

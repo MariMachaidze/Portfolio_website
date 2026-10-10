@@ -115,6 +115,17 @@ export interface ProjectShowcase {
   stickers: ShowcaseSticker[];
 }
 
+export interface ProjectGalleryImage {
+  id: string;
+  src: string;
+  alt: string;
+}
+
+export type ProjectVideo =
+  | { type: "video"; src: string; poster?: string }
+  | { type: "youtube"; ytId: string }
+  | { type: "vimeo"; vimeoId: string };
+
 export interface Project {
   slug: string;
   title: string;
@@ -127,6 +138,12 @@ export interface Project {
   endDate: string | "Present";
   tech: string[];
   links: ProjectLinks;
-  /** Optional bento-grid showcase rendered on the project's own page only. */
+  /** Write-up shown next to the gallery on the project's own page. */
+  description?: string;
+  /** Photo dump, laid out 2-per-row next to the description. */
+  gallery?: ProjectGalleryImage[];
+  /** Single optional video, shown full-width below the gallery/description. */
+  video?: ProjectVideo;
+  /** Bento-grid showcase — not currently rendered (paused in favor of the simpler gallery/description/video layout above), kept so nothing already built is lost. */
   showcase?: ProjectShowcase;
 }

@@ -126,6 +126,18 @@ const ProjectShowcaseSchema = z.object({
   stickers: z.array(ShowcaseStickerSchema),
 });
 
+const ProjectGalleryImageSchema = z.object({
+  id: z.string().min(1),
+  src: z.string().min(1),
+  alt: z.string(),
+});
+
+const ProjectVideoSchema = z.discriminatedUnion("type", [
+  z.object({ type: z.literal("video"), src: z.string().min(1), poster: z.string().optional() }),
+  z.object({ type: z.literal("youtube"), ytId: z.string().min(1) }),
+  z.object({ type: z.literal("vimeo"), vimeoId: z.string().min(1) }),
+]);
+
 export const ProjectsSchema = z
   .array(
     z.object({
@@ -141,6 +153,9 @@ export const ProjectsSchema = z
       endDate: z.string(),
       tech: z.array(z.string()),
       links: ProjectLinksSchema,
+      description: z.string().optional(),
+      gallery: z.array(ProjectGalleryImageSchema).optional(),
+      video: ProjectVideoSchema.optional(),
       showcase: ProjectShowcaseSchema.optional(),
     }),
   )
