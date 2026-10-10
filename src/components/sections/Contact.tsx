@@ -16,10 +16,18 @@ interface FormState {
 const EMPTY_FORM: FormState = { name: "", email: "", subject: "", message: "" };
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+function encodeFormData(data: Record<string, string>): string {
+  return Object.entries(data)
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join("&");
+}
+
 export function Contact() {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [errors, setErrors] = useState<Partial<FormState>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const infoCards = [
     { icon: Mail, label: "Email", value: profile.email },
@@ -41,16 +49,37 @@ export function Contact() {
     setForm((prev) => ({ ...prev, [field]: value }));
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const validationErrors = validate(form);
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length > 0) return;
 
-    // TODO: replace this with a real API call (e.g. a Netlify Function) once
-    // an email-sending service is wired up. For now this just simulates success.
-    setSubmitted(true);
-    setForm(EMPTY_FORM);
+    // A filled-in honeypot field means a bot submitted the form — pretend
+    // success without actually sending anything.
+    const botField = new FormData(event.currentTarget).get("bot-field");
+    if (botField) {
+      setSubmitted(true);
+      setForm(EMPTY_FORM);
+      return;
+    }
+
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      const res = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encodeFormData({ "form-name": "contact", ...form }),
+      });
+      if (!res.ok) throw new Error(`Request failed (${res.status})`);
+      setSubmitted(true);
+      setForm(EMPTY_FORM);
+    } catch {
+      setSubmitError(`Something went wrong sending that — please email me directly at ${profile.email} instead.`);
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -89,6 +118,7 @@ export function Contact() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} noValidate className="grid gap-5 sm:grid-cols-2">
+              <input type="text" name="bot-field" tabIndex={-1} autoComplete="off" className="hidden" />
               <div>
                 <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-text">
                   Name
@@ -146,9 +176,10 @@ export function Contact() {
               </div>
 
               <div className="sm:col-span-2">
-                <Button type="submit">
-                  <Send size={16} /> Send Message
+                <Button type="submit" disabled={submitting}>
+                  <Send size={16} /> {submitting ? "Sending..." : "Send Message"}
                 </Button>
+                {submitError && <p className="mt-3 text-sm text-accent-2">{submitError}</p>}
               </div>
             </form>
           )}
