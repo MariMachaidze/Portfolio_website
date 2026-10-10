@@ -2,10 +2,10 @@
   {
     "id": "northwind-labs",
     "role": "Senior Frontend Engineer",
-    "company": "Northwind Labs",
+    "company": "SAP SE",
     "companyUrl": "https://example.com",
-    "startDate": "2023-03",
-    "endDate": "Present",
+    "startDate": "2025-06",
+    "endDate": "2026-06",
     "location": "Austin, TX",
     "locationType": "Hybrid",
     "summary": "Lead frontend architecture for a fintech dashboard used by 50k+ monthly users.",
@@ -14,7 +14,12 @@
       "Designed and shipped a shared component library adopted across 3 product teams.",
       "Mentored 2 junior engineers through onboarding and their first production launches."
     ],
-    "tech": ["React", "TypeScript", "Tailwind CSS", "GraphQL"]
+    "tech": [
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "GraphQL"
+    ]
   },
   {
     "id": "bright-path-analytics",
@@ -30,7 +35,12 @@
       "Cut CI/CD pipeline time from 30 minutes to 4 minutes via caching and parallel jobs.",
       "Introduced automated testing, raising coverage from under 10% to over 70%."
     ],
-    "tech": ["Node.js", "React", "PostgreSQL", "Docker"]
+    "tech": [
+      "Node.js",
+      "React",
+      "PostgreSQL",
+      "Docker"
+    ]
   },
   {
     "id": "studio-coral",
@@ -46,6 +56,11 @@
       "Integrated Stripe checkout flows for 6 client storefronts.",
       "Improved average Lighthouse performance scores from 62 to 91."
     ],
-    "tech": ["JavaScript", "Sass", "WordPress", "Stripe"]
+    "tech": [
+      "JavaScript",
+      "Sass",
+      "WordPress",
+      "Stripe"
+    ]
   }
 ]
