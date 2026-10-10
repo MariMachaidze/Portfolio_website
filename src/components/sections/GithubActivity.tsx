@@ -44,7 +44,7 @@ export function GithubActivity() {
   if (loading || error || !data) return null;
 
   return (
-    <section className="py-20">
+    <section className="pt-20">
       <Container>
         <SectionHeading
           eyebrow="Code activity"
