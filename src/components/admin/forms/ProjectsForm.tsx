@@ -28,6 +28,7 @@ function emptyVideo(type: ProjectVideo["type"]): ProjectVideo {
 function emptyProject(): Project {
   const seed = `new-project-${Date.now()}`;
   return {
+    id: crypto.randomUUID(),
     slug: seed,
     title: "New project",
     summary: "",
@@ -49,35 +50,35 @@ export function ProjectsForm() {
   if (editor.loadError) return <p className="text-sm text-accent-2">{editor.loadError}</p>;
   if (!draft) return null;
 
-  function update(slug: string, patch: Partial<Project>) {
-    setDraft((prev) => prev && prev.map((p) => (p.slug === slug ? { ...p, ...patch } : p)));
+  function update(id: string, patch: Partial<Project>) {
+    setDraft((prev) => prev && prev.map((p) => (p.id === id ? { ...p, ...patch } : p)));
   }
 
-  function removeProject(slug: string) {
-    setDraft((prev) => prev && prev.filter((p) => p.slug !== slug));
+  function removeProject(id: string) {
+    setDraft((prev) => prev && prev.filter((p) => p.id !== id));
   }
 
-  function setGallery(slug: string, gallery: ProjectGalleryImage[]) {
-    update(slug, { gallery });
+  function setGallery(id: string, gallery: ProjectGalleryImage[]) {
+    update(id, { gallery });
   }
 
   function addGalleryImage(project: Project) {
-    setGallery(project.slug, [...(project.gallery ?? []), { id: crypto.randomUUID(), src: "", alt: "" }]);
+    setGallery(project.id, [...(project.gallery ?? []), { id: crypto.randomUUID(), src: "", alt: "" }]);
   }
 
   function updateGalleryImage(project: Project, id: string, patch: Partial<ProjectGalleryImage>) {
     setGallery(
-      project.slug,
+      project.id,
       (project.gallery ?? []).map((img) => (img.id === id ? { ...img, ...patch } : img)),
     );
   }
 
   function removeGalleryImage(project: Project, id: string) {
-    setGallery(project.slug, (project.gallery ?? []).filter((img) => img.id !== id));
+    setGallery(project.id, (project.gallery ?? []).filter((img) => img.id !== id));
   }
 
-  function setVideoKind(slug: string, kind: VideoKind) {
-    update(slug, { video: kind === "none" ? undefined : emptyVideo(kind) });
+  function setVideoKind(id: string, kind: VideoKind) {
+    update(id, { video: kind === "none" ? undefined : emptyVideo(kind) });
   }
 
   function addProject() {
@@ -98,50 +99,50 @@ export function ProjectsForm() {
 
       <ReorderableList
         items={draft}
-        getId={(p) => p.slug}
+        getId={(p) => p.id}
         onReorder={setDraft}
         renderItem={(project) => (
           <div className="mb-4 rounded-xl border border-border bg-surface p-4">
             <div className="mb-3 flex justify-end">
-              <Button type="button" variant="ghost" onClick={() => removeProject(project.slug)}>
+              <Button type="button" variant="ghost" onClick={() => removeProject(project.id)}>
                 Remove
               </Button>
             </div>
             <TextField
               label="Slug"
-              htmlFor={`proj-slug-${project.slug}`}
+              htmlFor={`proj-slug-${project.id}`}
               hint="URL: /projects/<slug>, lowercase-with-hyphens"
               value={project.slug}
-              onChange={(e) => update(project.slug, { slug: e.target.value })}
+              onChange={(e) => update(project.id, { slug: e.target.value })}
             />
             <TextField
               label="Title"
-              htmlFor={`proj-title-${project.slug}`}
+              htmlFor={`proj-title-${project.id}`}
               value={project.title}
-              onChange={(e) => update(project.slug, { title: e.target.value })}
+              onChange={(e) => update(project.id, { title: e.target.value })}
             />
             <TextField
               label="Summary"
-              htmlFor={`proj-summary-${project.slug}`}
+              htmlFor={`proj-summary-${project.id}`}
               value={project.summary}
-              onChange={(e) => update(project.slug, { summary: e.target.value })}
+              onChange={(e) => update(project.id, { summary: e.target.value })}
             />
             <TextField
               label="Cover seed"
-              htmlFor={`proj-coverSeed-${project.slug}`}
+              htmlFor={`proj-coverSeed-${project.id}`}
               hint="unique string, used for the placeholder cover pattern"
               value={project.coverSeed}
-              onChange={(e) => update(project.slug, { coverSeed: e.target.value })}
+              onChange={(e) => update(project.id, { coverSeed: e.target.value })}
             />
 
             <div className="mb-4">
-              <label htmlFor={`proj-status-${project.slug}`} className="mb-1.5 block text-sm font-medium text-text">
+              <label htmlFor={`proj-status-${project.id}`} className="mb-1.5 block text-sm font-medium text-text">
                 Status
               </label>
               <select
-                id={`proj-status-${project.slug}`}
+                id={`proj-status-${project.id}`}
                 value={project.status}
-                onChange={(e) => update(project.slug, { status: e.target.value as ProjectStatus })}
+                onChange={(e) => update(project.id, { status: e.target.value as ProjectStatus })}
                 className="w-full rounded-lg border border-border bg-bg px-3.5 py-2.5 text-sm text-text outline-none focus:border-primary"
               >
                 {STATUS_OPTIONS.map((s) => (
@@ -155,33 +156,33 @@ export function ProjectsForm() {
             <div className="grid grid-cols-2 gap-3">
               <TextField
                 label="Start date"
-                htmlFor={`proj-start-${project.slug}`}
+                htmlFor={`proj-start-${project.id}`}
                 hint="YYYY-MM"
                 value={project.startDate}
-                onChange={(e) => update(project.slug, { startDate: e.target.value })}
+                onChange={(e) => update(project.id, { startDate: e.target.value })}
               />
               <TextField
                 label="End date"
-                htmlFor={`proj-end-${project.slug}`}
+                htmlFor={`proj-end-${project.id}`}
                 hint='YYYY-MM or "Present"'
                 value={project.endDate}
-                onChange={(e) => update(project.slug, { endDate: e.target.value })}
+                onChange={(e) => update(project.id, { endDate: e.target.value })}
               />
             </div>
 
             <DelimitedListField
               label="Tech"
-              htmlFor={`proj-tech-${project.slug}`}
+              htmlFor={`proj-tech-${project.id}`}
               hint="comma separated"
               delimiter=","
               value={project.tech}
-              onChange={(tech) => update(project.slug, { tech })}
+              onChange={(tech) => update(project.id, { tech })}
             />
             <TextField
               label="Code URL"
-              htmlFor={`proj-codeUrl-${project.slug}`}
+              htmlFor={`proj-codeUrl-${project.id}`}
               value={project.links.codeUrl ?? ""}
-              onChange={(e) => update(project.slug, { links: { codeUrl: e.target.value || undefined } })}
+              onChange={(e) => update(project.id, { links: { codeUrl: e.target.value || undefined } })}
             />
 
             <h4 className="mb-2 mt-4 text-sm font-semibold text-text">
@@ -190,17 +191,17 @@ export function ProjectsForm() {
 
             <TextAreaField
               label="Description"
-              htmlFor={`proj-description-${project.slug}`}
+              htmlFor={`proj-description-${project.id}`}
               rows={4}
               value={project.description ?? ""}
-              onChange={(e) => update(project.slug, { description: e.target.value || undefined })}
+              onChange={(e) => update(project.id, { description: e.target.value || undefined })}
             />
 
             <h5 className="mb-2 text-sm font-medium text-text">Photo gallery</h5>
             <ReorderableList
               items={project.gallery ?? []}
               getId={(img) => img.id}
-              onReorder={(gallery) => setGallery(project.slug, gallery)}
+              onReorder={(gallery) => setGallery(project.id, gallery)}
               className="mb-3 space-y-3"
               renderItem={(image) => (
                 <div className="rounded-lg border border-border bg-bg p-3">
@@ -232,15 +233,15 @@ export function ProjectsForm() {
             <h5 className="mb-2 text-sm font-medium text-text">Video</h5>
             <div className="mb-4">
               <label
-                htmlFor={`proj-video-kind-${project.slug}`}
+                htmlFor={`proj-video-kind-${project.id}`}
                 className="mb-1.5 block text-sm font-medium text-text"
               >
                 Video type
               </label>
               <select
-                id={`proj-video-kind-${project.slug}`}
+                id={`proj-video-kind-${project.id}`}
                 value={project.video?.type ?? "none"}
-                onChange={(e) => setVideoKind(project.slug, e.target.value as VideoKind)}
+                onChange={(e) => setVideoKind(project.id, e.target.value as VideoKind)}
                 className="w-full rounded-lg border border-border bg-bg px-3.5 py-2.5 text-sm text-text outline-none focus:border-primary"
               >
                 <option value="none">None</option>
@@ -252,25 +253,25 @@ export function ProjectsForm() {
             {project.video?.type === "video" && (
               <TextField
                 label="Video URL"
-                htmlFor={`proj-video-src-${project.slug}`}
+                htmlFor={`proj-video-src-${project.id}`}
                 value={project.video.src}
-                onChange={(e) => update(project.slug, { video: { type: "video", src: e.target.value } })}
+                onChange={(e) => update(project.id, { video: { type: "video", src: e.target.value } })}
               />
             )}
             {project.video?.type === "youtube" && (
               <TextField
                 label="YouTube video ID"
-                htmlFor={`proj-video-yt-${project.slug}`}
+                htmlFor={`proj-video-yt-${project.id}`}
                 value={project.video.ytId}
-                onChange={(e) => update(project.slug, { video: { type: "youtube", ytId: e.target.value } })}
+                onChange={(e) => update(project.id, { video: { type: "youtube", ytId: e.target.value } })}
               />
             )}
             {project.video?.type === "vimeo" && (
               <TextField
                 label="Vimeo video ID"
-                htmlFor={`proj-video-vimeo-${project.slug}`}
+                htmlFor={`proj-video-vimeo-${project.id}`}
                 value={project.video.vimeoId}
-                onChange={(e) => update(project.slug, { video: { type: "vimeo", vimeoId: e.target.value } })}
+                onChange={(e) => update(project.id, { video: { type: "vimeo", vimeoId: e.target.value } })}
               />
             )}
 
@@ -282,7 +283,7 @@ export function ProjectsForm() {
             </h4>
             <ShowcaseGridEditor
               showcase={project.showcase ?? EMPTY_SHOWCASE}
-              onChange={(showcase) => update(project.slug, { showcase })}
+              onChange={(showcase) => update(project.id, { showcase })}
             />
           </div>
         )}

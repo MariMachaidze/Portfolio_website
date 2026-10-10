@@ -141,6 +141,7 @@ const ProjectVideoSchema = z.discriminatedUnion("type", [
 export const ProjectsSchema = z
   .array(
     z.object({
+      id: z.string().min(1),
       slug: z
         .string()
         .min(1)

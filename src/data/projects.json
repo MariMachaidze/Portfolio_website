@@ -1,5 +1,6 @@
 [
   {
+    "id": "fc56eab1-4d4f-453a-9ef8-145534b138d3",
     "slug": "pulseboard",
     "title": "Pulseboard",
     "summary": "Real-time analytics dashboard for subscription businesses.",
@@ -68,6 +69,7 @@
     }
   },
   {
+    "id": "317f9696-95fa-413f-af3a-b4ae6db41f07",
     "slug": "recipe-radar",
     "title": "Recipe Radar",
     "summary": "AI-assisted recipe recommendations from what's already in your pantry.",
@@ -86,6 +88,7 @@
     }
   },
   {
+    "id": "0320699d-b5ef-4ceb-a692-dd194282799f",
     "slug": "trailmate",
     "title": "TrailMate",
     "summary": "Offline-first hiking companion with GPS tracking and trail maps.",
@@ -104,6 +107,7 @@
     }
   },
   {
+    "id": "1d0c93d0-a4bf-4e66-a055-4c1e9b159dde",
     "slug": "task-forge",
     "title": "TaskForge",
     "summary": "An early Kanban tool for small teams, since sunset in favor of Pulseboard.",

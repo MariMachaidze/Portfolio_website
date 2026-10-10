@@ -127,6 +127,8 @@ export type ProjectVideo =
   | { type: "vimeo"; vimeoId: string };
 
 export interface Project {
+  /** Stable internal identity — never shown or edited directly. Keep `slug` (the public URL) and this separate: `slug` is meant to change, this isn't. */
+  id: string;
   slug: string;
   title: string;
   summary: string;
