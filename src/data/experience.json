@@ -1,66 +1,40 @@
 [
   {
     "id": "northwind-labs",
-    "role": "Senior Frontend Engineer",
+    "role": "AI Applications Engineer",
     "company": "SAP SE",
     "companyUrl": "https://example.com",
     "startDate": "2025-06",
     "endDate": "2026-06",
-    "location": "Austin, TX",
+    "location": "Walldorf, Germany",
     "locationType": "Hybrid",
-    "summary": "Lead frontend architecture for a fintech dashboard used by 50k+ monthly users.",
+    "summary": "Needs summary",
     "bullets": [
-      "Rebuilt the core dashboard for performance, cutting time-to-interactive by 45%.",
-      "Designed and shipped a shared component library adopted across 3 product teams.",
-      "Mentored 2 junior engineers through onboarding and their first production launches."
+      "Needs point adding"
     ],
     "tech": [
-      "React",
-      "TypeScript",
-      "Tailwind CSS",
-      "GraphQL"
+      "SAP AI Core",
+      "Python",
+      "Yaml",
+      "SAP BTP",
+      "SAP Joule"
     ]
   },
   {
     "id": "bright-path-analytics",
-    "role": "Software Engineer",
-    "company": "Bright Path Analytics",
-    "startDate": "2021-06",
-    "endDate": "2023-02",
+    "role": "Software Engineer Intern/Researcher",
+    "company": "Constructor Tech",
+    "startDate": "2024-07",
+    "endDate": "2024-12",
     "location": "Remote",
     "locationType": "Remote",
-    "summary": "Built a self-serve reporting tool for mid-market customers.",
+    "summary": "Write Summary",
     "bullets": [
-      "Migrated a legacy jQuery admin panel to React + Vite, improving maintainability.",
-      "Cut CI/CD pipeline time from 30 minutes to 4 minutes via caching and parallel jobs.",
-      "Introduced automated testing, raising coverage from under 10% to over 70%."
+      "Write points"
     ],
     "tech": [
-      "Node.js",
-      "React",
-      "PostgreSQL",
-      "Docker"
-    ]
-  },
-  {
-    "id": "studio-coral",
-    "role": "Junior Web Developer",
-    "company": "Studio Coral",
-    "startDate": "2019-08",
-    "endDate": "2021-05",
-    "location": "Austin, TX",
-    "locationType": "On-site",
-    "summary": "Built marketing sites and e-commerce integrations for small businesses.",
-    "bullets": [
-      "Delivered 15+ marketing sites from Figma designs to production.",
-      "Integrated Stripe checkout flows for 6 client storefronts.",
-      "Improved average Lighthouse performance scores from 62 to 91."
-    ],
-    "tech": [
-      "JavaScript",
-      "Sass",
-      "WordPress",
-      "Stripe"
+      "ML",
+      "skit-learn"
     ]
   }
 ]
