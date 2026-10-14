@@ -1,16 +1,5 @@
 import { z } from "zod";
 
-const IconKeySchema = z.enum([
-  "code",
-  "server",
-  "palette",
-  "database",
-  "cloud",
-  "wrench",
-  "terminal",
-  "layout",
-]);
-
 const SocialLinksSchema = z.object({
   github: z.string(),
   linkedin: z.string(),
@@ -35,17 +24,24 @@ export const ProfileSchema = z.object({
   social: SocialLinksSchema,
 });
 
-const SkillItemSchema = z.object({ name: z.string().min(1) });
+const SkillItemSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  usage: z.string(),
+});
 
-export const SkillsSchema = z.array(
-  z.object({
-    id: z.string().min(1),
-    title: z.string().min(1),
-    icon: IconKeySchema,
-    description: z.string().optional(),
-    items: z.array(SkillItemSchema),
-  }),
-);
+const SkillCategorySchema = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1),
+  color: z.string().min(1),
+  light: z.string().min(1),
+  items: z.array(SkillItemSchema),
+});
+
+export const SkillsSchema = z.object({
+  categories: z.array(SkillCategorySchema),
+  additionalTools: z.string(),
+});
 
 export const ExperienceSchema = z.array(
   z.object({

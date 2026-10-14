@@ -1,13 +1,3 @@
-export type IconKey =
-  | "code"
-  | "server"
-  | "palette"
-  | "database"
-  | "cloud"
-  | "wrench"
-  | "terminal"
-  | "layout";
-
 export interface SocialLinks {
   github: string;
   linkedin: string;
@@ -38,15 +28,26 @@ export interface Profile {
 }
 
 export interface SkillItem {
+  id: string;
   name: string;
+  /** "Where I used it" blurb shown in the skills chip's detail panel. */
+  usage: string;
 }
 
 export interface SkillCategory {
   id: string;
   title: string;
-  icon: IconKey;
-  description?: string;
+  /** Hex color used for this category's pin markers and legend swatch (bold accent). */
+  color: string;
+  /** Hex color used for the lighter accent variant (e.g. the detail panel's category dot). */
+  light: string;
   items: SkillItem[];
+}
+
+export interface SkillsContent {
+  categories: SkillCategory[];
+  /** Freeform "Additional tools" line shown below the skills chip. */
+  additionalTools: string;
 }
 
 export interface ExperienceEntry {

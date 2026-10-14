@@ -1,47 +1,197 @@
-[
-  {
-    "id": "languages",
-    "title": "Languages & Frameworks",
-    "icon": "code",
-    "items": [
-      {
-        "name": "Python"
-      },
-      {
-        "name": "C++"
-      }
-    ]
-  },
-  {
-    "id": "backend",
-    "title": "Backend & Data",
-    "icon": "database",
-    "items": [
-      {
-        "name": "REST APIs"
-      },
-      {
-        "name": "Docker"
-      }
-    ]
-  },
-  {
-    "id": "tools",
-    "title": "Tools & Platforms",
-    "icon": "cloud",
-    "items": [
-      {
-        "name": "Git"
-      },
-      {
-        "name": "GitHub Actions"
-      },
-      {
-        "name": "Netlify"
-      },
-      {
-        "name": "AWS"
-      }
-    ]
-  }
-]
+{
+  "categories": [
+    {
+      "id": "3a627ac3-5a17-494a-96f3-0b11732e0730",
+      "title": "AI and LLMs",
+      "color": "#91563d",
+      "light": "#c99078",
+      "items": [
+        {
+          "id": "ad0b47fb-51ac-4f97-b0b4-798690e87300",
+          "name": "LLM APIs",
+          "usage": "SAP Integrated OpenAI, Anthropic, Gemini and Hugging Face models with REST APIs and external databases. Smart Job Search Engine Gemini 2.5 Flash behind every LLM call."
+        },
+        {
+          "id": "456a31fb-eaa2-4fd7-a54f-cd2b6a1f1960",
+          "name": "RAG",
+          "usage": "SAP RAG over 1,500+ enterprise documents, 80% answer accuracy. Smart Job Search Engine Hand-built retrieval over profile and past documents, in progress."
+        },
+        {
+          "id": "ac790b87-84b9-4262-b4c7-f8bf9868f5f5",
+          "name": "LangGraph",
+          "usage": "SAP Human-in-the-loop agentic workflows. Smart Job Search Engine Discovery, tailoring and chat graphs."
+        },
+        {
+          "id": "d3fd8ea0-050c-4f00-bfaa-ae49c531ebbd",
+          "name": "LangChain",
+          "usage": "SAP Agentic workflows and prompt engineering."
+        },
+        {
+          "id": "d3b0a4be-2e6c-4816-81c8-76c6e60c30da",
+          "name": "MCP",
+          "usage": "SAP Connected AI agents to internal business tools. robo-mcp An offline MCP server for verified hardware data."
+        },
+        {
+          "id": "8dd09932-df22-427c-a1e7-f6e3a3a79ea7",
+          "name": "n8n",
+          "usage": "SAP Human-in-the-loop workflow orchestration."
+        },
+        {
+          "id": "cab37103-d680-42aa-bdce-4d76c6ef4f78",
+          "name": "Knowledge graphs",
+          "usage": "SAP Linked AI agents with internal business tools."
+        },
+        {
+          "id": "1d563f03-7b95-4ebc-8f50-20ffcf41bfaa",
+          "name": "LLM evaluation",
+          "usage": "SAP LLM-as-a-judge plus user feedback to score RAG answers."
+        }
+      ]
+    },
+    {
+      "id": "a3ac3ad8-c566-42fb-965c-3fbe95fadb3a",
+      "title": "Software engineering",
+      "color": "#345e83",
+      "light": "#8aafc8",
+      "items": [
+        {
+          "id": "ef387562-31f9-4d07-a1c6-45ed1521c6b3",
+          "name": "Python",
+          "usage": "SAP Backend services and LLM workflows. Thesis ROS nodes from camera to robot. Constructor Tech ML research and data pipelines. robo-mcp, Smart Job Search Engine Both written in Python."
+        },
+        {
+          "id": "db500f34-6ab6-45c6-9728-c761b4c5a134",
+          "name": "FastAPI",
+          "usage": "SAP Backend services for vulnerability management. Smart Job Search Engine API with JWT and TOTP two-factor authentication."
+        },
+        {
+          "id": "e605e084-485b-4786-b5c6-4c844f6e01fa",
+          "name": "REST APIs",
+          "usage": "SAP Model integrations with external databases. Smart Job Search Engine Greenhouse and Lever ATS APIs for job discovery."
+        },
+        {
+          "id": "2baa44d2-3659-45be-b8f9-7a7ede74952c",
+          "name": "ETL / ELT",
+          "usage": "SAP Document pipelines across AWS S3 and Azure, feeding RAG."
+        },
+        {
+          "id": "9d2f2417-efd6-488c-87a4-50cf532e23aa",
+          "name": "TypeScript, React",
+          "usage": "Smart Job Search Engine React and TypeScript frontend, deployed on Netlify."
+        },
+        {
+          "id": "c4ee17b4-981c-456d-80a7-70006d1cc96f",
+          "name": "JavaScript, HTML, CSS",
+          "usage": "SAP Natural-language interface for querying and orchestrating backend AI services."
+        },
+        {
+          "id": "2f5a6aac-ed7f-4606-a0ca-80362ca79f47",
+          "name": "pytest",
+          "usage": "robo-mcp Test suite, run in GitHub Actions."
+        },
+        {
+          "id": "bbd001b0-74c7-4052-8ec2-42404017b735",
+          "name": "Playwright",
+          "usage": "Smart Job Search Engine Scraper fallback for career pages without an ATS API."
+        }
+      ]
+    },
+    {
+      "id": "377d6b5a-e17d-4e5b-a7d2-24edc2ddbcbf",
+      "title": "ML and robotics",
+      "color": "#436853",
+      "light": "#8dae9d",
+      "items": [
+        {
+          "id": "748f806e-0e70-44cf-834e-cb1569243abc",
+          "name": "C, C++",
+          "usage": "Competitive programming, World Robot Olympiad Autonomous map-based navigation, bronze medal in 2022."
+        },
+        {
+          "id": "ff42ed0b-dec3-43a1-895a-d70340aeb80b",
+          "name": "Intel RealSense",
+          "usage": "Thesis D435i depth, back-projected with the pinhole camera model."
+        },
+        {
+          "id": "94fa22cc-6274-4b6f-9d3b-2fdfe9445076",
+          "name": "MediaPipe, OpenCV",
+          "usage": "Thesis 21-point hand landmarks on RealSense frames."
+        },
+        {
+          "id": "570e765e-ce5d-41b7-adfc-53bf3fce214f",
+          "name": "ROS/ ROS2",
+          "usage": "Thesis ROS 1 Noetic pipeline from camera to robot. DuckieTown Speed control and obstacle detection."
+        },
+        {
+          "id": "f730fe3f-dfd2-4cc1-9d1b-46f8bdf4d7a2",
+          "name": "NumPy, Pandas",
+          "usage": "Constructor Tech Synthetic training data from LTspice simulations."
+        },
+        {
+          "id": "269c6096-6640-4f80-9d31-933f452ee83d",
+          "name": "scikit-learn",
+          "usage": "Constructor Tech Model training and evaluation."
+        },
+        {
+          "id": "58a77cea-be8a-4fed-9b8f-fd66f0345470",
+          "name": "TensorFlow",
+          "usage": "Constructor Tech MLP training and evaluation. Google Developer Group Taught five AI workshops."
+        },
+        {
+          "id": "f662c7f6-f168-4f9c-9da8-c22bc6911dfc",
+          "name": "PyTorch",
+          "usage": "Constructor Tech MLPs that localise faulty resistors, 80% accuracy on held-out data."
+        }
+      ]
+    },
+    {
+      "id": "573f5a31-ad80-4899-a54e-b4e673e978f8",
+      "title": "Cloud and delivery",
+      "color": "#705185",
+      "light": "#af9ac9",
+      "items": [
+        {
+          "id": "6b0607d0-4dc4-467f-a5d1-9c37781182a5",
+          "name": "Linux, Git",
+          "usage": "Thesis ROS 1 Noetic on Ubuntu. DuckieTown Linux-based robot stack."
+        },
+        {
+          "id": "36230a6d-a641-4334-800a-2bfbb33bb30c",
+          "name": "IAM, RBAC",
+          "usage": "SAP Authentication, authorisation scopes and role-based access for sensitive enterprise data."
+        },
+        {
+          "id": "23a54627-15e5-4eea-ab24-e62c7ed07ad7",
+          "name": "CI/CD",
+          "usage": "SAP Git-based pipelines deploying to Kubernetes. robo-mcp, Smart Job Search Engine GitHub Actions workflows."
+        },
+        {
+          "id": "d2faaf25-0f02-4cec-941a-986705725f59",
+          "name": "AWS S3",
+          "usage": "SAP Document storage in the RAG pipelines. Smart Job Search Engine Storage for CVs and generated documents."
+        },
+        {
+          "id": "8649f19a-31bf-422d-a4ca-5d107b8335b8",
+          "name": "SAP BTP",
+          "usage": "SAP Deployment target for AI services."
+        },
+        {
+          "id": "66483d86-1adc-40be-be51-d4333e0b910d",
+          "name": "Microsoft Azure",
+          "usage": "SAP Deployment target and part of the RAG document pipelines."
+        },
+        {
+          "id": "ef8bb827-8536-4b5b-9ad9-2b29435b65fa",
+          "name": "Kubernetes",
+          "usage": "SAP Deployed AI services to Microsoft Azure and SAP BTP."
+        },
+        {
+          "id": "a6d73849-455e-41ae-a0dd-e715e0b96f00",
+          "name": "Docker",
+          "usage": "SAP Containerised AI microservices. DuckieTown Robot software in containers. Smart Job Search Engine Full stack via Docker Compose."
+        }
+      ]
+    }
+  ],
+  "additionalTools": "SQL · YAML · prompt engineering · vector embeddings · SAP S/4HANA · JSON Schema · schemdraw · LTspice · Git · GitHub Actions · Netlify · AWS"
+}
