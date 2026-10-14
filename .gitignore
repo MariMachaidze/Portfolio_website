@@ -30,3 +30,5 @@ deno.lock
 *.njsproj
 *.sln
 *.sw?
+
+react-arduino-skills
