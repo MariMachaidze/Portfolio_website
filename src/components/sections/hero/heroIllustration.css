@@ -1,0 +1,504 @@
+/*
+ * Scoped styles for the animated Hero landscape illustration (sun, hills,
+ * waves, fish-leap easter egg, paper boats). Every selector is nested under
+ * .hero-illustration so this can't leak onto the rest of the site — same
+ * pattern as skillsChip.css. Keyframe names are prefixed `hero-` for the
+ * same reason (keyframes can't be scoped to a selector).
+ */
+
+.hero-illustration .mobile-design,
+.hero-illustration .tablet-design,
+.hero-illustration .desktop-design {
+  overflow: hidden;
+  width: 100%;
+}
+
+.hero-illustration .mobile-design {
+  --wave-shift: 130px;
+  --wave-half: 65px;
+  --boat-1-right: 375.56px;
+  --boat-1-left: -110.4px;
+  --boat-2-right: 240.861px;
+  --boat-2-left: -233.1px;
+  --boat-3-right: 115.961px;
+  --boat-3-left: -350px;
+}
+
+.hero-illustration .tablet-design {
+  --wave-shift: 168px;
+  --wave-half: 84px;
+  --boat-1-right: 709.045px;
+  --boat-1-left: -186.88px;
+  --boat-2-right: 445.607px;
+  --boat-2-left: -430.32px;
+  --boat-3-right: 201.528px;
+  --boat-3-left: -662.4px;
+}
+
+.hero-illustration .desktop-design {
+  --wave-shift: 200px;
+  --wave-half: 100px;
+  --boat-1-right: 1281.468px;
+  --boat-1-left: -302.4px;
+  --boat-2-right: 794.27px;
+  --boat-2-left: -765.6px;
+  --boat-3-right: 341.871px;
+  --boat-3-left: -1206px;
+}
+
+.hero-illustration .tablet-design,
+.hero-illustration .desktop-design {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .hero-illustration .mobile-design {
+    display: none;
+  }
+
+  .hero-illustration .tablet-design {
+    display: block;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-illustration .tablet-design {
+    display: none;
+  }
+
+  .hero-illustration .desktop-design {
+    display: block;
+    --wave-shift: 14vw;
+    --wave-half: 7vw;
+    --boat-1-right: calc(84vw + 72px);
+    --boat-1-left: calc(-16vw - 72px);
+    --boat-2-right: calc(51vw + 60px);
+    --boat-2-left: calc(-49vw - 60px);
+    --boat-3-right: calc(20vw + 54px);
+    --boat-3-left: calc(-80vw - 54px);
+  }
+
+  .hero-illustration .desktop-design [data-name="Introduction"] {
+    padding-inline: clamp(48px, 11.667vw, 168px);
+  }
+
+  .hero-illustration .desktop-design [data-name="Biography"] {
+    width: min(58vw, 633.6px);
+  }
+
+  .hero-illustration .desktop-design [data-name="Greeting"] p {
+    font-size: clamp(34px, 3.08vw, 44.352px);
+    line-height: 1.25;
+  }
+
+  .hero-illustration .desktop-design [data-name="Summary"] p {
+    width: min(100%, 576px);
+  }
+
+  .hero-illustration .desktop-design [data-name="Doodle landscape — hills, waves and sunshine"],
+  .hero-illustration .desktop-design [data-name="Mountain ridge — clear peaks and pencil facets"],
+  .hero-illustration .desktop-design [data-name="Wooded hills — continuous shoreline"],
+  .hero-illustration .desktop-design [data-name="Pencil pine trees along the hills"],
+  .hero-illustration .desktop-design [data-name="Pencil ripple accents"],
+  .hero-illustration .desktop-design [data-name="Paper boats — three sailing lanes"] {
+    width: 100%;
+  }
+
+  .hero-illustration .desktop-design [data-name="Doodle waves — far ribbon"],
+  .hero-illustration .desktop-design [data-name="Doodle waves — wandering water"],
+  .hero-illustration .desktop-design [data-name="Doodle waves — foreground ribbon"] {
+    left: -14vw;
+    width: 128vw;
+  }
+
+  .hero-illustration .desktop-design [data-name="Doodle waves — far ribbon"] > div,
+  .hero-illustration .desktop-design [data-name="Doodle waves — wandering water"] > div,
+  .hero-illustration .desktop-design [data-name="Doodle waves — foreground ribbon"] > div {
+    inset-inline: 0;
+  }
+
+  .hero-illustration .desktop-design [data-name="Shining doodle sun"] {
+    left: 55.67%;
+  }
+
+  .hero-illustration .desktop-design [data-name="Visible wind trail 1"] {
+    left: 2.5%;
+  }
+
+  .hero-illustration .desktop-design [data-name="Visible wind trail 2"] {
+    left: 72%;
+  }
+
+  .hero-illustration .desktop-design [data-name="Visible wind trail 3"] {
+    left: 37%;
+  }
+
+  .hero-illustration .desktop-design [data-name="Paper boat 1 — sailing"] {
+    left: 16%;
+  }
+
+  .hero-illustration .desktop-design [data-name="Paper boat 2 — sailing"] {
+    left: 49%;
+  }
+
+  .hero-illustration .desktop-design [data-name="Paper boat 3 — sailing"] {
+    left: 80%;
+  }
+}
+
+.hero-illustration [data-name="Sunshine — soft halo"] {
+  transform-origin: center;
+  animation: hero-halo-pulse 2s ease-in-out infinite;
+}
+
+.hero-illustration [data-name="Sunshine — long sketch rays"] {
+  transform-origin: center;
+  animation: hero-sun-breathe 2s ease-in-out infinite;
+}
+
+.hero-illustration [data-name="Sunshine — twinkling rays"] {
+  transform-origin: center;
+  animation: hero-sun-twinkle 2s ease-in-out infinite;
+}
+
+.hero-illustration [data-name^="Visible wind trail"] {
+  animation: hero-wind-drift 2s ease-in-out infinite;
+}
+
+.hero-illustration [data-name="Visible wind trail 2"] {
+  animation-delay: -0.18s;
+}
+
+.hero-illustration [data-name="Visible wind trail 3"] {
+  animation-delay: -0.36s;
+}
+
+.hero-illustration [data-name="Doodle waves — far ribbon"],
+.hero-illustration [data-name="Doodle waves — foreground ribbon"] {
+  animation: hero-wave-forward 2s linear infinite;
+}
+
+.hero-illustration [data-name="Doodle waves — wandering water"] {
+  animation: hero-wave-reverse 2s linear infinite;
+}
+
+.hero-illustration [data-name="Fish leap — waterline stage"],
+.hero-illustration [data-name="Fish leap — opposite direction 2"],
+.hero-illustration [data-name="Fish leap — opposite direction 3"] {
+  --fish-delay: 0s;
+  z-index: 12;
+}
+
+.hero-illustration [data-name="Doodle fish — jumping out and diving under"],
+.hero-illustration [data-name="Doodle fish 2 — jumping left"],
+.hero-illustration [data-name="Doodle fish 3 — jumping left"] {
+  transform-origin: center;
+  animation: hero-fish-leap 4.2s cubic-bezier(0.37, 0, 0.63, 1) var(--fish-delay, 0s) 1 both;
+  will-change: transform, opacity;
+}
+
+.hero-illustration [data-name^="Doodle fish"] object {
+  filter: drop-shadow(0 2px 2px rgb(3 15 30 / 45%));
+}
+
+.hero-illustration [data-name="Water splash — launch droplets"] {
+  transform-origin: center bottom;
+  animation: hero-launch-splash 4.2s ease-out var(--fish-delay, 0s) 1 both;
+  will-change: transform, opacity;
+}
+
+.hero-illustration [data-name="Water splash — landing droplets"] {
+  transform-origin: center bottom;
+  animation: hero-landing-splash 4.2s ease-out var(--fish-delay, 0s) 1 both;
+  will-change: transform, opacity;
+}
+
+.hero-illustration [data-name="Landing ripple — expanding ring"] {
+  transform-origin: center;
+  animation: hero-ripple 4.2s ease-out var(--fish-delay, 0s) 1 both;
+  will-change: transform, opacity;
+}
+
+.hero-illustration [data-name="Paper boat 1 — sailing"] {
+  --boat-right: var(--boat-1-right);
+  --boat-left: var(--boat-1-left);
+  transform-origin: center;
+  animation: hero-boat-sail 14s linear infinite;
+}
+
+.hero-illustration [data-name="Paper boat 2 — sailing"] {
+  --boat-right: var(--boat-2-right);
+  --boat-left: var(--boat-2-left);
+  transform-origin: center;
+  animation: hero-boat-sail-alt 17s linear -5s infinite;
+}
+
+.hero-illustration [data-name="Paper boat 3 — sailing"] {
+  --boat-right: var(--boat-3-right);
+  --boat-left: var(--boat-3-left);
+  transform-origin: center;
+  animation: hero-boat-sail 20s linear -11s infinite;
+}
+
+.hero-illustration [data-name="Paper boat 1 — sailing"] img,
+.hero-illustration [data-name="Paper boat 2 — sailing"] img,
+.hero-illustration [data-name="Paper boat 3 — sailing"] img {
+  transform-origin: center;
+  animation: hero-boat-rock 2s ease-in-out infinite;
+}
+
+@keyframes hero-halo-pulse {
+  0%,
+  100% {
+    opacity: 0.12;
+  }
+  50% {
+    opacity: 0.24;
+  }
+}
+
+@keyframes hero-sun-breathe {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.58;
+    transform: scale(1.07);
+  }
+}
+
+@keyframes hero-sun-twinkle {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.07);
+  }
+}
+
+@keyframes hero-wind-drift {
+  0% {
+    opacity: 0.25;
+    transform: translate(0, 0);
+  }
+  35% {
+    opacity: 0.75;
+  }
+  85% {
+    opacity: 0;
+    transform: translate(20px, 2px);
+  }
+  100% {
+    opacity: 0.25;
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes hero-wave-forward {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(var(--wave-half), 2px);
+  }
+  100% {
+    transform: translate(var(--wave-shift), 0);
+  }
+}
+
+@keyframes hero-wave-reverse {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(var(--wave-half), -2px);
+  }
+  100% {
+    transform: translate(var(--wave-shift), 0);
+  }
+}
+
+@keyframes hero-fish-leap {
+  0% {
+    opacity: 0;
+    transform: translate(-4px, 8px) rotate(-48deg) scale(0.86);
+  }
+  4% {
+    opacity: 0.3;
+    transform: translate(-2px, 3px) rotate(-46deg) scale(0.92);
+  }
+  8% {
+    opacity: 1;
+    transform: translate(0, -4px) rotate(-42deg) scale(1);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(18px, -48px) rotate(-24deg) scale(1.03);
+  }
+  34% {
+    opacity: 1;
+    transform: translate(46px, -82px) rotate(0deg) scale(1.04);
+  }
+  48% {
+    opacity: 1;
+    transform: translate(72px, -62px) rotate(22deg) scale(1.03);
+  }
+  60% {
+    opacity: 1;
+    transform: translate(88px, -28px) rotate(43deg) scale(1);
+  }
+  68% {
+    opacity: 1;
+    transform: translate(94px, 2px) rotate(66deg) scale(0.96);
+  }
+  72% {
+    opacity: 0.15;
+    transform: translate(96px, 14px) rotate(78deg) scale(0.88);
+  }
+  74%,
+  100% {
+    opacity: 0;
+    transform: translate(96px, 16px) rotate(82deg) scale(0.84);
+  }
+}
+
+@keyframes hero-launch-splash {
+  0%,
+  2%,
+  23%,
+  100% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.25, 0.15);
+  }
+  8% {
+    opacity: 0.95;
+    transform: translateY(0) scale(0.9, 1.05);
+  }
+  15% {
+    opacity: 0.55;
+    transform: translateY(-7px) scale(1.08, 1.18);
+  }
+  23% {
+    opacity: 0;
+    transform: translateY(-14px) scale(1.2, 1.28);
+  }
+}
+
+@keyframes hero-landing-splash {
+  0%,
+  58%,
+  82%,
+  100% {
+    opacity: 0;
+    transform: translateY(9px) scale(0.2, 0.12);
+  }
+  66% {
+    opacity: 0.95;
+    transform: translateY(0) scale(1, 1.08);
+  }
+  73% {
+    opacity: 0.55;
+    transform: translateY(-8px) scale(1.15, 1.22);
+  }
+  82% {
+    opacity: 0;
+    transform: translateY(-16px) scale(1.28, 1.35);
+  }
+}
+
+@keyframes hero-ripple {
+  0%,
+  64%,
+  100% {
+    opacity: 0;
+    transform: scale(0.25, 0.35);
+  }
+  70% {
+    opacity: 0.75;
+    transform: scale(0.85, 0.72);
+  }
+  85% {
+    opacity: 0;
+    transform: scale(1.45, 1.15);
+  }
+}
+
+@keyframes hero-boat-sail {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  46% {
+    opacity: 1;
+    transform: translateX(var(--boat-right));
+  }
+  46.01% {
+    opacity: 0;
+  }
+  46.02% {
+    opacity: 0;
+    transform: translateX(var(--boat-left));
+  }
+  46.5% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes hero-boat-sail-alt {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  46% {
+    opacity: 1;
+    transform: translateX(var(--boat-right));
+  }
+  46.01% {
+    opacity: 0;
+  }
+  46.02% {
+    opacity: 0;
+    transform: translateX(var(--boat-left));
+  }
+  46.5% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes hero-boat-rock {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  25% {
+    transform: translateY(2px) rotate(-1.6deg);
+  }
+  50% {
+    transform: translateY(0) rotate(0);
+  }
+  75% {
+    transform: translateY(-2px) rotate(1.6deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-illustration *,
+  .hero-illustration *::before,
+  .hero-illustration *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
