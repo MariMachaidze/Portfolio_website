@@ -23,19 +23,6 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
-
-    <script>
-      (function () {
-        try {
-          var stored = localStorage.getItem("theme");
-          var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-          var theme = stored || (prefersDark ? "dark" : "light");
-          document.documentElement.classList.toggle("dark", theme === "dark");
-        } catch (e) {
-          // localStorage may be unavailable (e.g. private browsing) — default to light.
-        }
-      })();
-    </script>
   </head>
   <body>
     <!--

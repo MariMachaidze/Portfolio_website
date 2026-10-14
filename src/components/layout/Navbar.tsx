@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { profile } from "../../data/profile";
 import { Container } from "../ui/Container";
-import { ThemeToggle } from "./ThemeToggle";
 
 const NAV_ITEMS = [
   { label: "Home", id: "hero" },
@@ -48,7 +47,6 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <ThemeToggle />
           <button
             type="button"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
