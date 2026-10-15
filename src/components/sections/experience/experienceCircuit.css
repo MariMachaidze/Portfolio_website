@@ -1,14 +1,14 @@
-@import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Share+Tech+Mono&display=swap");
 
 /*
- * Scoped styles for the interactive "experience signal router" circuit
- * (ported from a Figma Make export). Every selector is nested under
- * .experience-circuit so this can't leak onto the rest of the site — same
- * pattern as skillsChip.css / heroIllustration.css. Keyframe names are
- * prefixed `exp-` for the same reason. Kept in the same rule order as the
- * source file, since several selectors are intentionally redeclared later
- * with different (final) values — reordering would change which wins.
+ * Scoped styles for the interactive "experience signal router" circuit, generated
+ * from the Figma Make "experience_final" export. Every selector is nested under
+ * .experience-circuit so nothing leaks onto the rest of the site, keyframes are
+ * prefixed exp-, and SVG filter/gradient refs point at the exp-* ids in
+ * ExperienceCircuit.tsx. Source rule order is preserved on purpose: many
+ * selectors are redeclared later with their final values.
  */
+
 
 .experience-circuit {
   --paper: #0a2f68;
@@ -22,24 +22,13 @@
   --signal-soft: #5b4113;
   --warning: #ff784f;
   --pcb-font: "Share Tech Mono", "OCR B", "Courier New", monospace;
+  --display-font: "IBM Plex Mono", "Courier New", monospace;
   --pencil: var(--pcb-font);
-
-  margin: 0;
-  padding: 24px 0;
-  display: grid;
-  place-items: center;
-  background: #0b1f3a;
-  color: var(--ink);
-  font-family: var(--pcb-font);
 }
 
-.experience-circuit * {
-  box-sizing: border-box;
-}
+.experience-circuit * { box-sizing: border-box; }
 
-.experience-circuit button {
-  font: inherit;
-}
+.experience-circuit button { font: inherit; }
 
 .experience-circuit .desktop-schematic {
   position: relative;
@@ -47,13 +36,42 @@
   margin: 20px;
   background: var(--paper);
   border-radius: 18px;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, .58), 0 0 0 1px rgba(131, 190, 169, .18);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, .58),
+    0 0 0 1px rgba(131, 190, 169, .18);
+  transform: none;
 }
 
 .experience-circuit .desktop-schematic svg {
   display: block;
   width: 100%;
   height: auto;
+}
+
+.experience-circuit .reset {
+  position: absolute;
+  z-index: 4;
+  top: 16px;
+  right: 30px;
+  padding: 7px 14px;
+  border: 1px solid #57796d;
+  border-radius: 4px;
+  background: #082522;
+  color: #d8e7db;
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 11px;
+  line-height: 1.2;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .25);
+}
+
+.experience-circuit .reset:hover,
+.experience-circuit .reset:focus-visible {
+  border-color: var(--signal);
+  color: var(--ink-strong);
+  outline: none;
 }
 
 .experience-circuit .wire {
@@ -129,11 +147,6 @@
   filter: url(#exp-rough-ink);
 }
 
-.experience-circuit .company-card.empty rect,
-.experience-circuit .company-card.empty .component-outline {
-  opacity: .45;
-}
-
 .experience-circuit .company-card .card-shadow {
   fill: rgba(67, 53, 38, .12);
   stroke: none;
@@ -174,11 +187,6 @@
 .experience-circuit .svg-toggle {
   cursor: pointer;
   outline: none;
-}
-
-.experience-circuit .svg-toggle.disabled {
-  cursor: not-allowed;
-  opacity: .4;
 }
 
 .experience-circuit .svg-toggle .toggle-shadow {
@@ -229,9 +237,7 @@
   stroke: var(--signal);
 }
 
-.experience-circuit .svg-toggle.active .toggle-knob {
-  fill: url(#exp-switch-knob-on);
-}
+.experience-circuit .svg-toggle.active .toggle-knob { fill: url(#exp-switch-knob-on); }
 
 .experience-circuit .svg-toggle:focus-visible rect {
   stroke-width: 4;
@@ -246,22 +252,17 @@
   font-family: var(--pencil);
 }
 
-.experience-circuit .group-label {
-  font-size: 30px;
-  font-weight: 600;
-}
-
-.experience-circuit .line-label {
-  font-size: 28px;
-}
-
-.experience-circuit .caption {
-  font-size: 29px;
-}
-
+.experience-circuit .group-label,
+.experience-circuit .line-label,
+.experience-circuit .caption,
 .experience-circuit .legend-text {
-  font-size: 27px;
+  font-family: var(--pencil);
 }
+
+.experience-circuit .group-label { font-size: 30px; font-weight: 600; }
+.experience-circuit .line-label { font-size: 28px; }
+.experience-circuit .caption { font-size: 29px; }
+.experience-circuit .legend-text { font-size: 27px; }
 
 .experience-circuit .legend {
   stroke: var(--line);
@@ -330,9 +331,7 @@
   filter: drop-shadow(0 0 5px rgba(236, 152, 19, .65));
 }
 
-.experience-circuit .monitor-label {
-  font-size: 27px;
-}
+.experience-circuit .monitor-label { font-size: 27px; }
 
 .experience-circuit .screen-copy {
   height: 100%;
@@ -342,6 +341,24 @@
   font-family: "Inter", Arial, sans-serif;
   animation: exp-content-in 220ms ease-out;
 }
+
+.experience-circuit .source-box {
+  min-height: 156px;
+  margin-bottom: 42px;
+  padding: 18px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  border: 1.5px solid #bdb9af;
+  border-radius: 9px;
+  background: linear-gradient(rgba(255, 255, 255, .28), rgba(226, 222, 211, .12));
+  box-shadow: inset 0 1px 2px rgba(64, 55, 43, .06);
+}
+
+.experience-circuit .source-box span { font-size: 21px; }
+.experience-circuit .source-box b { color: var(--ink-strong); font-size: 27px; font-weight: 400; }
+.experience-circuit .source-box small { font-size: 19px; }
 
 .experience-circuit .screen-role {
   color: var(--ink-strong);
@@ -426,38 +443,23 @@
   font-size: 24px;
 }
 
-.experience-circuit .blink {
-  color: var(--signal);
-  animation: exp-blink 900ms steps(1) infinite;
-}
+.experience-circuit .blink { color: var(--signal); animation: exp-blink 900ms steps(1) infinite; }
+.experience-circuit .mobile-layout { display: none; }
+.experience-circuit .responsive-hint { display: none; }
 
 @keyframes exp-marker-pulse {
-  0%, 100% {
-    stroke-opacity: .9;
-  }
-  50% {
-    stroke-opacity: 1;
-  }
+  0%, 100% { stroke-opacity: .9; }
+  50% { stroke-opacity: 1; }
 }
 
 @keyframes exp-content-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes exp-blink {
-  50% {
-    opacity: 0;
-  }
-}
+@keyframes exp-blink { 50% { opacity: 0; } }
 
-/* PCB material pass (redeclares several rules above with final values) */
+/* PCB material pass */
 .experience-circuit .drawing-sheet {
   fill: #0b3474;
   stroke: #2365a8;
@@ -484,10 +486,23 @@
   pointer-events: none;
 }
 
-.experience-circuit .solder-pad {
-  fill: #bc812e;
-  stroke: #f2c871;
+.experience-circuit .mounting-hole circle:first-child {
+  fill: #c8892d;
+  stroke: #f0c36a;
+  stroke-width: 1.5;
+}
+
+.experience-circuit .mounting-hole circle:last-child {
+  fill: #061311;
+  stroke: #020706;
   stroke-width: 1;
+}
+
+.experience-circuit .edge-vias circle,
+.experience-circuit .compact-edge-vias circle {
+  fill: #b77b2a;
+  stroke: #edc46d;
+  stroke-width: .7;
 }
 
 .experience-circuit .smd-part .smd-pad {
@@ -644,6 +659,12 @@
   stroke: var(--signal);
 }
 
+.experience-circuit .solder-pad {
+  fill: #bc812e;
+  stroke: #f2c871;
+  stroke-width: 1;
+}
+
 .experience-circuit .component-ref,
 .experience-circuit .encoder-refs text,
 .experience-circuit .fabrication-note {
@@ -651,6 +672,40 @@
   font-family: "IBM Plex Mono", "Courier New", monospace;
   font-size: 8px;
   letter-spacing: .08em;
+}
+
+.experience-circuit .surface-resistor rect {
+  fill: #ddd6c5;
+  stroke: #ffffff;
+  stroke-width: .8;
+}
+
+.experience-circuit .surface-resistor path {
+  stroke: #c48a32;
+  stroke-width: 2;
+}
+
+.experience-circuit .surface-resistor text {
+  fill: #7ba8cf;
+  font-family: "IBM Plex Mono", "Courier New", monospace;
+  font-size: 7px;
+}
+
+.experience-circuit .test-point circle:first-child {
+  fill: #ba7f2c;
+  stroke: #f1c56e;
+  stroke-width: 1;
+}
+
+.experience-circuit .test-point circle:nth-child(2) {
+  fill: #092451;
+  stroke: none;
+}
+
+.experience-circuit .test-point text {
+  fill: #82acd2;
+  font-family: "IBM Plex Mono", "Courier New", monospace;
+  font-size: 8px;
 }
 
 .experience-circuit .via-row circle:first-child {
@@ -719,23 +774,10 @@
   font-family: "IBM Plex Mono", "Courier New", monospace;
 }
 
-.experience-circuit .group-label {
-  font-size: 16px;
-  letter-spacing: .08em;
-}
-
-.experience-circuit .line-label {
-  font-size: 18px;
-}
-
-.experience-circuit .caption {
-  font-size: 17px;
-  letter-spacing: .04em;
-}
-
-.experience-circuit .legend-text {
-  font-size: 16px;
-}
+.experience-circuit .group-label { font-size: 16px; letter-spacing: .08em; }
+.experience-circuit .line-label { font-size: 18px; }
+.experience-circuit .caption { font-size: 17px; letter-spacing: .04em; }
+.experience-circuit .legend-text { font-size: 16px; }
 
 .experience-circuit .legend {
   stroke: #40645a;
@@ -826,7 +868,9 @@
 .experience-circuit .led.on {
   fill: var(--signal);
   stroke: #ffe093;
-  filter: drop-shadow(0 0 3px rgba(255, 236, 174, .95)) drop-shadow(0 0 9px rgba(255, 178, 28, .85));
+  filter:
+    drop-shadow(0 0 3px rgba(255, 236, 174, .95))
+    drop-shadow(0 0 9px rgba(255, 178, 28, .85));
 }
 
 .experience-circuit .module-reset {
@@ -915,7 +959,9 @@
   position: absolute;
   z-index: 3;
   inset: 0;
-  background: repeating-linear-gradient(0deg, transparent 0 3px, rgba(128, 229, 217, .025) 3px 4px), linear-gradient(90deg, rgba(255, 255, 255, .018), transparent 35%);
+  background:
+    repeating-linear-gradient(0deg, transparent 0 3px, rgba(128, 229, 217, .025) 3px 4px),
+    linear-gradient(90deg, rgba(255,255,255,.018), transparent 35%);
   pointer-events: none;
 }
 
@@ -933,6 +979,20 @@
   z-index: 1;
 }
 
+.experience-circuit .source-box {
+  border: 1px solid #285677;
+  background:
+    linear-gradient(rgba(30, 75, 106, .25), rgba(3, 16, 30, .2)),
+    repeating-linear-gradient(0deg, transparent 0 3px, rgba(112, 190, 230, .02) 3px 4px);
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, .35);
+}
+
+.experience-circuit .source-box span,
+.experience-circuit .source-box small {
+  color: #7ea4bc;
+}
+
+.experience-circuit .source-box b,
 .experience-circuit .screen-role {
   color: #eefaf6;
 }
@@ -963,19 +1023,226 @@
   color: var(--warning);
 }
 
+.experience-circuit .display-ribbon rect {
+  fill: #a87528;
+  stroke: #e7b758;
+  stroke-width: .7;
+}
+
+.experience-circuit .display-ribbon path {
+  stroke: #4e3410;
+  stroke-width: 1;
+}
+
 @keyframes exp-pcb-signal {
-  0%, 100% {
-    stroke-opacity: .86;
+  0%, 100% { stroke-opacity: .86; }
+  50% { stroke-opacity: 1; }
+}
+
+@media (max-width: 700px) {
+
+  .experience-circuit .desktop-schematic { display: none; }
+
+  .experience-circuit .mobile-layout {
+    display: block;
+    max-width: 390px;
+    min-height: 812px;
+    margin: 0 auto;
   }
-  50% {
-    stroke-opacity: 1;
+
+  .experience-circuit .mobile-top {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--line-light);
+    color: var(--ink-strong);
+    font-size: 18px;
+    font-weight: 500;
+    font-family: "IBM Plex Mono", "Courier New", monospace;
+    letter-spacing: .06em;
   }
+
+  .experience-circuit .mobile-top button {
+    padding: 6px 12px;
+    border: 1px solid var(--line-light);
+    border-radius: 999px;
+    background: #061b3b;
+    color: var(--ink);
+    font-family: "IBM Plex Mono", "Courier New", monospace;
+    font-size: 12px;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .25);
+  }
+
+  .experience-circuit .mobile-inputs {
+    padding: 12px 0;
+    display: grid;
+    gap: 7px;
+  }
+
+  .experience-circuit .mobile-inputs button {
+    min-height: 62px;
+    padding: 9px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--line-light);
+    border-radius: 10px;
+    background: #092b5e;
+    color: var(--ink);
+    text-align: left;
+    box-shadow: 2px 3px 6px rgba(0, 0, 0, .2);
+  }
+
+  .experience-circuit .mobile-inputs button.active {
+    border-color: #cc8a1e;
+    background: #3a2b10;
+  }
+
+  .experience-circuit .mobile-inputs button > span {
+    display: grid;
+    gap: 3px;
+  }
+
+  .experience-circuit .mobile-inputs b {
+    color: var(--ink-strong);
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .experience-circuit .mobile-inputs small { font-size: 12px; }
+
+  .experience-circuit .mobile-inputs i {
+    position: relative;
+    width: 61px;
+    height: 30px;
+    padding-left: 38px;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-style: normal;
+    transition: 180ms ease;
+  }
+
+  .experience-circuit .mobile-inputs em {
+    position: absolute;
+    left: 4px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--line);
+    transition: transform 180ms ease;
+  }
+
+  .experience-circuit .mobile-inputs .active i {
+    border-color: var(--signal);
+  }
+
+  .experience-circuit .mobile-inputs .active em {
+    transform: translateX(30px);
+    background: var(--signal);
+  }
+
+  .experience-circuit .mobile-flow {
+    padding: 11px;
+    display: grid;
+    gap: 8px;
+    border: 1px solid var(--line-light);
+    border-radius: 10px;
+    background: #061d40;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, .25);
+    font-family: "IBM Plex Mono", "Courier New", monospace;
+  }
+
+  .experience-circuit .mobile-flow > div {
+    display: grid;
+    grid-template-columns: 35px 1fr 58px 35px;
+    align-items: center;
+    color: var(--line);
+    font-size: 12px;
+  }
+
+  .experience-circuit .mobile-flow b {
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 4px;
+  }
+
+  .experience-circuit .mobile-flow i {
+    padding: 5px;
+    border: 1px solid currentColor;
+    border-radius: 0 14px 14px 0;
+    font-size: 9px;
+    font-style: normal;
+    text-align: center;
+  }
+
+  .experience-circuit .mobile-flow em {
+    font-style: normal;
+    text-align: right;
+  }
+
+  .experience-circuit .mobile-flow > div.active { color: var(--signal); }
+
+  .experience-circuit .mobile-flow .valid-flow {
+    display: block;
+    padding-top: 8px;
+    border-top: 1px solid var(--line-light);
+    text-align: center;
+  }
+
+  .experience-circuit .mobile-monitor {
+    min-height: 286px;
+    margin-top: 14px;
+    padding: 14px 20px 18px;
+    border: 3px solid #707b76;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #151d1b, #080d0c);
+    box-shadow: 4px 9px 18px rgba(0, 0, 0, .35);
+  }
+
+  .experience-circuit .mobile-led {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+  }
+
+  .experience-circuit .mobile-led i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--line);
+  }
+
+  .experience-circuit .mobile-monitor.active .mobile-led i { background: var(--signal); }
+
+  .experience-circuit .mobile-monitor .source-box {
+    min-height: 74px;
+    margin-bottom: 14px;
+    padding: 9px;
+    gap: 3px;
+  }
+
+  .experience-circuit .mobile-monitor .source-box span { font-size: 12px; }
+  .experience-circuit .mobile-monitor .source-box b { font-size: 18px; }
+  .experience-circuit .mobile-monitor .source-box small { font-size: 12px; }
+  .experience-circuit .mobile-monitor .display-status {
+    margin-bottom: 12px;
+    font-size: 7px;
+  }
+  .experience-circuit .mobile-monitor .screen-role { font-size: 20px; }
+  .experience-circuit .mobile-monitor .screen-company { font-size: 14px; }
+  .experience-circuit .mobile-monitor .screen-date { font-size: 12px; }
+  .experience-circuit .mobile-monitor .screen-copy > p { margin: 10px 0; font-size: 11px; }
+  .experience-circuit .mobile-monitor .skills-label { font-size: 13px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .experience-circuit *,
-  .experience-circuit *::before,
-  .experience-circuit *::after {
+  .experience-circuit *, .experience-circuit *::before, .experience-circuit *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
@@ -992,6 +1259,20 @@
   height: 100%;
 }
 
+.experience-circuit .compact-reset {
+  position: absolute;
+  z-index: 5;
+  top: 13px;
+  right: 16px;
+  padding: 5px 8px;
+  border: 1px solid #5686b5;
+  border-radius: 3px;
+  background: #071c3c;
+  color: #c5def2;
+  font: 8px "IBM Plex Mono", "Courier New", monospace;
+  letter-spacing: .08em;
+}
+
 .experience-circuit .compact-title,
 .experience-circuit .compact-ref,
 .experience-circuit .compact-output,
@@ -1006,18 +1287,14 @@
   letter-spacing: .12em;
 }
 
-.experience-circuit .compact-company > path {
-  fill: rgba(2, 21, 54, .18);
-  stroke: #a9cae6;
+.experience-circuit .compact-company > rect {
+  fill: rgba(7, 14, 24, .54);
+  stroke: #51718f;
   stroke-width: 1;
 }
 
-.experience-circuit .compact-company.empty > path {
-  opacity: .45;
-}
-
-.experience-circuit .compact-company.active > path {
-  fill: rgba(255, 178, 28, .08);
+.experience-circuit .compact-company.active > rect {
+  fill: rgba(116, 66, 5, .78);
   stroke: var(--signal);
 }
 
@@ -1043,11 +1320,6 @@
 .experience-circuit .compact-toggle {
   cursor: pointer;
   outline: none;
-}
-
-.experience-circuit .compact-toggle.disabled {
-  cursor: not-allowed;
-  opacity: .4;
 }
 
 .experience-circuit .compact-toggle rect {
@@ -1092,6 +1364,57 @@
   font-size: 7px;
 }
 
+.experience-circuit .rail-label,
+.experience-circuit .y-label {
+  fill: #b8c9d8;
+  font-family: var(--pcb-font);
+  font-size: 8px;
+}
+
+.experience-circuit .gate-bubble {
+  fill: #071425;
+  stroke: #7d94a7;
+  stroke-width: 1.5;
+}
+
+.experience-circuit .gate-bubble.on {
+  fill: #071425;
+  stroke: var(--signal);
+  filter: drop-shadow(0 0 2px rgba(255, 178, 28, .45));
+}
+
+.experience-circuit .compact-schematic .down-and {
+  fill: rgba(5, 12, 22, .72);
+}
+
+.experience-circuit .compact-schematic .down-and.on {
+  fill: #f7ead2;
+}
+
+.experience-circuit .compact-schematic .wire {
+  stroke: #75a2cc;
+  stroke-width: 3;
+  opacity: .82;
+}
+
+.experience-circuit .compact-schematic .wire.on {
+  stroke: var(--signal);
+  stroke-width: 4.25;
+  opacity: 1;
+}
+
+.experience-circuit .desktop-schematic .wire {
+  stroke: #729bc0;
+  stroke-width: 2.7;
+  opacity: .92;
+}
+
+.experience-circuit .desktop-schematic .wire.on {
+  stroke: var(--signal);
+  stroke-width: 4.2;
+  opacity: 1;
+}
+
 .experience-circuit .compact-pin-label {
   font-size: 5px;
   text-anchor: middle;
@@ -1100,6 +1423,45 @@
 .experience-circuit .compact-led-label {
   font-size: 7px;
   letter-spacing: .08em;
+}
+
+.experience-circuit .compact-display-title,
+.experience-circuit .compact-module-label {
+  fill: #91b8dc;
+  font-family: var(--pcb-font) !important;
+  letter-spacing: .06em;
+}
+
+.experience-circuit .compact-display-title {
+  font-size: 5.5px;
+  text-anchor: middle;
+}
+
+.experience-circuit .compact-module-label {
+  font-size: 5px;
+}
+
+.experience-circuit .compact-copper-pads rect {
+  fill: #bb7f2c;
+  stroke: #f1c66f;
+  stroke-width: .7;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .35));
+}
+
+.experience-circuit .compact-ribbon rect {
+  fill: #ba7d29;
+  stroke: #f0c46a;
+}
+
+.experience-circuit .compact-ribbon path {
+  stroke: #49300e;
+  stroke-width: .8;
+}
+
+.experience-circuit .compact-screw circle {
+  fill: #69777c;
+  stroke: #b3c0c4;
+  stroke-width: .7;
 }
 
 .experience-circuit .compact-monitor .screen-copy {
@@ -1154,10 +1516,98 @@
   font-size: 10px;
 }
 
+.experience-circuit .oled-glass {
+  fill: #01070d;
+  stroke: #34739a;
+}
+
+.experience-circuit .screen-copy {
+  color: #e9f7ff;
+  font-family: var(--display-font) !important;
+  text-shadow: 0 0 3px rgba(121, 205, 246, .16);
+}
+
+.experience-circuit .screen-copy * {
+  font-family: var(--display-font) !important;
+}
+
+.experience-circuit .display-status {
+  color: #83d4ff;
+  font-weight: 500;
+  text-shadow: 0 0 5px rgba(91, 196, 246, .24);
+}
+
+.experience-circuit .screen-role,
+.experience-circuit .screen-message b {
+  color: #ffffff;
+  font-weight: 600;
+  text-shadow: 0 0 7px rgba(132, 212, 248, .2);
+}
+
+.experience-circuit .screen-company {
+  color: #c9e6f5;
+  font-weight: 500;
+}
+
+.experience-circuit .screen-date {
+  border-color: #dc941d;
+  background: #422b08;
+  color: #ffd06b;
+}
+
+.experience-circuit .screen-copy > p,
+.experience-circuit .screen-message p {
+  color: #b8d1df;
+}
+
+.experience-circuit .skills-label {
+  color: #edf8ff;
+}
+
+.experience-circuit .skill-pills span {
+  border-color: #4f7f9c;
+  background: #0b2638;
+  color: #d3e8f3;
+}
+
+.experience-circuit .screen-copy::before {
+  opacity: .55;
+}
+
+.experience-circuit .screen-copy::after {
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, .34);
+}
+
+.experience-circuit .desktop-schematic .display-status {
+  font-size: 11px;
+}
+
+.experience-circuit .desktop-schematic .screen-role {
+  font-size: 30px;
+}
+
+.experience-circuit .desktop-schematic .screen-company {
+  font-size: 19px;
+}
+
+.experience-circuit .desktop-schematic .screen-date {
+  font-size: 13px;
+}
+
+.experience-circuit .desktop-schematic .screen-copy > p {
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.experience-circuit .desktop-schematic .skills-label {
+  font-size: 14px;
+}
+
+.experience-circuit .desktop-schematic .skill-pills span {
+  font-size: 9px;
+}
+
 @media (max-width: 1100px) {
-  .experience-circuit {
-    padding: 16px 0;
-  }
 
   .experience-circuit .desktop-schematic {
     display: none;
@@ -1166,19 +1616,192 @@
   .experience-circuit .compact-schematic {
     position: relative;
     display: block;
-    width: min(100%, calc(80vh * .479));
-    margin: 0 auto;
+    width: min(94vw, calc(94svh * .5));
+    height: min(94svh, calc(94vw * 2));
+    margin: 0;
+  }
+
+  .experience-circuit .responsive-hint,
+  .experience-circuit .mobile-layout {
+    display: none;
   }
 }
 
 @media (min-width: 701px) and (max-width: 1100px) {
+  .experience-circuit .desktop-schematic {
+    display: block;
+    width: 96vw;
+    max-width: none;
+    margin: 0;
+  }
+
+  .experience-circuit .desktop-schematic svg {
+    width: 100%;
+    height: auto;
+  }
+
   .experience-circuit .compact-schematic {
-    width: min(70vw, calc(80vh * .479));
+    display: none;
+  }
+
+  .experience-circuit .desktop-schematic .wire {
+    stroke-width: 1.8;
+    opacity: .8;
+  }
+
+  .experience-circuit .desktop-schematic .wire.on {
+    stroke-width: 3;
+    opacity: 1;
+  }
+
+  .experience-circuit .desktop-schematic .gate {
+    stroke-width: 1.45;
+  }
+
+  .experience-circuit .desktop-schematic .gate.on {
+    stroke-width: 2;
+  }
+
+  .experience-circuit .desktop-schematic .dot,
+  .experience-circuit .desktop-schematic .pin {
+    r: 3.5px;
+    stroke-width: .7;
+  }
+
+  .experience-circuit .desktop-schematic .company-card {
+    transform: scaleY(1.07);
+    transform-box: fill-box;
+    transform-origin: center bottom;
+  }
+
+  .experience-circuit .desktop-schematic .company-card .company-name {
+    font-size: 24px !important;
+  }
+
+  .experience-circuit .desktop-schematic .company-card text {
+    font-size: 17px !important;
+  }
+
+  .experience-circuit .desktop-schematic .company-card .component-id {
+    font-size: 7px !important;
+  }
+
+  .experience-circuit .desktop-monitor-module {
+    transform: scaleX(1.04);
+    transform-box: fill-box;
+    transform-origin: left center;
+  }
+
+  .experience-circuit .desktop-schematic .display-status {
+    font-size: 12px !important;
+  }
+
+  .experience-circuit .desktop-schematic .screen-role {
+    font-size: 34px !important;
+  }
+
+  .experience-circuit .desktop-schematic .screen-company {
+    font-size: 20px !important;
+  }
+
+  .experience-circuit .desktop-schematic .screen-date {
+    font-size: 14px !important;
+  }
+
+  .experience-circuit .desktop-schematic .screen-copy > p {
+    font-size: 13px !important;
+  }
+
+  .experience-circuit .desktop-schematic .skills-label {
+    font-size: 15px !important;
+  }
+
+  .experience-circuit .desktop-schematic .skill-pills span {
+    font-size: 10px !important;
+  }
+
+  .experience-circuit .desktop-schematic .component-ref,
+  .experience-circuit .desktop-schematic .encoder-refs text,
+  .experience-circuit .desktop-schematic .fabrication-note,
+  .experience-circuit .desktop-schematic .smd-part text {
+    font-size: 5.5px !important;
+  }
+
+  .experience-circuit .desktop-schematic .group-label,
+  .experience-circuit .desktop-schematic .line-label,
+  .experience-circuit .desktop-schematic .caption,
+  .experience-circuit .desktop-schematic .legend-text {
+    font-size: 10px !important;
+  }
+
+  .experience-circuit .compact-schematic .wire {
+    stroke-width: 3.3;
+  }
+
+  .experience-circuit .compact-schematic .wire.on {
+    stroke-width: 4.7;
+  }
+
+  .experience-circuit .compact-company text {
+    font-size: 10px !important;
+  }
+
+  .experience-circuit .compact-company .compact-name {
+    font-size: 14px !important;
+  }
+
+  .experience-circuit .compact-company .compact-id {
+    font-size: 6px !important;
+  }
+
+  .experience-circuit .compact-title,
+  .experience-circuit .compact-signature {
+    font-size: 6px !important;
+  }
+
+  .experience-circuit .rail-label,
+  .experience-circuit .y-label {
+    font-size: 10px !important;
+  }
+
+  .experience-circuit .compact-toggle .switch-symbol {
+    font-size: 7px !important;
+  }
+
+  .experience-circuit .compact-led-label {
+    font-size: 8px !important;
+  }
+
+  .experience-circuit .compact-monitor .display-status {
+    font-size: 10px !important;
+  }
+
+  .experience-circuit .compact-monitor .screen-role {
+    font-size: 24px !important;
+  }
+
+  .experience-circuit .compact-monitor .screen-company {
+    font-size: 15px !important;
+  }
+
+  .experience-circuit .compact-monitor .screen-date {
+    font-size: 11px !important;
+  }
+
+  .experience-circuit .compact-monitor .screen-copy > p {
+    font-size: 10px !important;
+  }
+
+  .experience-circuit .compact-monitor .skills-label {
+    font-size: 12px !important;
+  }
+
+  .experience-circuit .compact-monitor .skill-pills span {
+    font-size: 8px !important;
   }
 }
 
 /* Unified technical PCB silkscreen typography. */
-.experience-circuit,
 .experience-circuit button,
 .experience-circuit .screen-copy,
 .experience-circuit .desktop-schematic text,
@@ -1203,6 +1826,8 @@
 .experience-circuit .component-ref,
 .experience-circuit .encoder-refs text,
 .experience-circuit .fabrication-note,
+.experience-circuit .surface-resistor text,
+.experience-circuit .test-point text,
 .experience-circuit .smd-part text {
   font-size: 7.5px;
 }
@@ -1232,41 +1857,50 @@
 }
 
 .experience-circuit .display-status {
-  font-size: 7px;
+  font-size: 9px;
 }
 
 .experience-circuit .screen-role {
-  font-size: 18px;
+  font-size: 22px;
   line-height: 1.25;
 }
 
 .experience-circuit .screen-company {
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .experience-circuit .screen-date {
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .experience-circuit .screen-copy > p {
-  font-size: 8px;
-  line-height: 1.6;
+  font-size: 10px;
+  line-height: 1.55;
 }
 
 .experience-circuit .skills-label {
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .experience-circuit .skill-pills span {
-  font-size: 6px;
+  font-size: 8px;
+}
+
+.experience-circuit .source-box span,
+.experience-circuit .source-box small {
+  font-size: 10px;
+}
+
+.experience-circuit .source-box b {
+  font-size: 15px;
 }
 
 .experience-circuit .screen-message b {
-  font-size: 16px;
+  font-size: 20px;
 }
 
 .experience-circuit .screen-message p {
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .experience-circuit .svg-toggle text {
@@ -1274,11 +1908,11 @@
 }
 
 .experience-circuit .compact-company text {
-  font-size: 7px;
+  font-size: 8.5px;
 }
 
 .experience-circuit .compact-company .compact-name {
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .experience-circuit .compact-company .compact-id {
@@ -1311,39 +1945,40 @@
 }
 
 .experience-circuit .compact-monitor .display-status {
-  font-size: 5px;
-}
-
-.experience-circuit .compact-monitor .screen-role {
-  font-size: 13px;
-}
-
-.experience-circuit .compact-monitor .screen-company {
   font-size: 8px;
 }
 
-.experience-circuit .compact-monitor .screen-date {
-  font-size: 6px;
+.experience-circuit .compact-monitor .screen-role {
+  font-size: 20px;
 }
 
-.experience-circuit .compact-monitor .screen-copy > p {
-  font-size: 6px;
-}
-
-.experience-circuit .compact-monitor .skills-label {
-  font-size: 7px;
-}
-
-.experience-circuit .compact-monitor .skill-pills span {
-  font-size: 5px;
-}
-
-.experience-circuit .compact-monitor .screen-message b {
+.experience-circuit .compact-monitor .screen-company {
   font-size: 12px;
 }
 
-.experience-circuit .compact-monitor .screen-message p {
+.experience-circuit .compact-monitor .screen-date {
+  font-size: 9px;
+}
+
+.experience-circuit .compact-monitor .screen-copy > p {
+  font-size: 8px;
+  line-height: 1.45;
+}
+
+.experience-circuit .compact-monitor .skills-label {
+  font-size: 10px;
+}
+
+.experience-circuit .compact-monitor .skill-pills span {
   font-size: 7px;
+}
+
+.experience-circuit .compact-monitor .screen-message b {
+  font-size: 18px;
+}
+
+.experience-circuit .compact-monitor .screen-message p {
+  font-size: 10px;
 }
 
 @media (max-width: 700px) {
@@ -1444,4 +2079,187 @@
 
 .experience-circuit .compact-toggle .switch-symbol {
   font-size: 5px !important;
+}
+
+@media (max-width: 700px) {
+
+  .experience-circuit .compact-schematic {
+    width: min(94vw, calc(94svh * .5));
+    height: min(94svh, calc(94vw * 2));
+  }
+
+  .experience-circuit .compact-schematic .wire {
+    stroke: #75a2cc;
+    stroke-width: 3;
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+    opacity: .82;
+  }
+
+  .experience-circuit .compact-schematic .wire.on {
+    stroke-width: 4.25;
+    filter: none;
+    animation: none;
+    opacity: 1;
+  }
+
+  .experience-circuit .compact-schematic .gate {
+    stroke-width: 1.6;
+    filter: none;
+    opacity: .86;
+  }
+
+  .experience-circuit .compact-schematic .gate.on {
+    stroke-width: 1.7;
+    filter: none;
+    opacity: 1;
+  }
+
+  .experience-circuit .compact-schematic .dot,
+  .experience-circuit .compact-schematic .pin {
+    r: 2.4px;
+    stroke-width: .9;
+    filter: none;
+    opacity: .75;
+  }
+
+  .experience-circuit .compact-schematic .dot.on,
+  .experience-circuit .compact-schematic .pin.on {
+    opacity: 1;
+  }
+
+  .experience-circuit .compact-schematic .solder-pad {
+    r: 1.8px;
+    stroke-width: .55;
+  }
+
+  .experience-circuit .compact-schematic .pcb-texture,
+  .experience-circuit .compact-schematic .compact-ref,
+  .experience-circuit .compact-schematic .solder-pad,
+  .experience-circuit .compact-schematic .switch-terminal,
+  .experience-circuit .compact-schematic .compact-id,
+  .experience-circuit .compact-schematic .compact-output,
+  .experience-circuit .compact-schematic .compact-pin-label {
+    display: none;
+  }
+
+  .experience-circuit .compact-schematic .board-edge {
+    stroke-dasharray: none;
+    opacity: .7;
+  }
+
+  .experience-circuit .compact-schematic .component-pin {
+    display: none;
+  }
+
+  .experience-circuit .compact-title,
+  .experience-circuit .compact-signature {
+    font-size: 6px;
+  }
+
+  .experience-circuit .compact-company text {
+    font-size: 9.5px;
+  }
+
+  .experience-circuit .compact-company .compact-name {
+    font-size: 16px;
+  }
+
+  .experience-circuit .rail-label,
+  .experience-circuit .y-label {
+    font-size: 10px;
+  }
+
+  .experience-circuit .compact-toggle .switch-symbol {
+    font-size: 6px !important;
+  }
+
+  .experience-circuit .compact-led-label {
+    font-size: 7px;
+  }
+
+  .experience-circuit .compact-monitor .display-status {
+    margin-bottom: 10px;
+    font-size: 10px;
+  }
+
+  .experience-circuit .compact-monitor .screen-role {
+    font-size: 24px;
+  }
+
+  .experience-circuit .compact-monitor .screen-company {
+    font-size: 14px;
+  }
+
+  .experience-circuit .compact-monitor .screen-date {
+    font-size: 11px;
+  }
+
+  .experience-circuit .compact-monitor .screen-copy > p {
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  .experience-circuit .compact-monitor .skills-label {
+    font-size: 12px;
+  }
+
+  .experience-circuit .compact-monitor .skill-pills span {
+    font-size: 8px;
+  }
+
+  .experience-circuit .compact-monitor .screen-message b {
+    font-size: 21px;
+  }
+
+  .experience-circuit .compact-monitor .screen-message p {
+    font-size: 12px;
+  }
+}
+
+
+/* Site integration (not part of the export). */
+.experience-circuit {
+  padding: 24px 0;
+  display: grid;
+  place-items: center;
+  background: #0b1f3a;
+  color: var(--ink);
+  font-family: var(--pcb-font);
+}
+
+.experience-circuit .company-card.empty .component-outline,
+.experience-circuit .compact-company.empty > rect {
+  opacity: .45;
+}
+
+.experience-circuit .company-card.empty text,
+.experience-circuit .compact-company.empty text {
+  opacity: .6;
+}
+
+.experience-circuit .svg-toggle.disabled,
+.experience-circuit .compact-toggle.disabled {
+  cursor: not-allowed;
+  opacity: .4;
+}
+
+/* Real role titles can contain long unbreakable words ("Intern/Researcher"). */
+.experience-circuit .screen-role {
+  overflow-wrap: anywhere;
+}
+
+/*
+ * The export enlarges card text on tablets to sizes that only fit its short
+ * placeholders; real company names and "Mon YYYY – Mon YYYY" dates spill out
+ * of the cards there, so step them back down.
+ */
+@media (min-width: 701px) and (max-width: 1100px) {
+  .experience-circuit .desktop-schematic .company-card .company-name {
+    font-size: 21px !important;
+  }
+
+  .experience-circuit .desktop-schematic .company-card text {
+    font-size: 15px !important;
+  }
 }

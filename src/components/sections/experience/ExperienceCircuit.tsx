@@ -11,9 +11,8 @@ type Slot = ExperienceEntry | null;
 const SLOT_COUNT = 3;
 const slots: Slot[] = Array.from({ length: SLOT_COUNT }, (_, i) => experience[i] ?? null);
 
-/** The card/switch geometry below is fixed-size SVG text (no wrapping), so
- * real company/role strings longer than the placeholder text it was authored
- * against need truncating to avoid overlapping neighboring cards. */
+/** Card labels are fixed-size SVG text (no wrapping), so company names longer
+ * than the export's placeholders are truncated to keep cards from overlapping. */
 function truncate(text: string, max: number) {
   return text.length > max ? `${text.slice(0, max - 1)}…` : text;
 }
@@ -64,14 +63,11 @@ function CompanyCard({ slot, x, active, index }: { slot: Slot; x: number; active
       <text x={x + 10} y="62" className="component-id">
         U{index + 1} / INPUT_{index + 1}
       </text>
-      <text x={x + 92} y="91" className="company-name">
+      <text x={x + 92} y="96" className="company-name">
         {truncate(slot?.company ?? "Empty slot", 16)}
       </text>
-      <text x={x + 92} y="117">
-        {truncate(slot?.role ?? "No role added yet", 24)}
-      </text>
-      <text x={x + 92} y="141">
-        {slot ? formatDateRange(slot.startDate, slot.endDate) : "—"}
+      <text x={x + 92} y="130">
+        {slot ? formatDateRange(slot.startDate, slot.endDate) : "No job yet"}
       </text>
       {[24, 69, 115, 160].map((offset, pin) => (
         <g key={offset} className="component-pin">
@@ -173,7 +169,8 @@ function ScreenContent({ slot, conflict }: { slot: Slot; conflict: boolean }) {
   return (
     <div className="screen-copy">
       <span className="display-status">ACTIVE EXPERIENCE</span>
-      <strong className="screen-role">{slot.role}</strong>
+      {/* Zero-width space lets "Intern/Researcher"-style titles wrap at the slash. */}
+      <strong className="screen-role">{slot.role.replaceAll("/", "/​")}</strong>
       <span className="screen-company">
         {slot.company}
         {slot.locationType ? ` · ${slot.location} (${slot.locationType})` : ` · ${slot.location}`}
@@ -237,24 +234,27 @@ function SmdPart({ x, y, label, vertical = false }: { x: number; y: number; labe
 function Monitor({
   y,
   valid,
+  x1,
+  x0,
   slot,
   conflict,
   reset,
 }: {
   y: Bit[];
   valid: Bit;
+  x1: Bit;
+  x0: Bit;
   slot: Slot;
   conflict: boolean;
-  source: string;
   reset: () => void;
 }) {
   return (
-    <g>
-      <rect x="1068" y="60" width="285" height="645" rx="18" className="monitor-shadow" />
-      <rect x="1062" y="54" width="285" height="645" rx="18" className="monitor-frame" />
-      <rect x="1082" y="74" width="245" height="605" rx="10" className="monitor-inner" />
-      <path d="M1090 82H1318" className="bezel-highlight" />
-      {[1080, 1329].flatMap((x) =>
+    <g className="desktop-monitor-module">
+      <rect x="1016" y="60" width="337" height="645" rx="18" className="monitor-shadow" />
+      <rect x="1010" y="54" width="337" height="645" rx="18" className="monitor-frame" />
+      <rect x="1030" y="74" width="297" height="605" rx="10" className="monitor-inner" />
+      <path d="M1038 82H1318" className="bezel-highlight" />
+      {[1028, 1329].flatMap((x) =>
         [72, 681].map((y2) => (
           <g key={`${x}-${y2}`} className="bezel-screw">
             <circle cx={x} cy={y2} r="5" />
@@ -262,30 +262,32 @@ function Monitor({
           </g>
         )),
       )}
-      <circle cx="1110" cy="114" r="15" className="led-well" />
-      <circle cx="1110" cy="114" r="12" className="led-ring" />
-      <circle cx="1110" cy="114" r="10" className={`led ${valid ? "on" : ""}`} />
-      <circle cx="1107" cy="111" r="3" className="led-highlight" />
-      <text x="1135" y="122" className="monitor-label">
+      <circle cx="1058" cy="114" r="15" className="led-well" />
+      <circle cx="1058" cy="114" r="12" className="led-ring" />
+      <circle cx="1058" cy="114" r="10" className={`led ${valid ? "on" : ""}`} />
+      <circle cx="1055" cy="111" r="3" className="led-highlight" />
+      <text x="1083" y="122" className="monitor-label">
         Valid LED
       </text>
-      <ModuleReset x={1250} y={102} onReset={reset} />
-      <rect x="1092" y="160" width="226" height="502" rx="8" className="oled-shadow" />
-      <rect x="1095" y="163" width="220" height="496" rx="6" className="oled-glass" />
-      <path d="M1103 171H1305L1272 218H1103Z" className="oled-reflection" />
-      <foreignObject x="1100" y="172" width="210" height="482">
+      <ModuleReset x={1246} y={102} onReset={reset} />
+      <rect x="1040" y="160" width="278" height="502" rx="8" className="oled-shadow" />
+      <rect x="1043" y="163" width="272" height="496" rx="6" className="oled-glass" />
+      <path d="M1051 171H1305L1272 218H1051Z" className="oled-reflection" />
+      <foreignObject x="1049" y="172" width="260" height="482">
         <ScreenContent slot={slot} conflict={conflict} />
       </foreignObject>
       {y.map((bit, index) => (
-        <circle key={index} cx="1062" cy={401 + index * 108} r="6" className={`pin ${bit ? "on" : ""}`} />
+        <circle key={index} cx="1010" cy={401 + index * 108} r="6" className={`pin ${bit ? "on" : ""}`} />
       ))}
-      <circle cx="1062" cy="114" r="6" className={`pin ${valid ? "on" : ""}`} />
+      <circle cx="1010" cy="114" r="6" className={`pin ${valid ? "on" : ""}`} />
+      <circle cx="1010" cy="226" r="6" className={`pin ${x1 ? "on" : ""}`} />
+      <circle cx="1010" cy="322" r="6" className={`pin ${x0 ? "on" : ""}`} />
       <g className="monitor-vents">
         <path d="M1280 664h10M1296 664h10M1312 664h8" />
       </g>
       <g className="display-ribbon">
-        <rect x="1176" y="688" width="58" height="10" rx="2" />
-        {[1182, 1191, 1200, 1209, 1218, 1227].map((x) => (
+        <rect x="1150" y="688" width="58" height="10" rx="2" />
+        {[1156, 1165, 1174, 1183, 1192, 1201].map((x) => (
           <path key={x} d={`M${x} 688V698`} />
         ))}
       </g>
@@ -441,9 +443,9 @@ function DesktopSchematic({
           </g>
         ))}
 
-        <Wire d="M746 402H1062" on={Boolean(y[0])} />
-        <Wire d="M746 510H1062" on={Boolean(y[1])} />
-        <Wire d="M746 618H1062" on={Boolean(y[2])} />
+        <Wire d="M746 402H1010" on={Boolean(y[0])} />
+        <Wire d="M746 510H1010" on={Boolean(y[1])} />
+        <Wire d="M746 618H1010" on={Boolean(y[2])} />
         <text x="960" y="390" className="line-label">
           Y1
         </text>
@@ -465,8 +467,8 @@ function DesktopSchematic({
         <Dot x={814} y={510} on={Boolean(y[1])} />
         <Dot x={842} y={618} on={Boolean(y[2])} />
         <OrGate x={895} y={114} on={Boolean(valid)} />
-        <Wire d="M983 114H1062" on={Boolean(valid)} />
-        <text x="994" y="102" className="line-label">
+        <Wire d="M983 114H1010" on={Boolean(valid)} />
+        <text x="1002" textAnchor="end"y="102" className="line-label">
           Valid
         </text>
 
@@ -475,8 +477,8 @@ function DesktopSchematic({
         <Dot x={814} y={210} on={Boolean(y[1])} />
         <Dot x={842} y={242} on={Boolean(y[2])} />
         <OrGate x={895} y={226} on={Boolean(x1)} />
-        <Wire d="M983 226H1062" on={Boolean(x1)} />
-        <text x="994" y="214" className="line-label">
+        <Wire d="M983 226H1010" on={Boolean(x1)} />
+        <text x="1002" textAnchor="end"y="214" className="line-label">
           X1
         </text>
 
@@ -485,8 +487,8 @@ function DesktopSchematic({
         <Dot x={786} y={306} on={Boolean(y[0])} />
         <Dot x={842} y={338} on={Boolean(y[2])} />
         <OrGate x={895} y={322} on={Boolean(x0)} />
-        <Wire d="M983 322H1062" on={Boolean(x0)} />
-        <text x="994" y="310" className="line-label">
+        <Wire d="M983 322H1010" on={Boolean(x0)} />
+        <text x="1002" textAnchor="end"y="310" className="line-label">
           X0
         </text>
         <g className="encoder-refs">
@@ -516,7 +518,15 @@ function DesktopSchematic({
           <SmdPart x={810} y={694} label="C3" />
         </g>
 
-        <Monitor y={y} valid={valid} slot={activeIndex >= 0 ? slots[activeIndex] : null} conflict={count > 1} source={`${x1}${x0}`} reset={reset} />
+        <Monitor
+          y={y}
+          valid={valid}
+          x1={x1}
+          x0={x0}
+          slot={activeIndex >= 0 ? slots[activeIndex] : null}
+          conflict={count > 1}
+          reset={reset}
+        />
 
         <text x="184" y="754" className="caption">
           Switches and NOT gates
@@ -546,22 +556,16 @@ function DesktopSchematic({
 function CompactCompany({ slot, x, active, index }: { slot: Slot; x: number; active: boolean; index: number }) {
   return (
     <g className={`compact-company ${active ? "active" : ""} ${slot ? "" : "empty"}`}>
-      <path d={`M${x + 5} 30H${x + 105}L${x + 110} 35V109L${x + 105} 114H${x + 5}L${x} 109V35Z`} />
-      <text x={x + 6} y="43" className="compact-id">
+      <rect x={x} y="38" width="100" height="88" rx="9" />
+      <text x={x + 6} y="52" className="compact-id">
         U{index + 1}
       </text>
-      <text x={x + 55} y="64" className="compact-name">
-        {truncate(slot?.company ?? "Empty", 13)}
+      <text x={x + 50} y="78" className="compact-name">
+        {truncate(slot?.company ?? "Empty", 12)}
       </text>
-      <text x={x + 55} y="82">
-        {truncate(slot?.role ?? "No role yet", 16)}
+      <text x={x + 50} y="108">
+        {slot ? formatDateRange(slot.startDate, slot.endDate) : "No job yet"}
       </text>
-      <text x={x + 55} y="99">
-        {slot ? formatDateRange(slot.startDate, slot.endDate) : "—"}
-      </text>
-      {[18, 44, 70, 96].map((offset) => (
-        <circle key={offset} cx={x + offset} cy="114" r="2.5" className="solder-pad" />
-      ))}
     </g>
   );
 }
@@ -597,267 +601,186 @@ function CompactToggle({
         }
       }}
     >
-      <text x={x - 18} y="124" className="switch-symbol">
+      <text x={x - 18} y="134" className="switch-symbol">
         O
       </text>
-      <text x={x + 17} y="124" className="switch-symbol">
+      <text x={x + 17} y="134" className="switch-symbol">
         I
       </text>
-      <rect x={x - 23} y="127" width="46" height="25" rx="4" className="switch-housing" />
-      <rect x={x - 16} y="134" width="32" height="10" rx="3" className="switch-slot" />
-      <rect x={x + (value ? 1 : -15)} y="131" width="14" height="16" rx="3" className="switch-actuator" />
-      <path d={`M${x + (value ? 5 : -11)} 134V144M${x + (value ? 9 : -7)} 134V144`} className="actuator-ridges" />
+      <rect x={x - 23} y="137" width="46" height="25" rx="4" className="switch-housing" />
+      <rect x={x - 16} y="144" width="32" height="10" rx="3" className="switch-slot" />
+      <rect x={x + (value ? 1 : -15)} y="141" width="14" height="16" rx="3" className="switch-actuator" />
+      <path d={`M${x + (value ? 5 : -11)} 144V154M${x + (value ? 9 : -7)} 144V154`} className="actuator-ridges" />
       {[-14, 0, 14].map((offset) => (
-        <circle key={offset} cx={x + offset} cy="153" r="2.5" className="switch-terminal" />
+        <circle key={offset} cx={x + offset} cy="163" r="2.5" className="switch-terminal" />
       ))}
     </g>
   );
 }
 
-function CompactOrGate({ x, y, on }: { x: number; y: number; on: boolean }) {
+function DownAndGate({ x, y, on }: { x: number; y: number; on: boolean }) {
   return (
     <path
-      d={`M${x} ${y - 12}Q${x + 7} ${y} ${x} ${y + 12}Q${x + 29} ${y + 10} ${x + 44} ${y}Q${x + 29} ${y - 10} ${x} ${y - 12}Z`}
-      className={`gate ${on ? "on" : ""}`}
+      d={`M${x - 27} ${y}H${x + 27}V${y + 28}A27 27 0 0 1 ${x - 27} ${y + 28}Z`}
+      className={`gate down-and ${on ? "on" : ""}`}
     />
-  );
-}
-
-function CompactNotGate({ x, y, on }: { x: number; y: number; on: boolean }) {
-  return (
-    <g className={`gate ${on ? "on" : ""}`}>
-      <path d={`M${x} ${y - 7}V${y + 7}L${x + 18} ${y}Z`} />
-      <circle cx={x + 22} cy={y} r="3" />
-    </g>
   );
 }
 
 function CompactMonitor({
   y,
   valid,
-  x1,
-  x0,
   slot,
   conflict,
   reset,
 }: {
   y: Bit[];
   valid: Bit;
-  x1: Bit;
-  x0: Bit;
   slot: Slot;
   conflict: boolean;
   reset: () => void;
 }) {
   return (
     <g className="compact-monitor">
-      <rect x="18" y="514" width="354" height="282" rx="12" className="monitor-frame" />
-      <rect x="28" y="524" width="334" height="262" rx="8" className="monitor-inner" />
-      <circle cx="48" cy="543" r="9" className="led-well" />
-      <circle cx="48" cy="543" r="6" className={`led ${valid ? "on" : ""}`} />
-      <text x="61" y="547" className="compact-led-label">
-        VALID
+      <rect x="28" y="445" width="334" height="317" rx="12" className="monitor-frame" />
+      <rect x="38" y="455" width="314" height="297" rx="8" className="monitor-inner" />
+      {(
+        [
+          [43, 460],
+          [347, 460],
+          [43, 747],
+          [347, 747],
+        ] as const
+      ).map(([x, screwY]) => (
+        <g key={`${x}-${screwY}`} className="bezel-screw compact-screw">
+          <circle cx={x} cy={screwY} r="3.5" />
+          <path d={`M${x - 2} ${screwY}H${x + 2}`} />
+        </g>
+      ))}
+      <circle cx="58" cy="476" r="9" className="led-well" />
+      <circle cx="58" cy="476" r="6" className={`led ${valid ? "on" : ""}`} />
+      <text x="71" y="480" className="compact-led-label">
+        VALID LED
       </text>
-      <ModuleReset x={282} y={531} onReset={reset} />
-      <rect x="38" y="558" width="314" height="216" rx="6" className="oled-shadow" />
-      <rect x="41" y="561" width="308" height="210" rx="4" className="oled-glass" />
-      <foreignObject x="51" y="570" width="288" height="192">
+      <text x="184" y="480" className="compact-display-title">
+        OLED EXPERIENCE DISPLAY
+      </text>
+      <ModuleReset x={276} y={464} onReset={reset} />
+      <rect x="49" y="492" width="292" height="246" rx="6" className="oled-shadow" />
+      <rect x="52" y="495" width="286" height="240" rx="4" className="oled-glass" />
+      <foreignObject x="61" y="505" width="268" height="218">
         <ScreenContent slot={slot} conflict={conflict} />
       </foreignObject>
       {y.map((bit, index) => (
         <g key={index}>
-          <circle cx={92 + index * 46} cy="514" r="4" className={`pin ${bit ? "on" : ""}`} />
-          <text x={92 + index * 46} y="507" className="compact-pin-label">
+          <circle cx={COMPACT_COLUMN_X[index]} cy="445" r="4" className={`pin ${bit ? "on" : ""}`} />
+          <text x={COMPACT_COLUMN_X[index]} y="438" className="compact-pin-label">
             Y{index + 1}
           </text>
         </g>
       ))}
-      <circle cx="270" cy="514" r="4" className={`pin ${valid ? "on" : ""}`} />
-      <text x="270" y="507" className="compact-pin-label">
-        V
+      <text x="48" y="753" className="compact-module-label">
+        DISPLAY MODULE
       </text>
-      <circle cx="306" cy="514" r="4" className={`pin ${x1 ? "on" : ""}`} />
-      <text x="306" y="507" className="compact-pin-label">
-        X1
+      <text x="342" y="753" textAnchor="end" className="compact-module-label">
+        REV. A
       </text>
-      <circle cx="326" cy="514" r="4" className={`pin ${x0 ? "on" : ""}`} />
-      <text x="326" y="507" className="compact-pin-label">
-        X0
-      </text>
+      <g className="display-ribbon compact-ribbon">
+        <rect x="166" y="744" width="58" height="10" rx="2" />
+        {[172, 181, 190, 199, 208, 217].map((x) => (
+          <path key={x} d={`M${x} 744V754`} />
+        ))}
+      </g>
     </g>
   );
 }
+
+/** x of each job's switch, AND gate and display pin on the compact board. */
+const COMPACT_COLUMN_X = [78, 195, 312];
+const COMPACT_RAIL_Y = [205, 230, 255];
+/** One-hot wiring: each gate takes its own source straight and the other two inverted. */
+const COMPACT_GATE_INPUTS = COMPACT_COLUMN_X.map((gateX, gateIndex) =>
+  [0, 1, 2].map((source) => ({ source, inverted: source !== gateIndex, x: gateX + (source - 1) * 18 })),
+);
 
 function CompactSchematic({
   sw,
   y,
   valid,
-  x1,
-  x0,
   toggle,
   reset,
 }: {
   sw: Bit[];
   y: Bit[];
   valid: Bit;
-  x1: Bit;
-  x0: Bit;
   toggle: (index: number) => void;
   reset: () => void;
 }) {
   const n = sw.map((bit) => (bit ? 0 : 1) as Bit);
   const count = sw[0] + sw[1] + sw[2];
   const activeIndex = count === 1 ? sw.findIndex(Boolean) : -1;
-  const inputX = [56, 195, 334];
 
   return (
     <div className="compact-schematic">
-      <svg viewBox="0 0 390 814" aria-label="Complete responsive experience logic circuit">
+      <svg viewBox="0 0 390 780" preserveAspectRatio="none" aria-label="Complete responsive experience logic circuit">
         <defs>
           <linearGradient id="exp-compact-pcb-blue" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0" stopColor="#12488f" />
             <stop offset=".5" stopColor="#0a3474" />
             <stop offset="1" stopColor="#062658" />
           </linearGradient>
-          <pattern id="exp-compact-pcb-fiber" width="18" height="18" patternUnits="userSpaceOnUse">
-            <circle cx="3" cy="4" r=".45" fill="#8bc4f2" opacity=".12" />
-            <circle cx="13" cy="12" r=".35" fill="#031b42" opacity=".32" />
-          </pattern>
         </defs>
-        <rect x="4" y="4" width="382" height="806" rx="14" className="drawing-sheet" />
-        <rect x="10" y="10" width="370" height="794" rx="10" fill="url(#exp-compact-pcb-fiber)" className="pcb-texture" />
-        <rect x="10" y="10" width="370" height="794" rx="10" className="board-edge" />
+        <rect x="4" y="4" width="382" height="772" rx="14" className="drawing-sheet" />
+        <rect x="10" y="10" width="370" height="760" rx="10" className="board-edge" />
         <text x="18" y="21" className="compact-title">
           EXPERIENCE ROUTER
         </text>
         <text x="372" y="21" className="compact-signature">
           M.Machaidze
         </text>
-        <SmdPart x={26} y={204} label="C1" />
-        <SmdPart x={358} y={204} label="C2" vertical />
-        <SmdPart x={344} y={486} label="C3" />
-        {[18, 140, 262].map((x, index) => (
+        <SmdPart x={24} y={180} label="C1" />
+        <SmdPart x={366} y={180} label="C2" vertical />
+        <SmdPart x={30} y={420} label="C3" />
+        {[28, 145, 262].map((x, index) => (
           <CompactCompany key={x} slot={slots[index]} x={x} active={Boolean(sw[index])} index={index} />
         ))}
-        {inputX.map((x, index) => (
+        {COMPACT_COLUMN_X.map((x, index) => (
           <CompactToggle key={x} x={x} value={sw[index]} index={index} slot={slots[index]} onToggle={() => toggle(index)} />
         ))}
 
-        {/* Input rails and NOT gates */}
-        <Wire d="M56 153V251" on={Boolean(sw[0])} />
-        <Wire d="M195 153V350" on={Boolean(sw[1])} />
-        <Wire d="M334 153V449" on={Boolean(sw[2])} />
-        <Wire d="M56 173H81" on={Boolean(sw[0])} />
-        <Wire d="M195 173H220" on={Boolean(sw[1])} />
-        <Wire d="M334 173H260" on={Boolean(sw[2])} />
-        <CompactNotGate x={81} y={173} on={Boolean(n[0])} />
-        <CompactNotGate x={220} y={173} on={Boolean(n[1])} />
-        <CompactNotGate x={260} y={173} on={Boolean(n[2])} />
-        <Wire d="M106 173V431" on={Boolean(n[0])} />
-        <Wire d="M245 173V440" on={Boolean(n[1])} />
-        <Wire d="M285 173V359" on={Boolean(n[2])} />
-        {(
-          [
-            [56, 173, sw[0]],
-            [195, 173, sw[1]],
-            [334, 173, sw[2]],
-            [56, 251, sw[0]],
-            [195, 350, sw[1]],
-            [334, 449, sw[2]],
-            [106, 341, n[0]],
-            [106, 431, n[0]],
-            [245, 260, n[1]],
-            [245, 440, n[1]],
-            [285, 269, n[2]],
-            [285, 359, n[2]],
-          ] as const
-        ).map(([x, branchY, bit]) => (
-          <Dot key={`${x}-${branchY}`} x={x} y={branchY} on={Boolean(bit)} />
-        ))}
-
-        {/* Y1 = S1 · ¬S2 · ¬S3 */}
-        <Wire d="M56 251H148" on={Boolean(sw[0])} />
-        <Wire d="M245 260H148" on={Boolean(n[1])} />
-        <Wire d="M285 269H148" on={Boolean(n[2])} />
-        {/* Y2 = ¬S1 · S2 · ¬S3 */}
-        <Wire d="M106 341H148" on={Boolean(n[0])} />
-        <Wire d="M195 350H148" on={Boolean(sw[1])} />
-        <Wire d="M285 359H148" on={Boolean(n[2])} />
-        {/* Y3 = ¬S1 · ¬S2 · S3 */}
-        <Wire d="M106 431H148" on={Boolean(n[0])} />
-        <Wire d="M245 440H148" on={Boolean(n[1])} />
-        <Wire d="M334 449H148" on={Boolean(sw[2])} />
-
-        {[260, 350, 440].map((gateY, index) => (
-          <g key={gateY}>
-            <path d={`M148 ${gateY - 14}H176A14 14 0 0 1 176 ${gateY + 14}H148Z`} className={`gate ${y[index] ? "on" : ""}`} />
-            <Wire d={`M190 ${gateY}H${[222, 234, 246][index]}`} on={Boolean(y[index])} />
-            <text x="151" y={gateY - 18} className="compact-ref">
-              U{index + 4}/AND3
+        {COMPACT_RAIL_Y.map((sourceY, index) => (
+          <g key={sourceY}>
+            <text x="20" y={sourceY + 3} className="rail-label">
+              S{index + 1}
             </text>
-            {[gateY - 9, gateY, gateY + 9].map((padY) => (
-              <circle key={padY} cx="148" cy={padY} r="2.5" className="solder-pad" />
-            ))}
-            <circle cx="190" cy={gateY} r="2.5" className="solder-pad" />
+            <Wire d={`M48 ${sourceY}H342`} on={Boolean(sw[index])} />
+            <Wire d={`M${COMPACT_COLUMN_X[index]} 163V${sourceY}`} on={Boolean(sw[index])} />
+            <Dot x={COMPACT_COLUMN_X[index]} y={sourceY} on={Boolean(sw[index])} />
           </g>
         ))}
 
-        {/* One-hot buses feed the three encoder gates and the display pins. */}
-        <Wire d="M222 260V250H314" on={Boolean(y[0])} />
-        <Wire d="M234 350V260H314" on={Boolean(y[1])} />
-        <Wire d="M246 440V270H314" on={Boolean(y[2])} />
-        <CompactOrGate x={306} y={260} on={Boolean(valid)} />
-
-        <Wire d="M234 340H314" on={Boolean(y[1])} />
-        <Wire d="M246 360H314" on={Boolean(y[2])} />
-        <CompactOrGate x={306} y={350} on={Boolean(x1)} />
-
-        <Wire d="M222 430H314" on={Boolean(y[0])} />
-        <Wire d="M246 450H314" on={Boolean(y[2])} />
-        <CompactOrGate x={306} y={440} on={Boolean(x0)} />
-        <text x="353" y="264" className="compact-output">
-          V
-        </text>
-        <text x="353" y="354" className="compact-output">
-          X1
-        </text>
-        <text x="353" y="444" className="compact-output">
-          X0
-        </text>
-
-        {/* All one-hot outputs and VALID terminate at the display header. */}
-        <Wire d="M222 260V341Q230 350 222 359V431Q230 440 222 449V486H92V514" on={Boolean(y[0])} />
-        <Wire d="M234 350V431Q242 440 234 449V478H138V514" on={Boolean(y[1])} />
-        <Wire d="M246 440V470H184V514" on={Boolean(y[2])} />
-        <Wire d="M350 260H376V462H270V514" on={Boolean(valid)} />
-        <Wire d="M350 350H366V478H306V514" on={Boolean(x1)} />
-        <Wire d="M350 440H356V494H326V514" on={Boolean(x0)} />
-        {(
-          [
-            [222, 260, y[0]],
-            [222, 430, y[0]],
-            [234, 350, y[1]],
-            [234, 340, y[1]],
-            [246, 440, y[2]],
-            [246, 360, y[2]],
-            [246, 450, y[2]],
-          ] as const
-        ).map(([x, branchY, bit]) => (
-          <Dot key={`encoder-${x}-${branchY}`} x={x} y={branchY} on={Boolean(bit)} />
-        ))}
-        {[92, 138, 184, 270].map((x, index) => (
-          <Dot key={x} x={x} y={514} on={Boolean(index < 3 ? y[index] : valid)} />
+        {COMPACT_GATE_INPUTS.map((inputs, gateIndex) => (
+          <g key={COMPACT_COLUMN_X[gateIndex]}>
+            {inputs.map((input) => {
+              const sourceValue = sw[input.source];
+              const inputValue = input.inverted ? n[input.source] : sourceValue;
+              return (
+                <g key={`${gateIndex}-${input.source}`}>
+                  <Wire d={`M${input.x} ${COMPACT_RAIL_Y[input.source]}V${input.inverted ? 294 : 300}`} on={Boolean(sourceValue)} />
+                  <Dot x={input.x} y={COMPACT_RAIL_Y[input.source]} on={Boolean(sourceValue)} />
+                  {input.inverted && <circle cx={input.x} cy="296" r="4" className={`gate-bubble ${inputValue ? "on" : ""}`} />}
+                </g>
+              );
+            })}
+            <DownAndGate x={COMPACT_COLUMN_X[gateIndex]} y={300} on={Boolean(y[gateIndex])} />
+            <Wire d={`M${COMPACT_COLUMN_X[gateIndex]} 355V445`} on={Boolean(y[gateIndex])} />
+            <text x={COMPACT_COLUMN_X[gateIndex] + 10} y="400" className="y-label">
+              Y{gateIndex + 1}
+            </text>
+          </g>
         ))}
 
-        <CompactMonitor
-          y={y}
-          valid={valid}
-          x1={x1}
-          x0={x0}
-          slot={activeIndex >= 0 ? slots[activeIndex] : null}
-          conflict={count > 1}
-          reset={reset}
-        />
+        <CompactMonitor y={y} valid={valid} slot={activeIndex >= 0 ? slots[activeIndex] : null} conflict={count > 1} reset={reset} />
       </svg>
     </div>
   );
@@ -885,7 +808,7 @@ export function ExperienceCircuit() {
   return (
     <div className="experience-circuit">
       <DesktopSchematic sw={sw} y={y} valid={valid} x1={x1} x0={x0} toggle={toggle} reset={reset} />
-      <CompactSchematic sw={sw} y={y} valid={valid} x1={x1} x0={x0} toggle={toggle} reset={reset} />
+      <CompactSchematic sw={sw} y={y} valid={valid} toggle={toggle} reset={reset} />
     </div>
   );
 }
