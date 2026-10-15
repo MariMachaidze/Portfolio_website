@@ -409,7 +409,7 @@
   border: 1px solid var(--line);
   border-radius: 999px;
   background: rgba(255, 255, 255, .35);
-  font-size: 9px;
+  font-size: 10px;
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1505,7 +1505,7 @@
 
 .experience-circuit .compact-monitor .skill-pills span {
   padding: 3px 2px;
-  font-size: 6px;
+  font-size: 7px;
 }
 
 .experience-circuit .compact-monitor .screen-message b {
@@ -1604,7 +1604,7 @@
 }
 
 .experience-circuit .desktop-schematic .skill-pills span {
-  font-size: 9px;
+  font-size: 10px;
 }
 
 @media (max-width: 1100px) {
@@ -1717,7 +1717,7 @@
   }
 
   .experience-circuit .desktop-schematic .skill-pills span {
-    font-size: 10px !important;
+    font-size: 11px !important;
   }
 
   .experience-circuit .desktop-schematic .component-ref,
@@ -1797,7 +1797,7 @@
   }
 
   .experience-circuit .compact-monitor .skill-pills span {
-    font-size: 8px !important;
+    font-size: 9px !important;
   }
 }
 
@@ -1883,7 +1883,7 @@
 }
 
 .experience-circuit .skill-pills span {
-  font-size: 8px;
+  font-size: 9px;
 }
 
 .experience-circuit .source-box span,
@@ -1970,7 +1970,7 @@
 }
 
 .experience-circuit .compact-monitor .skill-pills span {
-  font-size: 7px;
+  font-size: 8px;
 }
 
 .experience-circuit .compact-monitor .screen-message b {
@@ -2205,7 +2205,7 @@
   }
 
   .experience-circuit .compact-monitor .skill-pills span {
-    font-size: 8px;
+    font-size: 9px;
   }
 
   .experience-circuit .compact-monitor .screen-message b {
