@@ -170,6 +170,19 @@
     padding-inline: clamp(48px, 11.667vw, 168px);
   }
 
+  /*
+   * Biography has a capped width but Portrait (flex:1) doesn't, so on very
+   * wide viewports the row's leftover space all piles up inside Portrait's
+   * own column, dragging the photo off-center and leaving a lopsided gap
+   * instead of a symmetric margin. Capping the whole row at its native
+   * (1440px-canvas) width and centering it keeps bio+photo together as one
+   * block once the viewport outgrows what the design was authored for.
+   */
+  .hero-illustration .desktop-design [data-name="Content"] {
+    max-width: 1104px;
+    margin-inline: auto;
+  }
+
   .hero-illustration .desktop-design [data-name="Biography"] {
     width: min(58vw, 633.6px);
   }
