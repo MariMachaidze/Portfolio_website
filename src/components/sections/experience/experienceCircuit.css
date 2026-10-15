@@ -2244,6 +2244,51 @@
   opacity: .4;
 }
 
+/* Wrap skill tags onto extra lines instead of squeezing them into one truncated row. */
+.experience-circuit .skill-pills {
+  flex-wrap: wrap;
+}
+
+.experience-circuit .skill-pills span {
+  flex: 0 1 auto;
+  max-width: 100%;
+  padding-inline: 7px;
+}
+
+.experience-circuit .compact-monitor .skill-pills span {
+  padding: 3px 7px;
+}
+
+/*
+ * The screen is a fixed-height flex column, so overflowing content made the
+ * browser squash lines (the summary collapsed behind the date pill). Never
+ * shrink a line; instead free enough height on the phone screen for a second
+ * row of skill tags plus a two-line summary.
+ */
+.experience-circuit .screen-copy > * {
+  flex-shrink: 0;
+}
+
+.experience-circuit .compact-monitor .display-status {
+  margin-bottom: 6px;
+}
+
+.experience-circuit .compact-monitor .screen-copy > p {
+  margin: 5px 0 4px;
+}
+
+@media (max-width: 700px) {
+  .experience-circuit .compact-monitor .screen-role {
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 701px) and (max-width: 1100px) {
+  .experience-circuit .desktop-schematic .screen-role {
+    font-size: 31px !important;
+  }
+}
+
 /* Real role titles can contain long unbreakable words ("Intern/Researcher"). */
 .experience-circuit .screen-role {
   overflow-wrap: anywhere;

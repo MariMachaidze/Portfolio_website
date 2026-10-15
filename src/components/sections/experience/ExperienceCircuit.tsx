@@ -668,7 +668,7 @@ function CompactMonitor({
       <ModuleReset x={276} y={464} onReset={reset} />
       <rect x="49" y="492" width="292" height="246" rx="6" className="oled-shadow" />
       <rect x="52" y="495" width="286" height="240" rx="4" className="oled-glass" />
-      <foreignObject x="61" y="505" width="268" height="218">
+      <foreignObject x="61" y="505" width="268" height="228">
         <ScreenContent slot={slot} conflict={conflict} />
       </foreignObject>
       {y.map((bit, index) => (
