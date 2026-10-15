@@ -1,0 +1,1448 @@
+@import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
+
+/*
+ * Scoped styles for the interactive "experience signal router" circuit
+ * (ported from a Figma Make export). Every selector is nested under
+ * .experience-circuit so this can't leak onto the rest of the site — same
+ * pattern as skillsChip.css / heroIllustration.css. Keyframe names are
+ * prefixed `exp-` for the same reason. Kept in the same rule order as the
+ * source file, since several selectors are intentionally redeclared later
+ * with different (final) values — reordering would change which wins.
+ */
+
+.experience-circuit {
+  --paper: #0a2f68;
+  --paper-deep: #061f48;
+  --white: #edf5ff;
+  --ink: #b9d4ef;
+  --ink-strong: #f2f8ff;
+  --line: #4f77a2;
+  --line-light: #27578c;
+  --signal: #ffb21c;
+  --signal-soft: #5b4113;
+  --warning: #ff784f;
+  --pcb-font: "Share Tech Mono", "OCR B", "Courier New", monospace;
+  --pencil: var(--pcb-font);
+
+  margin: 0;
+  padding: 24px 0;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 50% 0%, #182d4b, transparent 45%), linear-gradient(135deg, #070d18, #02050b);
+  border-radius: 18px;
+  color: var(--ink);
+  font-family: var(--pcb-font);
+}
+
+.experience-circuit * {
+  box-sizing: border-box;
+}
+
+.experience-circuit button {
+  font: inherit;
+}
+
+.experience-circuit .desktop-schematic {
+  position: relative;
+  width: min(calc(100% - 40px), 1440px);
+  margin: 20px;
+  background: var(--paper);
+  border-radius: 18px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .58), 0 0 0 1px rgba(131, 190, 169, .18);
+}
+
+.experience-circuit .desktop-schematic svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.experience-circuit .wire {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  transition: stroke 180ms ease;
+  filter: url(#exp-rough-ink);
+}
+
+.experience-circuit .wire.on {
+  stroke: var(--signal);
+  stroke-width: 4.4;
+  filter: url(#exp-marker-edge);
+  animation: exp-marker-pulse 2.4s ease-in-out infinite;
+}
+
+.experience-circuit .dot,
+.experience-circuit .pin {
+  fill: var(--line);
+  transition: fill 180ms ease;
+  filter: url(#exp-rough-ink);
+}
+
+.experience-circuit .dot.on,
+.experience-circuit .pin.on,
+.experience-circuit .led.on {
+  fill: var(--signal);
+}
+
+.experience-circuit .gate {
+  fill: rgba(244, 240, 230, .86);
+  stroke: var(--ink);
+  stroke-width: 2.6;
+  vector-effect: non-scaling-stroke;
+  transition: fill 180ms ease, stroke 180ms ease;
+  filter: url(#exp-rough-ink);
+}
+
+.experience-circuit .gate.on {
+  fill: var(--signal-soft);
+  stroke: var(--signal);
+  stroke-width: 3.2;
+  filter: url(#exp-marker-edge);
+}
+
+.experience-circuit .drawing-sheet {
+  fill: var(--paper);
+  filter: url(#exp-paper-grain);
+}
+
+.experience-circuit .sheet-heading text {
+  fill: #8a857b;
+  font-family: var(--pencil);
+  font-size: 15px;
+  letter-spacing: .12em;
+}
+
+.experience-circuit .sheet-heading path {
+  fill: none;
+  stroke: #c8c1b3;
+  stroke-width: 1;
+  stroke-dasharray: 8 4;
+}
+
+.experience-circuit .company-card rect {
+  fill: rgba(255, 253, 247, .94);
+  stroke: #aaa69b;
+  stroke-width: 1.4;
+  filter: url(#exp-rough-ink);
+}
+
+.experience-circuit .company-card.empty rect,
+.experience-circuit .company-card.empty .component-outline {
+  opacity: .45;
+}
+
+.experience-circuit .company-card .card-shadow {
+  fill: rgba(67, 53, 38, .12);
+  stroke: none;
+  filter: url(#exp-soft-shadow);
+}
+
+.experience-circuit .company-card.active rect {
+  fill: var(--signal-soft);
+  stroke: #9d7132;
+}
+
+.experience-circuit .company-card.active .card-shadow {
+  fill: rgba(92, 61, 20, .14);
+  stroke: none;
+}
+
+.experience-circuit .company-card .paper-tape {
+  fill: rgba(221, 207, 170, .68);
+  stroke: rgba(129, 111, 76, .25);
+  stroke-width: .7;
+  filter: none;
+}
+
+.experience-circuit .company-card text {
+  fill: var(--ink);
+  font-family: var(--pencil);
+  font-size: 27px;
+  letter-spacing: .01em;
+  text-anchor: middle;
+}
+
+.experience-circuit .company-card .company-name {
+  fill: var(--ink-strong);
+  font-size: 31px;
+  font-weight: 600;
+}
+
+.experience-circuit .svg-toggle {
+  cursor: pointer;
+  outline: none;
+}
+
+.experience-circuit .svg-toggle.disabled {
+  cursor: not-allowed;
+  opacity: .4;
+}
+
+.experience-circuit .svg-toggle .toggle-shadow {
+  fill: rgba(71, 58, 41, .16);
+  stroke: none;
+  filter: url(#exp-soft-shadow);
+}
+
+.experience-circuit .svg-toggle .toggle-track {
+  fill: url(#exp-switch-well);
+  stroke: var(--line);
+  stroke-width: 2;
+}
+
+.experience-circuit .svg-toggle .toggle-knob {
+  fill: url(#exp-switch-knob);
+  stroke: #73736d;
+  stroke-width: 1;
+  filter: url(#exp-soft-shadow);
+  transition: cx 180ms ease;
+}
+
+.experience-circuit .svg-toggle .knob-shadow {
+  fill: rgba(54, 48, 39, .24);
+  stroke: none;
+}
+
+.experience-circuit .svg-toggle .knob-highlight {
+  fill: rgba(255, 255, 255, .7);
+  stroke: none;
+}
+
+.experience-circuit .svg-toggle .toggle-highlight {
+  fill: none;
+  stroke: rgba(255, 255, 255, .9);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.experience-circuit .svg-toggle text {
+  fill: var(--ink);
+  font-family: var(--pencil);
+  font-size: 29px;
+}
+
+.experience-circuit .svg-toggle.active .toggle-track {
+  fill: var(--signal-soft);
+  stroke: var(--signal);
+}
+
+.experience-circuit .svg-toggle.active .toggle-knob {
+  fill: url(#exp-switch-knob-on);
+}
+
+.experience-circuit .svg-toggle:focus-visible rect {
+  stroke-width: 4;
+}
+
+.experience-circuit .group-label,
+.experience-circuit .line-label,
+.experience-circuit .caption,
+.experience-circuit .legend-text,
+.experience-circuit .monitor-label {
+  fill: var(--ink);
+  font-family: var(--pencil);
+}
+
+.experience-circuit .group-label {
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.experience-circuit .line-label {
+  font-size: 28px;
+}
+
+.experience-circuit .caption {
+  font-size: 29px;
+}
+
+.experience-circuit .legend-text {
+  font-size: 27px;
+}
+
+.experience-circuit .legend {
+  stroke: var(--line);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.experience-circuit .legend.on {
+  stroke: var(--signal);
+  stroke-width: 4;
+}
+
+.experience-circuit .monitor-frame {
+  fill: url(#exp-bezel-metal);
+  stroke: var(--ink);
+  stroke-width: 3.2;
+  filter: url(#exp-soft-shadow);
+}
+
+.experience-circuit .monitor-shadow {
+  fill: rgba(44, 36, 26, .2);
+  filter: url(#exp-soft-shadow);
+}
+
+.experience-circuit .bezel-highlight {
+  fill: none;
+  stroke: rgba(255, 255, 255, .7);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.experience-circuit .monitor-inner {
+  fill: rgba(250, 248, 239, .92);
+  stroke: #b5b1a8;
+  stroke-width: 2;
+  filter: url(#exp-rough-ink);
+}
+
+.experience-circuit .bezel-screw circle {
+  fill: #8d8a82;
+  stroke: #5f5d57;
+  stroke-width: 1;
+}
+
+.experience-circuit .bezel-screw path {
+  stroke: #55534e;
+  stroke-width: 1;
+}
+
+.experience-circuit .monitor-vents path {
+  fill: none;
+  stroke: #77736b;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.experience-circuit .led {
+  fill: #76766f;
+  stroke: #5c5a55;
+  stroke-width: 1;
+  filter: url(#exp-soft-shadow);
+}
+
+.experience-circuit .led.on {
+  stroke: #c97700;
+  filter: drop-shadow(0 0 5px rgba(236, 152, 19, .65));
+}
+
+.experience-circuit .monitor-label {
+  font-size: 27px;
+}
+
+.experience-circuit .screen-copy {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: var(--ink);
+  font-family: "Inter", Arial, sans-serif;
+  animation: exp-content-in 220ms ease-out;
+}
+
+.experience-circuit .screen-role {
+  color: var(--ink-strong);
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.experience-circuit .screen-company {
+  margin-top: 8px;
+  font-size: 21px;
+}
+
+.experience-circuit .screen-date {
+  align-self: flex-start;
+  margin-top: 8px;
+  padding: 5px 13px;
+  border: 1px solid var(--signal);
+  border-radius: 999px;
+  background: var(--signal-soft);
+  font-size: 19px;
+}
+
+.experience-circuit .screen-copy > p {
+  margin: 18px 0 13px;
+  display: -webkit-box;
+  overflow: hidden;
+  color: #8a8b86;
+  font-size: 13px;
+  line-height: 1.45;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.experience-circuit .skills-label {
+  margin-bottom: 4px;
+  font-size: 20px;
+}
+
+.experience-circuit .skill-pills {
+  display: flex;
+  gap: 8px;
+}
+
+.experience-circuit .skill-pills span {
+  flex: 1;
+  padding: 6px 3px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .35);
+  font-size: 9px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.experience-circuit .screen-message {
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.experience-circuit .screen-message b {
+  color: var(--ink-strong);
+  font-size: 23px;
+}
+
+.experience-circuit .screen-message p {
+  margin: 0;
+  font-size: 17px;
+}
+
+.experience-circuit .warning-dot {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--warning);
+  border-radius: 50%;
+  color: var(--warning);
+  font-size: 24px;
+}
+
+.experience-circuit .blink {
+  color: var(--signal);
+  animation: exp-blink 900ms steps(1) infinite;
+}
+
+@keyframes exp-marker-pulse {
+  0%, 100% {
+    stroke-opacity: .9;
+  }
+  50% {
+    stroke-opacity: 1;
+  }
+}
+
+@keyframes exp-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes exp-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* PCB material pass (redeclares several rules above with final values) */
+.experience-circuit .drawing-sheet {
+  fill: #0b3474;
+  stroke: #2365a8;
+  stroke-width: 2;
+  filter: none;
+}
+
+.experience-circuit .desktop-schematic .drawing-sheet {
+  fill: url(#exp-pcb-blue);
+}
+
+.experience-circuit .compact-schematic .drawing-sheet {
+  fill: url(#exp-compact-pcb-blue);
+}
+
+.experience-circuit .board-edge {
+  fill: none;
+  stroke: rgba(144, 199, 255, .3);
+  stroke-width: 1;
+  stroke-dasharray: 2 5;
+}
+
+.experience-circuit .pcb-texture {
+  pointer-events: none;
+}
+
+.experience-circuit .solder-pad {
+  fill: #bc812e;
+  stroke: #f2c871;
+  stroke-width: 1;
+}
+
+.experience-circuit .smd-part .smd-pad {
+  fill: #d59a3c;
+  stroke: #f4d18b;
+  stroke-width: .6;
+}
+
+.experience-circuit .smd-part .smd-body {
+  fill: #c8c0ab;
+  stroke: #f1eadc;
+  stroke-width: .6;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .4));
+}
+
+.experience-circuit .smd-part .smd-mark {
+  fill: none;
+  stroke: #55544f;
+  stroke-width: 1;
+}
+
+.experience-circuit .smd-part text {
+  fill: #82aed3;
+  font-family: "IBM Plex Mono", "Courier New", monospace;
+  font-size: 6px;
+  letter-spacing: .05em;
+}
+
+.experience-circuit .sheet-heading text {
+  fill: #a9ccea;
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .16em;
+}
+
+.experience-circuit .sheet-heading path {
+  stroke: #3972ad;
+  stroke-width: 1;
+  stroke-dasharray: none;
+}
+
+.experience-circuit .wire {
+  stroke: #4c78a8;
+  stroke-width: 2.2;
+  filter: none;
+}
+
+.experience-circuit .wire.on {
+  stroke: var(--signal);
+  stroke-width: 3.5;
+  filter: drop-shadow(0 0 3px rgba(255, 178, 28, .55));
+  animation: exp-pcb-signal 1.8s ease-in-out infinite;
+}
+
+.experience-circuit .dot,
+.experience-circuit .pin {
+  fill: #b67d2c;
+  stroke: #edbb61;
+  stroke-width: 1;
+  filter: none;
+}
+
+.experience-circuit .dot.on,
+.experience-circuit .pin.on {
+  fill: #ffd466;
+  stroke: #fff0b4;
+  filter: drop-shadow(0 0 3px rgba(255, 178, 28, .75));
+}
+
+.experience-circuit .gate {
+  fill: #082657;
+  stroke: #d4e8f8;
+  stroke-width: 2;
+  filter: none;
+}
+
+.experience-circuit .gate.on {
+  fill: #4c3814;
+  stroke: var(--signal);
+  stroke-width: 2.6;
+  filter: drop-shadow(0 0 3px rgba(255, 178, 28, .35));
+}
+
+.experience-circuit .company-card .card-shadow {
+  fill: none;
+  stroke: none;
+  filter: none;
+}
+
+.experience-circuit .company-card .component-outline {
+  fill: rgba(4, 24, 59, .16);
+  stroke: #b8d6ef;
+  stroke-width: 1.6;
+  vector-effect: non-scaling-stroke;
+}
+
+.experience-circuit .company-card .component-notch {
+  fill: none;
+  stroke: #b8d6ef;
+  stroke-width: 1.4;
+}
+
+.experience-circuit .company-card.active .component-outline {
+  fill: rgba(255, 178, 28, .08);
+  stroke: var(--signal);
+}
+
+.experience-circuit .company-card.active .component-notch {
+  stroke: var(--signal);
+}
+
+.experience-circuit .company-card text {
+  fill: #b5d0e8;
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 16px;
+  letter-spacing: .01em;
+}
+
+.experience-circuit .company-card .company-name {
+  fill: #f0f7ff;
+  font-size: 21px;
+  font-weight: 600;
+}
+
+.experience-circuit .company-card .component-id {
+  fill: #79a9d5;
+  font-family: "IBM Plex Mono", "Courier New", monospace;
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-anchor: start;
+}
+
+.experience-circuit .component-pin path {
+  stroke: #d2e6f5;
+  stroke-width: 1.5;
+}
+
+.experience-circuit .component-pin circle {
+  fill: #b97d27;
+  stroke: #f4ca76;
+  stroke-width: 1;
+}
+
+.experience-circuit .component-pin text {
+  fill: #78a6ce;
+  font-family: "IBM Plex Mono", "Courier New", monospace;
+  font-size: 6px;
+  text-anchor: middle;
+}
+
+.experience-circuit .company-card.active .component-pin path {
+  stroke: var(--signal);
+}
+
+.experience-circuit .component-ref,
+.experience-circuit .encoder-refs text,
+.experience-circuit .fabrication-note {
+  fill: #79a9d5;
+  font-family: "IBM Plex Mono", "Courier New", monospace;
+  font-size: 8px;
+  letter-spacing: .08em;
+}
+
+.experience-circuit .via-row circle:first-child {
+  fill: #ae7629;
+  stroke: #ecc269;
+  stroke-width: .8;
+}
+
+.experience-circuit .via-row circle:last-child {
+  fill: #061936;
+  stroke: none;
+}
+
+.experience-circuit .svg-toggle .toggle-shadow {
+  fill: #031126;
+  filter: none;
+}
+
+.experience-circuit .svg-toggle .toggle-track {
+  fill: #061b3b;
+  stroke: #6e91b2;
+  stroke-width: 2;
+}
+
+.experience-circuit .svg-toggle .toggle-highlight {
+  stroke: rgba(255, 255, 255, .12);
+}
+
+.experience-circuit .svg-toggle .toggle-knob {
+  fill: #8b938d;
+  stroke: #c0c8c2;
+  stroke-width: 1;
+  filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, .65));
+}
+
+.experience-circuit .svg-toggle.active .toggle-track {
+  fill: #3b2d12;
+  stroke: #d99820;
+}
+
+.experience-circuit .svg-toggle.active .toggle-knob {
+  fill: #e9a521;
+  stroke: #ffd875;
+}
+
+.experience-circuit .svg-toggle .knob-shadow {
+  fill: rgba(0, 0, 0, .5);
+}
+
+.experience-circuit .svg-toggle .knob-highlight {
+  fill: rgba(255, 255, 255, .45);
+}
+
+.experience-circuit .svg-toggle text {
+  fill: #c8daeb;
+  font-family: "IBM Plex Mono", "Courier New", monospace;
+  font-size: 22px;
+}
+
+.experience-circuit .group-label,
+.experience-circuit .line-label,
+.experience-circuit .caption,
+.experience-circuit .legend-text,
+.experience-circuit .monitor-label {
+  fill: #b2cde5;
+  font-family: "IBM Plex Mono", "Courier New", monospace;
+}
+
+.experience-circuit .group-label {
+  font-size: 16px;
+  letter-spacing: .08em;
+}
+
+.experience-circuit .line-label {
+  font-size: 18px;
+}
+
+.experience-circuit .caption {
+  font-size: 17px;
+  letter-spacing: .04em;
+}
+
+.experience-circuit .legend-text {
+  font-size: 16px;
+}
+
+.experience-circuit .legend {
+  stroke: #40645a;
+}
+
+.experience-circuit .legend.on {
+  stroke: var(--signal);
+  filter: drop-shadow(0 0 2px rgba(255, 178, 28, .5));
+}
+
+.experience-circuit .monitor-shadow {
+  fill: rgba(0, 0, 0, .42);
+  filter: blur(4px);
+}
+
+.experience-circuit .monitor-frame {
+  fill: #101722;
+  stroke: #75879a;
+  stroke-width: 3;
+  filter: drop-shadow(4px 8px 8px rgba(0, 0, 0, .42));
+}
+
+.experience-circuit .monitor-inner {
+  fill: #06121e;
+  stroke: #295477;
+  stroke-width: 2;
+  filter: none;
+}
+
+.experience-circuit .oled-shadow {
+  fill: #000807;
+  stroke: #020505;
+  stroke-width: 2;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, .7));
+}
+
+.experience-circuit .oled-glass {
+  fill: #020b15;
+  stroke: #205174;
+  stroke-width: 1.5;
+}
+
+.experience-circuit .oled-reflection {
+  fill: rgba(155, 224, 221, .045);
+  pointer-events: none;
+}
+
+.experience-circuit .bezel-highlight {
+  stroke: rgba(255, 255, 255, .16);
+}
+
+.experience-circuit .bezel-screw circle {
+  fill: #68716c;
+  stroke: #a3aba6;
+}
+
+.experience-circuit .bezel-screw path {
+  stroke: #303633;
+}
+
+.experience-circuit .monitor-vents path {
+  stroke: #3f4b46;
+}
+
+.experience-circuit .led {
+  fill: #263933;
+  stroke: #597167;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .8));
+}
+
+.experience-circuit .led-well {
+  fill: #050a09;
+  stroke: #4a554f;
+  stroke-width: 1.5;
+}
+
+.experience-circuit .led-ring {
+  fill: #19211f;
+  stroke: #707b75;
+  stroke-width: 1;
+}
+
+.experience-circuit .led-highlight {
+  fill: rgba(255, 255, 255, .5);
+  pointer-events: none;
+}
+
+.experience-circuit .led.on {
+  fill: var(--signal);
+  stroke: #ffe093;
+  filter: drop-shadow(0 0 3px rgba(255, 236, 174, .95)) drop-shadow(0 0 9px rgba(255, 178, 28, .85));
+}
+
+.experience-circuit .module-reset {
+  cursor: pointer;
+  outline: none;
+}
+
+.experience-circuit .module-reset .switch-legs {
+  fill: none;
+  stroke: #d3a34e;
+  stroke-width: 2.5;
+  stroke-linecap: square;
+}
+
+.experience-circuit .module-reset .switch-body {
+  fill: #7b8588;
+  stroke: #c5ced0;
+  stroke-width: 1;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .5));
+}
+
+.experience-circuit .module-reset .switch-well {
+  fill: #212a2d;
+  stroke: #090d0e;
+  stroke-width: 1;
+}
+
+.experience-circuit .module-reset .switch-cap {
+  fill: #b84335;
+  stroke: #eb8b79;
+  stroke-width: 1;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .65));
+  transition: fill 140ms ease;
+}
+
+.experience-circuit .module-reset .switch-glint {
+  fill: rgba(255, 255, 255, .5);
+  stroke: none;
+}
+
+.experience-circuit .module-reset text {
+  fill: #91b9d8;
+  font-family: "IBM Plex Mono", "Courier New", monospace;
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-anchor: middle;
+}
+
+.experience-circuit .module-reset:hover .switch-cap,
+.experience-circuit .module-reset:focus-visible .switch-cap {
+  fill: #db5b49;
+}
+
+.experience-circuit .module-reset:focus-visible .switch-body {
+  stroke: #ffffff;
+  stroke-width: 1.5;
+}
+
+.experience-circuit .module-reset:active .switch-cap {
+  fill: #7f2d25;
+}
+
+.experience-circuit .monitor-label {
+  fill: #bfd3e5;
+  font-size: 18px;
+}
+
+.experience-circuit .screen-copy {
+  position: relative;
+  color: #b6d4e4;
+  font-family: "Inter", Arial, sans-serif;
+  text-shadow: 0 0 5px rgba(130, 235, 222, .12);
+}
+
+.experience-circuit .display-status {
+  margin-bottom: 38px;
+  color: #5fa9cb;
+  font-family: "IBM Plex Mono", "Courier New", monospace;
+  font-size: 9px;
+  letter-spacing: .08em;
+}
+
+.experience-circuit .screen-copy::before {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent 0 3px, rgba(128, 229, 217, .025) 3px 4px), linear-gradient(90deg, rgba(255, 255, 255, .018), transparent 35%);
+  pointer-events: none;
+}
+
+.experience-circuit .screen-copy::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  box-shadow: inset 0 0 28px rgba(0, 0, 0, .48);
+  pointer-events: none;
+}
+
+.experience-circuit .screen-copy > * {
+  position: relative;
+  z-index: 1;
+}
+
+.experience-circuit .screen-role {
+  color: #eefaf6;
+}
+
+.experience-circuit .screen-company,
+.experience-circuit .screen-copy > p {
+  color: #86a8bd;
+}
+
+.experience-circuit .screen-date {
+  border-color: #986b20;
+  background: #332711;
+  color: #ffc356;
+}
+
+.experience-circuit .skills-label {
+  color: #c1d4cc;
+}
+
+.experience-circuit .skill-pills span {
+  border-color: #2c5875;
+  background: #071b2c;
+  color: #94b2c5;
+}
+
+.experience-circuit .warning-dot {
+  border-color: var(--warning);
+  color: var(--warning);
+}
+
+@keyframes exp-pcb-signal {
+  0%, 100% {
+    stroke-opacity: .86;
+  }
+  50% {
+    stroke-opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .experience-circuit *,
+  .experience-circuit *::before,
+  .experience-circuit *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Complete vertical PCB used on tablet and mobile. */
+.experience-circuit .compact-schematic {
+  display: none;
+}
+
+.experience-circuit .compact-schematic svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.experience-circuit .compact-title,
+.experience-circuit .compact-ref,
+.experience-circuit .compact-output,
+.experience-circuit .compact-pin-label,
+.experience-circuit .compact-led-label {
+  fill: #91b8dc;
+  font-family: "IBM Plex Mono", "Courier New", monospace;
+}
+
+.experience-circuit .compact-title {
+  font-size: 7px;
+  letter-spacing: .12em;
+}
+
+.experience-circuit .compact-company > path {
+  fill: rgba(2, 21, 54, .18);
+  stroke: #a9cae6;
+  stroke-width: 1;
+}
+
+.experience-circuit .compact-company.empty > path {
+  opacity: .45;
+}
+
+.experience-circuit .compact-company.active > path {
+  fill: rgba(255, 178, 28, .08);
+  stroke: var(--signal);
+}
+
+.experience-circuit .compact-company text {
+  fill: #a9c8e2;
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 7px;
+  text-anchor: middle;
+}
+
+.experience-circuit .compact-company .compact-id {
+  fill: #6f9fc9;
+  font: 5px "IBM Plex Mono", "Courier New", monospace;
+  text-anchor: start;
+}
+
+.experience-circuit .compact-company .compact-name {
+  fill: #eff8ff;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.experience-circuit .compact-toggle {
+  cursor: pointer;
+  outline: none;
+}
+
+.experience-circuit .compact-toggle.disabled {
+  cursor: not-allowed;
+  opacity: .4;
+}
+
+.experience-circuit .compact-toggle rect {
+  fill: #061a38;
+  stroke: #668caf;
+  stroke-width: 1.3;
+}
+
+.experience-circuit .compact-toggle circle {
+  fill: #899ba9;
+  stroke: #d1e2ee;
+  stroke-width: .8;
+  transition: cx 180ms ease;
+}
+
+.experience-circuit .compact-toggle text {
+  fill: #b9d1e5;
+  font: 8px "IBM Plex Mono", "Courier New", monospace;
+}
+
+.experience-circuit .compact-toggle.active rect {
+  fill: #3a2b10;
+  stroke: var(--signal);
+}
+
+.experience-circuit .compact-toggle.active circle {
+  fill: var(--signal);
+  stroke: #ffe193;
+}
+
+.experience-circuit .compact-toggle:focus-visible rect {
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+.experience-circuit .compact-ref {
+  font-size: 5px;
+  letter-spacing: .04em;
+}
+
+.experience-circuit .compact-output {
+  font-size: 7px;
+}
+
+.experience-circuit .compact-pin-label {
+  font-size: 5px;
+  text-anchor: middle;
+}
+
+.experience-circuit .compact-led-label {
+  font-size: 7px;
+  letter-spacing: .08em;
+}
+
+.experience-circuit .compact-monitor .screen-copy {
+  text-shadow: 0 0 4px rgba(130, 210, 240, .14);
+}
+
+.experience-circuit .compact-monitor .display-status {
+  margin-bottom: 10px;
+  font-size: 6px;
+}
+
+.experience-circuit .compact-monitor .screen-role {
+  font-size: 18px;
+}
+
+.experience-circuit .compact-monitor .screen-company {
+  margin-top: 3px;
+  font-size: 11px;
+}
+
+.experience-circuit .compact-monitor .screen-date {
+  margin-top: 5px;
+  padding: 3px 7px;
+  font-size: 8px;
+}
+
+.experience-circuit .compact-monitor .screen-copy > p {
+  margin: 7px 0 6px;
+  font-size: 8px;
+  line-height: 1.35;
+  -webkit-line-clamp: 2;
+}
+
+.experience-circuit .compact-monitor .skills-label {
+  font-size: 9px;
+}
+
+.experience-circuit .compact-monitor .skill-pills {
+  gap: 4px;
+}
+
+.experience-circuit .compact-monitor .skill-pills span {
+  padding: 3px 2px;
+  font-size: 6px;
+}
+
+.experience-circuit .compact-monitor .screen-message b {
+  font-size: 17px;
+}
+
+.experience-circuit .compact-monitor .screen-message p {
+  font-size: 10px;
+}
+
+@media (max-width: 1100px) {
+  .experience-circuit {
+    padding: 16px 0;
+  }
+
+  .experience-circuit .desktop-schematic {
+    display: none;
+  }
+
+  .experience-circuit .compact-schematic {
+    position: relative;
+    display: block;
+    width: min(100%, calc(80vh * .479));
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 701px) and (max-width: 1100px) {
+  .experience-circuit .compact-schematic {
+    width: min(70vw, calc(80vh * .479));
+  }
+}
+
+/* Unified technical PCB silkscreen typography. */
+.experience-circuit,
+.experience-circuit button,
+.experience-circuit .screen-copy,
+.experience-circuit .desktop-schematic text,
+.experience-circuit .compact-schematic text,
+.experience-circuit .desktop-schematic foreignObject *,
+.experience-circuit .compact-schematic foreignObject * {
+  font-family: var(--pcb-font) !important;
+  font-synthesis: none;
+  -webkit-font-smoothing: none;
+  text-rendering: geometricPrecision;
+}
+
+.experience-circuit .company-card text {
+  font-size: 14px;
+}
+
+.experience-circuit .company-card .company-name {
+  font-size: 20px;
+}
+
+.experience-circuit .company-card .component-id,
+.experience-circuit .component-ref,
+.experience-circuit .encoder-refs text,
+.experience-circuit .fabrication-note,
+.experience-circuit .smd-part text {
+  font-size: 7.5px;
+}
+
+.experience-circuit .group-label {
+  font-size: 13px;
+}
+
+.experience-circuit .line-label {
+  font-size: 12px;
+}
+
+.experience-circuit .caption {
+  font-size: 12px;
+}
+
+.experience-circuit .legend-text {
+  font-size: 11px;
+}
+
+.experience-circuit .monitor-label {
+  font-size: 13px;
+}
+
+.experience-circuit .module-reset text {
+  font-size: 6px;
+}
+
+.experience-circuit .display-status {
+  font-size: 7px;
+}
+
+.experience-circuit .screen-role {
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.experience-circuit .screen-company {
+  font-size: 13px;
+}
+
+.experience-circuit .screen-date {
+  font-size: 9px;
+}
+
+.experience-circuit .screen-copy > p {
+  font-size: 8px;
+  line-height: 1.6;
+}
+
+.experience-circuit .skills-label {
+  font-size: 10px;
+}
+
+.experience-circuit .skill-pills span {
+  font-size: 6px;
+}
+
+.experience-circuit .screen-message b {
+  font-size: 16px;
+}
+
+.experience-circuit .screen-message p {
+  font-size: 9px;
+}
+
+.experience-circuit .svg-toggle text {
+  font-size: 17px;
+}
+
+.experience-circuit .compact-company text {
+  font-size: 7px;
+}
+
+.experience-circuit .compact-company .compact-name {
+  font-size: 10px;
+}
+
+.experience-circuit .compact-company .compact-id {
+  font-size: 5px;
+}
+
+.experience-circuit .compact-toggle text {
+  font-size: 6px;
+}
+
+.experience-circuit .compact-title {
+  font-size: 5px;
+}
+
+.experience-circuit .compact-signature {
+  fill: #91b8dc;
+  font-size: 5px;
+  letter-spacing: .08em;
+  text-anchor: end;
+}
+
+.experience-circuit .compact-ref,
+.experience-circuit .compact-pin-label {
+  font-size: 4px;
+}
+
+.experience-circuit .compact-output,
+.experience-circuit .compact-led-label {
+  font-size: 5px;
+}
+
+.experience-circuit .compact-monitor .display-status {
+  font-size: 5px;
+}
+
+.experience-circuit .compact-monitor .screen-role {
+  font-size: 13px;
+}
+
+.experience-circuit .compact-monitor .screen-company {
+  font-size: 8px;
+}
+
+.experience-circuit .compact-monitor .screen-date {
+  font-size: 6px;
+}
+
+.experience-circuit .compact-monitor .screen-copy > p {
+  font-size: 6px;
+}
+
+.experience-circuit .compact-monitor .skills-label {
+  font-size: 7px;
+}
+
+.experience-circuit .compact-monitor .skill-pills span {
+  font-size: 5px;
+}
+
+.experience-circuit .compact-monitor .screen-message b {
+  font-size: 12px;
+}
+
+.experience-circuit .compact-monitor .screen-message p {
+  font-size: 7px;
+}
+
+@media (max-width: 700px) {
+  .experience-circuit .compact-company .compact-name {
+    font-size: 12px;
+  }
+}
+
+/* Board-mounted SPDT slide switches. */
+.experience-circuit .svg-toggle .switch-housing-shadow {
+  fill: rgba(0, 0, 0, .48);
+  stroke: none;
+  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, .45));
+}
+
+.experience-circuit .svg-toggle .switch-housing,
+.experience-circuit .compact-toggle .switch-housing,
+.experience-circuit .svg-toggle.active .switch-housing,
+.experience-circuit .compact-toggle.active .switch-housing {
+  fill: #182126;
+  stroke: #74838a;
+  stroke-width: 1.3;
+}
+
+.experience-circuit .svg-toggle .switch-slot,
+.experience-circuit .compact-toggle .switch-slot,
+.experience-circuit .svg-toggle.active .switch-slot,
+.experience-circuit .compact-toggle.active .switch-slot {
+  fill: #05090b;
+  stroke: #313d42;
+  stroke-width: 1;
+}
+
+.experience-circuit .svg-toggle .switch-actuator,
+.experience-circuit .compact-toggle .switch-actuator {
+  fill: #899398;
+  stroke: #d0d7d9;
+  stroke-width: 1;
+  filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, .6));
+}
+
+.experience-circuit .svg-toggle.active .switch-actuator,
+.experience-circuit .compact-toggle.active .switch-actuator {
+  fill: #e79e19;
+  stroke: #ffda79;
+}
+
+.experience-circuit .actuator-ridges {
+  fill: none;
+  stroke: rgba(25, 31, 33, .7);
+  stroke-width: 1;
+}
+
+.experience-circuit .switch-screw {
+  fill: #596267;
+  stroke: #aeb8bc;
+  stroke-width: .7;
+}
+
+.experience-circuit .switch-leg {
+  stroke: #d49b3f;
+  stroke-width: 2;
+}
+
+.experience-circuit .switch-terminal {
+  fill: #b87828;
+  stroke: #f0c36d;
+  stroke-width: .8;
+}
+
+.experience-circuit .switch-symbol,
+.experience-circuit .switch-state {
+  fill: #8fb3cf;
+  font-family: var(--pcb-font) !important;
+}
+
+.experience-circuit .switch-symbol {
+  font-size: 9px !important;
+  text-anchor: middle;
+}
+
+.experience-circuit .switch-state {
+  font-size: 8px !important;
+  letter-spacing: .05em;
+}
+
+.experience-circuit .svg-toggle.active .switch-state,
+.experience-circuit .svg-toggle.active text.switch-symbol:nth-of-type(2),
+.experience-circuit .compact-toggle.active text.switch-symbol:nth-of-type(2) {
+  fill: var(--signal);
+}
+
+.experience-circuit .svg-toggle:focus-visible .switch-housing,
+.experience-circuit .compact-toggle:focus-visible .switch-housing {
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+.experience-circuit .compact-toggle .switch-symbol {
+  font-size: 5px !important;
+}
