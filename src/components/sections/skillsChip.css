@@ -219,7 +219,7 @@
   display: flex;
   gap: 24px;
   font-family: "JetBrains Mono", monospace;
-  font-size: 9px;
+  font-size: 11px;
   line-height: normal;
   letter-spacing: 0.45px;
   white-space: nowrap;
@@ -288,7 +288,7 @@
 .skills-chip .usage h3 {
   margin: 0 0 6px;
   font-family: "JetBrains Mono", monospace;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 400;
   letter-spacing: 0.5px;
   line-height: normal;
@@ -310,7 +310,7 @@
   padding-top: 24px;
   border-top: 1px solid #456b8d;
   font-family: "JetBrains Mono", monospace;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .skills-chip .legend-row,
@@ -329,7 +329,7 @@
   padding: 8px 16px;
   background: #102c4a;
   font-family: "JetBrains Mono", monospace;
-  font-size: 9px;
+  font-size: 11px;
   line-height: normal;
 }
 
@@ -522,7 +522,7 @@
     gap: 10px;
     padding: 8px 12px;
     color: #36516e;
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .skills-chip .board {

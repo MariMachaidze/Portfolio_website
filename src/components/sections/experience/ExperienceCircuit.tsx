@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { experience } from "../../../data/experience";
 import { formatDateRange } from "../../../lib/dateRange";
 import type { ExperienceEntry } from "../../../types";
 import "./experienceCircuit.css";
+import { useReadableSvgText } from "./useReadableSvgText";
 
 type Bit = 0 | 1;
 /** A circuit "input" slot — null when fewer than 3 real experience entries exist. */
@@ -15,6 +16,13 @@ const slots: Slot[] = Array.from({ length: SLOT_COUNT }, (_, i) => experience[i]
  * than the export's placeholders are truncated to keep cards from overlapping. */
 function truncate(text: string, max: number) {
   return text.length > max ? `${text.slice(0, max - 1)}…` : text;
+}
+
+/** "2024 – 2025": the compact cards are too narrow for "Mon YYYY – Mon YYYY" at a readable size. */
+function yearRange(start: string, end: string) {
+  const year = (value: string) => (value === "Present" ? "Now" : value.slice(0, 4));
+  const [from, to] = [year(start), year(end)];
+  return from === to ? from : `${from} – ${to}`;
 }
 
 function Wire({ d, on = false }: { d: string; on?: boolean }) {
@@ -556,15 +564,15 @@ function DesktopSchematic({
 function CompactCompany({ slot, x, active, index }: { slot: Slot; x: number; active: boolean; index: number }) {
   return (
     <g className={`compact-company ${active ? "active" : ""} ${slot ? "" : "empty"}`}>
-      <rect x={x} y="38" width="100" height="88" rx="9" />
+      <rect x={x} y="38" width="110" height="88" rx="9" />
       <text x={x + 6} y="52" className="compact-id">
         U{index + 1}
       </text>
-      <text x={x + 50} y="78" className="compact-name">
+      <text x={x + 55} y="78" className="compact-name">
         {truncate(slot?.company ?? "Empty", 12)}
       </text>
-      <text x={x + 50} y="108">
-        {slot ? formatDateRange(slot.startDate, slot.endDate) : "No job yet"}
+      <text x={x + 55} y="108">
+        {slot ? yearRange(slot.startDate, slot.endDate) : "No job yet"}
       </text>
     </g>
   );
@@ -642,12 +650,13 @@ function CompactMonitor({
 }) {
   return (
     <g className="compact-monitor">
-      <rect x="28" y="445" width="334" height="317" rx="12" className="monitor-frame" />
-      <rect x="38" y="455" width="314" height="297" rx="8" className="monitor-inner" />
+      {/* Sits 60 units higher than the export's, so the screen has room for readable text. */}
+      <rect x="28" y={MONITOR_TOP} width="334" height={762 - MONITOR_TOP} rx="12" className="monitor-frame" />
+      <rect x="38" y={MONITOR_TOP + 10} width="314" height={752 - MONITOR_TOP - 10} rx="8" className="monitor-inner" />
       {(
         [
-          [43, 460],
-          [347, 460],
+          [43, MONITOR_TOP + 15],
+          [347, MONITOR_TOP + 15],
           [43, 747],
           [347, 747],
         ] as const
@@ -657,24 +666,24 @@ function CompactMonitor({
           <path d={`M${x - 2} ${screwY}H${x + 2}`} />
         </g>
       ))}
-      <circle cx="58" cy="476" r="9" className="led-well" />
-      <circle cx="58" cy="476" r="6" className={`led ${valid ? "on" : ""}`} />
-      <text x="71" y="480" className="compact-led-label">
+      <circle cx="58" cy={MONITOR_TOP + 31} r="9" className="led-well" />
+      <circle cx="58" cy={MONITOR_TOP + 31} r="6" className={`led ${valid ? "on" : ""}`} />
+      <text x="71" y={MONITOR_TOP + 35} className="compact-led-label">
         VALID LED
       </text>
-      <text x="184" y="480" className="compact-display-title">
-        OLED EXPERIENCE DISPLAY
+      <text x="200" y={MONITOR_TOP + 35} className="compact-display-title">
+        OLED DISPLAY
       </text>
-      <ModuleReset x={276} y={464} onReset={reset} />
-      <rect x="49" y="492" width="292" height="246" rx="6" className="oled-shadow" />
-      <rect x="52" y="495" width="286" height="240" rx="4" className="oled-glass" />
-      <foreignObject x="61" y="505" width="268" height="228">
+      <ModuleReset x={276} y={MONITOR_TOP + 19} onReset={reset} />
+      <rect x="49" y={MONITOR_TOP + 47} width="292" height={738 - MONITOR_TOP - 47} rx="6" className="oled-shadow" />
+      <rect x="52" y={MONITOR_TOP + 50} width="286" height={735 - MONITOR_TOP - 50} rx="4" className="oled-glass" />
+      <foreignObject x="61" y={MONITOR_TOP + 60} width="268" height={733 - MONITOR_TOP - 60}>
         <ScreenContent slot={slot} conflict={conflict} />
       </foreignObject>
       {y.map((bit, index) => (
         <g key={index}>
-          <circle cx={COMPACT_COLUMN_X[index]} cy="445" r="4" className={`pin ${bit ? "on" : ""}`} />
-          <text x={COMPACT_COLUMN_X[index]} y="438" className="compact-pin-label">
+          <circle cx={COMPACT_COLUMN_X[index]} cy={MONITOR_TOP} r="4" className={`pin ${bit ? "on" : ""}`} />
+          <text x={COMPACT_COLUMN_X[index]} y={MONITOR_TOP - 7} className="compact-pin-label">
             Y{index + 1}
           </text>
         </g>
@@ -695,6 +704,7 @@ function CompactMonitor({
   );
 }
 
+const MONITOR_TOP = 385;
 /** x of each job's switch, AND gate and display pin on the compact board. */
 const COMPACT_COLUMN_X = [78, 195, 312];
 const COMPACT_RAIL_Y = [205, 230, 255];
@@ -740,8 +750,8 @@ function CompactSchematic({
         </text>
         <SmdPart x={24} y={180} label="C1" />
         <SmdPart x={366} y={180} label="C2" vertical />
-        <SmdPart x={30} y={420} label="C3" />
-        {[28, 145, 262].map((x, index) => (
+        <SmdPart x={30} y={368} label="C3" />
+        {[23, 140, 257].map((x, index) => (
           <CompactCompany key={x} slot={slots[index]} x={x} active={Boolean(sw[index])} index={index} />
         ))}
         {COMPACT_COLUMN_X.map((x, index) => (
@@ -773,8 +783,8 @@ function CompactSchematic({
               );
             })}
             <DownAndGate x={COMPACT_COLUMN_X[gateIndex]} y={300} on={Boolean(y[gateIndex])} />
-            <Wire d={`M${COMPACT_COLUMN_X[gateIndex]} 355V445`} on={Boolean(y[gateIndex])} />
-            <text x={COMPACT_COLUMN_X[gateIndex] + 10} y="400" className="y-label">
+            <Wire d={`M${COMPACT_COLUMN_X[gateIndex]} 355V${MONITOR_TOP}`} on={Boolean(y[gateIndex])} />
+            <text x={COMPACT_COLUMN_X[gateIndex] + 10} y="373" className="y-label">
               Y{gateIndex + 1}
             </text>
           </g>
@@ -804,9 +814,11 @@ export function ExperienceCircuit() {
     setSw((current) => current.map((bit, i) => (i === index ? (bit ? 0 : 1) : bit)) as Bit[]);
   };
   const reset = () => setSw([0, 0, 0]);
+  const rootRef = useRef<HTMLDivElement>(null);
+  useReadableSvgText(rootRef, sw.join(""));
 
   return (
-    <div className="experience-circuit">
+    <div className="experience-circuit" ref={rootRef}>
       <DesktopSchematic sw={sw} y={y} valid={valid} x1={x1} x0={x0} toggle={toggle} reset={reset} />
       <CompactSchematic sw={sw} y={y} valid={valid} toggle={toggle} reset={reset} />
     </div>

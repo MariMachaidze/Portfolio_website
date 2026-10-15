@@ -2277,15 +2277,22 @@
   margin: 5px 0 4px;
 }
 
-@media (max-width: 700px) {
-  .experience-circuit .compact-monitor .screen-role {
-    font-size: 20px;
-  }
+.experience-circuit .compact-monitor .screen-role {
+  font-size: 20px !important;
 }
 
-@media (min-width: 701px) and (max-width: 1100px) {
-  .experience-circuit .desktop-schematic .screen-role {
-    font-size: 31px !important;
+/* The smallest phones need every unit of screen height once text is enlarged. */
+@media (max-width: 359px) {
+  .experience-circuit .compact-monitor .display-status {
+    margin-bottom: 2px;
+  }
+
+  .experience-circuit .compact-monitor .screen-date {
+    margin-top: 3px;
+  }
+
+  .experience-circuit .compact-monitor .screen-copy > p {
+    margin: 3px 0 2px;
   }
 }
 
@@ -2295,16 +2302,21 @@
 }
 
 /*
- * The export enlarges card text on tablets to sizes that only fit its short
- * placeholders; real company names and "Mon YYYY – Mon YYYY" dates spill out
- * of the cards there, so step them back down.
+ * Text minimums are enforced by useReadableSvgText, but the wide board's
+ * fixed-size job cards can only hold readable company names and dates when it
+ * renders at >= ~80% scale. Below that width, use the tall board instead and
+ * size it by the page width (not the window height) so it stays big enough.
  */
-@media (min-width: 701px) and (max-width: 1100px) {
-  .experience-circuit .desktop-schematic .company-card .company-name {
-    font-size: 21px !important;
+@media (max-width: 1149px) {
+  .experience-circuit .desktop-schematic {
+    display: none !important;
   }
 
-  .experience-circuit .desktop-schematic .company-card text {
-    font-size: 15px !important;
+  .experience-circuit .compact-schematic {
+    display: block !important;
+    width: min(calc(100% - 32px), 560px) !important;
+    height: auto !important;
+    aspect-ratio: 390 / 780;
+    margin: 0 auto !important;
   }
 }
