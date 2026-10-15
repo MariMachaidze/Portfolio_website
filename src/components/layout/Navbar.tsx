@@ -17,17 +17,18 @@ const SECTION_IDS = NAV_ITEMS.map((item) => item.id);
 
 // Each homepage section's own background color, so the sticky navbar can
 // match whatever's currently scrolled underneath it. Keep this in sync with
-// each section's actual background (Hero is the navy illustrated scene;
-// Experience/Contact share the site's default --color-bg; Skills has its
-// own fixed chip color; Projects uses --color-surface-alt). Baked in at 90%
-// alpha to match the navbar's previous `bg-bg/90` look.
+// each section's actual background (Hero and Experience share the same navy;
+// Contact uses the site's default --color-bg; Skills has its own fixed chip
+// color; Projects uses --color-surface-alt). Baked in at 90% alpha to match
+// the navbar's previous `bg-bg/90` look.
 const SECTION_BG: Record<string, string> = {
   hero: "rgba(11, 31, 58, 0.9)",
   skills: "rgba(168, 192, 219, 0.9)",
-  experience: "rgba(250, 246, 239, 0.9)",
+  experience: "rgba(11, 31, 58, 0.9)",
   projects: "rgba(242, 236, 224, 0.9)",
   contact: "rgba(250, 246, 239, 0.9)",
 };
+const NAVY_SECTIONS = new Set(["hero", "experience"]);
 // Before the first scroll measurement resolves, the page is at the top —
 // i.e. still showing the (navy) Hero section — so default to its color
 // rather than flashing the light default first.
@@ -40,7 +41,7 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const activeSection = useActiveSection(SECTION_IDS, NAVBAR_HEIGHT_PX, isHome);
   const navbarBg = isHome ? (activeSection ? SECTION_BG[activeSection] : DEFAULT_BG) : undefined;
-  const onNavy = isHome && (activeSection ?? "hero") === "hero";
+  const onNavy = isHome && NAVY_SECTIONS.has(activeSection ?? "hero");
   const textClass = onNavy ? "text-[#f5e6d3]" : "text-text";
   const linkClass = onNavy
     ? "text-sm font-medium text-[#d7e3f0] transition-colors duration-200 hover:text-white"
