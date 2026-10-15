@@ -51,6 +51,66 @@
   display: none;
 }
 
+/*
+ * The landscape illustration (mountains, hills, pine trees, ripple accents,
+ * paper boats) was authored at a fixed per-breakpoint canvas width (390 /
+ * 768 / 1440px). Without this, at any viewport width that doesn't land
+ * exactly on one of those three values, the fixed-width art stops short
+ * and exposes bare background past its right edge. Stretching it to 100%
+ * and re-expressing the sun/wind-trail/boat/wave positions as percentages
+ * (or viewport-width units, for the wave ribbons' bleed) keeps the scene
+ * filling the section at every width in between.
+ */
+.hero-illustration [data-name="Doodle landscape — hills, waves and sunshine"],
+.hero-illustration [data-name="Mountain ridge — clear peaks and pencil facets"],
+.hero-illustration [data-name="Wooded hills — continuous shoreline"],
+.hero-illustration [data-name="Pencil pine trees along the hills"],
+.hero-illustration [data-name="Pencil ripple accents"],
+.hero-illustration [data-name="Paper boats — three sailing lanes"] {
+  width: 100%;
+}
+
+.hero-illustration [data-name="Doodle waves — far ribbon"],
+.hero-illustration [data-name="Doodle waves — wandering water"],
+.hero-illustration [data-name="Doodle waves — foreground ribbon"] {
+  left: -14vw;
+  width: 128vw;
+}
+
+.hero-illustration [data-name="Doodle waves — far ribbon"] > div,
+.hero-illustration [data-name="Doodle waves — wandering water"] > div,
+.hero-illustration [data-name="Doodle waves — foreground ribbon"] > div {
+  inset-inline: 0;
+}
+
+.hero-illustration .mobile-design [data-name="Shining doodle sun"] {
+  left: 48.23%;
+}
+
+.hero-illustration .mobile-design [data-name="Visible wind trail 1"] {
+  left: 2.5%;
+}
+
+.hero-illustration .mobile-design [data-name="Visible wind trail 2"] {
+  left: 72%;
+}
+
+.hero-illustration .mobile-design [data-name="Visible wind trail 3"] {
+  left: 37%;
+}
+
+.hero-illustration .mobile-design [data-name="Paper boat 1 — sailing"] {
+  left: 16%;
+}
+
+.hero-illustration .mobile-design [data-name="Paper boat 2 — sailing"] {
+  left: 49%;
+}
+
+.hero-illustration .mobile-design [data-name="Paper boat 3 — sailing"] {
+  left: 80%;
+}
+
 @media (min-width: 640px) {
   .hero-illustration .mobile-design {
     display: none;
@@ -58,6 +118,34 @@
 
   .hero-illustration .tablet-design {
     display: block;
+  }
+
+  .hero-illustration .tablet-design [data-name="Shining doodle sun"] {
+    left: 52.75%;
+  }
+
+  .hero-illustration .tablet-design [data-name="Visible wind trail 1"] {
+    left: 2.5%;
+  }
+
+  .hero-illustration .tablet-design [data-name="Visible wind trail 2"] {
+    left: 72%;
+  }
+
+  .hero-illustration .tablet-design [data-name="Visible wind trail 3"] {
+    left: 37%;
+  }
+
+  .hero-illustration .tablet-design [data-name="Paper boat 1 — sailing"] {
+    left: 16%;
+  }
+
+  .hero-illustration .tablet-design [data-name="Paper boat 2 — sailing"] {
+    left: 49%;
+  }
+
+  .hero-illustration .tablet-design [data-name="Paper boat 3 — sailing"] {
+    left: 80%;
   }
 }
 
@@ -93,28 +181,6 @@
 
   .hero-illustration .desktop-design [data-name="Summary"] p {
     width: min(100%, 576px);
-  }
-
-  .hero-illustration .desktop-design [data-name="Doodle landscape — hills, waves and sunshine"],
-  .hero-illustration .desktop-design [data-name="Mountain ridge — clear peaks and pencil facets"],
-  .hero-illustration .desktop-design [data-name="Wooded hills — continuous shoreline"],
-  .hero-illustration .desktop-design [data-name="Pencil pine trees along the hills"],
-  .hero-illustration .desktop-design [data-name="Pencil ripple accents"],
-  .hero-illustration .desktop-design [data-name="Paper boats — three sailing lanes"] {
-    width: 100%;
-  }
-
-  .hero-illustration .desktop-design [data-name="Doodle waves — far ribbon"],
-  .hero-illustration .desktop-design [data-name="Doodle waves — wandering water"],
-  .hero-illustration .desktop-design [data-name="Doodle waves — foreground ribbon"] {
-    left: -14vw;
-    width: 128vw;
-  }
-
-  .hero-illustration .desktop-design [data-name="Doodle waves — far ribbon"] > div,
-  .hero-illustration .desktop-design [data-name="Doodle waves — wandering water"] > div,
-  .hero-illustration .desktop-design [data-name="Doodle waves — foreground ribbon"] > div {
-    inset-inline: 0;
   }
 
   .hero-illustration .desktop-design [data-name="Shining doodle sun"] {

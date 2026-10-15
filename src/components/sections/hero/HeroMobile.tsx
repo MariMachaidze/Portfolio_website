@@ -64,7 +64,7 @@ const imgPaperBoat3Sailing = `${p}/49894.svg`;
 export function HeroMobile() {
   return (
     <div className="bg-[#0b1f3a] content-stretch flex flex-col items-start overflow-clip relative shrink-0 w-full" data-name="Introduction">
-      <div className="absolute bg-gradient-to-b from-[#0a1628] h-[1050px] left-0 to-[#0a1628] top-0 via-50% via-[#0d2348] w-[390px]" data-name="sky-gradient" />
+      <div className="absolute bg-gradient-to-b from-[#0a1628] h-[1050px] left-0 to-[#0a1628] top-0 via-50% via-[#0d2348] w-full" data-name="sky-gradient" />
       <div className="content-stretch flex flex-col gap-[40px] items-start justify-center overflow-clip pb-[274px] pt-[72px] px-[24px] relative shrink-0 w-full" data-name="content-wrapper">
         <div className="content-stretch flex flex-col items-start overflow-clip relative shrink-0 w-full" data-name="Biography">
           {profile.showBadge && profile.badge && (
