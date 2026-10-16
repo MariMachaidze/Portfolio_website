@@ -79,13 +79,13 @@ function Chip({
   return (
     <article className="chip">
       <picture className="chip-outline">
-        <source media="(max-width: 600px)" srcSet="/skills-chip/ic-outline-mobile.svg" />
+        <source media="(max-width: 767px)" srcSet="/skills-chip/ic-outline-mobile.svg" />
         <source media="(max-width: 1000px)" srcSet="/skills-chip/ic-outline-tablet.svg" />
         <img src="/skills-chip/ic-outline-desktop.svg" alt="" />
       </picture>
       <div className="chip-top">
         <picture className="index-dot">
-          <source media="(max-width: 600px)" srcSet="/skills-chip/pin-dot-mobile.svg" />
+          <source media="(max-width: 767px)" srcSet="/skills-chip/pin-dot-mobile.svg" />
           <img src="/skills-chip/pin-dot.svg" alt="" />
         </picture>
         <div className="chip-meta">
@@ -132,7 +132,7 @@ function Chip({
       <div className="bottom-rail" />
       <div className="chip-bottom">&#9670; SKILLS IC &mdash; {pinCount}-PIN DIP</div>
       <picture className="notch">
-        <source media="(max-width: 600px)" srcSet="/skills-chip/notch-mobile.svg" />
+        <source media="(max-width: 767px)" srcSet="/skills-chip/notch-mobile.svg" />
         <img src="/skills-chip/notch.svg" alt="" />
       </picture>
     </article>

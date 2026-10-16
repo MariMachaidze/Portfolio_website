@@ -99,7 +99,9 @@
 
 .skills-chip .pins {
   display: flex;
-  flex: 0 0 320px;
+  /* May give up the spare room beside the labels when the board is a few px too wide. */
+  flex: 0 1 320px;
+  min-width: 0;
   flex-direction: column;
 }
 
@@ -489,7 +491,7 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 767px) {
   .skills-chip {
     display: flex;
     flex-direction: column;
@@ -525,8 +527,10 @@
     font-size: 11px;
   }
 
+  /* Below 372px the 342px board doesn't fit, so the leads and the chip narrow with the screen. */
   .skills-chip .board {
-    width: 342px;
+    width: 100%;
+    max-width: 342px;
     align-self: center;
     padding: 0;
   }
@@ -562,7 +566,9 @@
   }
 
   .skills-chip .pin-lead {
-    width: 28px;
+    width: auto;
+    flex: 0 1 28px;
+    min-width: 14px;
     height: 6px;
     border-width: 0.5px;
     border-radius: 1px;
@@ -573,15 +579,16 @@
   }
 
   .skills-chip .chip {
-    width: 236px;
+    width: auto;
+    min-width: 0;
     height: 448px;
-    flex-basis: 236px;
+    flex: 0 1 236px;
     overflow: hidden;
     border-radius: 8px;
   }
 
   .skills-chip .chip-outline img {
-    width: 236px;
+    width: 100%;
     height: 448px;
   }
 
@@ -610,14 +617,23 @@
     padding: 54px 12px 20px;
   }
 
+  /* Fills whatever the legend leaves (the legend grows when its names wrap); still scrolls. */
   .skills-chip .detail-frame {
-    height: 184px;
+    height: auto;
+    min-height: 0;
+    flex: 1 1 184px;
   }
 
   .skills-chip .active-pin {
     gap: 5px;
     font-size: 11px;
     line-height: 16px;
+    /* The chip narrows on small phones; wrap rather than cut off the category name. */
+    white-space: normal;
+  }
+
+  .skills-chip .active-pin i {
+    flex: none;
   }
 
   .skills-chip .active-pin i,
@@ -640,8 +656,19 @@
     line-height: 16px;
   }
 
+  .skills-chip .legend-row {
+    gap: 8px;
+  }
+
   .skills-chip .legend-row > span:first-child {
     gap: 6px;
+  }
+
+  /* Category names may wrap; the pin range stays on one line. */
+  .skills-chip .legend-row > span:last-child,
+  .skills-chip .legend-row i {
+    flex: none;
+    white-space: nowrap;
   }
 
   .skills-chip .chip-bottom {
@@ -651,7 +678,7 @@
 
   .skills-chip .notch {
     top: -10px;
-    left: 104px;
+    left: calc(50% - 14px);
   }
 
   .skills-chip .notch,
@@ -662,7 +689,8 @@
 
   .skills-chip .pin-index {
     display: flex;
-    width: 342px;
+    width: 100%;
+    max-width: 342px;
     flex-direction: column;
     gap: 12px;
     align-self: center;
@@ -762,5 +790,13 @@
 
   .skills-chip .pin-index {
     display: flex;
+  }
+}
+
+/* On the narrowest phones the chip can't fit both the legend and the "Where I used it" text.
+   The category cards below the board already list each category's colour and pin range. */
+@media (max-width: 359px) {
+  .skills-chip .legend {
+    display: none;
   }
 }
