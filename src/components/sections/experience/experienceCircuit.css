@@ -2358,3 +2358,67 @@
 }
 
 @keyframes exp-blink-visibility { 50% { visibility: hidden; } }
+
+/* Long job titles and company lines stay within two lines on the wide board's screen. */
+.experience-circuit .desktop-schematic .screen-role {
+  font-size: 21px;
+}
+
+.experience-circuit .desktop-schematic .screen-company {
+  font-size: 15px;
+}
+
+/* The phone board, and the wide board below 1280px, list the screen's skills as one dotted line. */
+.experience-circuit .skill-line {
+  color: #cfe6f2;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.experience-circuit .desktop-schematic .skill-line {
+  display: none;
+}
+
+@media (max-width: 1279px) {
+  .experience-circuit .desktop-schematic .skill-line {
+    display: block;
+    font-size: 15px;
+  }
+
+  .experience-circuit .desktop-schematic .skill-pills {
+    display: none;
+  }
+}
+
+/* Wide board: the export's 38px gap under ACTIVE EXPERIENCE is room the longer titles need. */
+.experience-circuit .desktop-schematic .display-status {
+  margin-bottom: 16px;
+}
+
+/* Small phones: drop the two decorative labels and give the summary a third line instead. */
+@media (max-width: 374px) {
+  .experience-circuit .compact-monitor .display-status,
+  .experience-circuit .compact-monitor .skills-label {
+    display: none;
+  }
+
+  .experience-circuit .compact-monitor .screen-copy > p {
+    -webkit-line-clamp: 3;
+  }
+}
+
+/* The very smallest phones need a slightly smaller title to keep everything on the screen. */
+@media (max-width: 339px) {
+  .experience-circuit .compact-monitor .screen-role {
+    font-size: 18px !important;
+  }
+
+  .experience-circuit .compact-monitor .skill-line {
+    line-height: 1.2;
+  }
+}
+
+/* Company names that wrap onto two lines are set a little smaller so the longer line fits the card. */
+.experience-circuit .compact-company .compact-name.two-line {
+  font-size: 14px !important;
+}

@@ -18,6 +18,34 @@ function truncate(text: string, max: number) {
   return text.length > max ? `${text.slice(0, max - 1)}…` : text;
 }
 
+/** Splits a name into at most two balanced lines of about `max` characters, breaking between words. */
+function nameLines(text: string, max: number): string[] {
+  if (text.length <= max) return [text];
+  const words = text.split(" ");
+  let best: string[] | null = null;
+  for (let i = 1; i < words.length; i++) {
+    const lines = [words.slice(0, i).join(" "), words.slice(i).join(" ")];
+    if (!best || Math.max(lines[0].length, lines[1].length) < Math.max(best[0].length, best[1].length)) best = lines;
+  }
+  return (best ?? [text]).map((line) => truncate(line, max));
+}
+
+/** A card's company name, centred on `y` whether it takes one line or two (spacing follows the font size). */
+function CardName({ x, y, name, max, className }: { x: number; y: number; name: string; max: number; className: string }) {
+  const lines = nameLines(name, max);
+  return (
+    <text x={x} y={y} className={lines.length === 1 ? className : `${className} two-line`}>
+      {lines.length === 1
+        ? lines[0]
+        : lines.map((line, i) => (
+            <tspan key={line} x={x} dy={i === 0 ? "-0.55em" : "1.1em"}>
+              {line}
+            </tspan>
+          ))}
+    </text>
+  );
+}
+
 /** "2024 – 2025": the compact cards are too narrow for "Mon YYYY – Mon YYYY" at a readable size. */
 function yearRange(start: string, end: string) {
   const year = (value: string) => (value === "Present" ? "Now" : value.slice(0, 4));
@@ -71,9 +99,7 @@ function CompanyCard({ slot, x, active, index }: { slot: Slot; x: number; active
       <text x={x + 10} y="62" className="component-id">
         U{index + 1} / INPUT_{index + 1}
       </text>
-      <text x={x + 92} y="96" className="company-name">
-        {truncate(slot?.company ?? "Empty slot", 16)}
-      </text>
+      <CardName x={x + 92} y={96} name={slot?.company ?? "Empty slot"} max={16} className="company-name" />
       <text x={x + 92} y="130">
         {slot ? formatDateRange(slot.startDate, slot.endDate) : "No job yet"}
       </text>
@@ -152,7 +178,10 @@ function Toggle({
   );
 }
 
-function ScreenContent({ slot, conflict }: { slot: Slot; conflict: boolean }) {
+/** The screen has room for this many skill tags; reorder a job's skills in the admin panel to choose them. */
+const SCREEN_SKILLS = 6;
+
+function ScreenContent({ slot, conflict, compact = false }: { slot: Slot; conflict: boolean; compact?: boolean }) {
   if (conflict) {
     return (
       <div className="screen-copy screen-message">
@@ -174,6 +203,7 @@ function ScreenContent({ slot, conflict }: { slot: Slot; conflict: boolean }) {
     );
   }
 
+  const skills = slot.tech.slice(0, SCREEN_SKILLS);
   return (
     <div className="screen-copy">
       <span className="display-status">ACTIVE EXPERIENCE</span>
@@ -186,11 +216,16 @@ function ScreenContent({ slot, conflict }: { slot: Slot; conflict: boolean }) {
       <span className="screen-date">{formatDateRange(slot.startDate, slot.endDate)}</span>
       <p>{slot.summary}</p>
       <span className="skills-label">Skills</span>
-      <div className="skill-pills">
-        {slot.tech.map((tech) => (
-          <span key={tech}>{tech}</span>
-        ))}
-      </div>
+      {/* Where the screen is too small for tags around long names (the phone board, and the wide
+          board below 1280px), CSS shows the same skills as one dotted line instead. */}
+      <div className="skill-line">{skills.join(" · ")}</div>
+      {!compact && (
+        <div className="skill-pills">
+          {skills.map((tech) => (
+            <span key={tech}>{tech}</span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -568,9 +603,7 @@ function CompactCompany({ slot, x, active, index }: { slot: Slot; x: number; act
       <text x={x + 6} y="52" className="compact-id">
         U{index + 1}
       </text>
-      <text x={x + 55} y="78" className="compact-name">
-        {truncate(slot?.company ?? "Empty", 12)}
-      </text>
+      <CardName x={x + 55} y={78} name={slot?.company ?? "Empty"} max={13} className="compact-name" />
       <text x={x + 55} y="108">
         {slot ? yearRange(slot.startDate, slot.endDate) : "No job yet"}
       </text>
@@ -678,7 +711,7 @@ function CompactMonitor({
       <rect x="49" y={MONITOR_TOP + 47} width="292" height={738 - MONITOR_TOP - 47} rx="6" className="oled-shadow" />
       <rect x="52" y={MONITOR_TOP + 50} width="286" height={735 - MONITOR_TOP - 50} rx="4" className="oled-glass" />
       <foreignObject x="61" y={MONITOR_TOP + 60} width="268" height={733 - MONITOR_TOP - 60}>
-        <ScreenContent slot={slot} conflict={conflict} />
+        <ScreenContent slot={slot} conflict={conflict} compact />
       </foreignObject>
       {y.map((bit, index) => (
         <g key={index}>
