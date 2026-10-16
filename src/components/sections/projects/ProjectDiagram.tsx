@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { ProjectVisual } from "../../../types";
 import { PointingSimulation } from "./PointingSimulation";
+import { PortfolioFigure } from "./PortfolioFigure";
 import { clamp, type SimPoint } from "./simGeometry";
 
 /**
@@ -458,6 +459,8 @@ export function ProjectDiagram({
       </div>
     );
   }
+
+  if (type === "portfolio") return <PortfolioFigure figure={figure} />;
 
   if (type === "pointing") {
     return (

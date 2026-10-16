@@ -29,6 +29,7 @@ const FIGURE_COUNT: Record<ProjectVisual, number> = {
   pointing: 2,
   trust: 1,
   duckie: 1,
+  portfolio: 1,
 };
 
 const GITHUB_PROFILE = "https://github.com/MariMachaidze";

@@ -17,6 +17,7 @@ const VISUAL_OPTIONS: { value: ProjectVisual; label: string }[] = [
   { value: "pointing", label: "Pointing simulation + pipeline" },
   { value: "trust", label: "Robot arm trust study" },
   { value: "duckie", label: "Duckiebot road" },
+  { value: "portfolio", label: "Admin save to live site" },
 ];
 const EMPTY_SHOWCASE = { widgets: [], stickers: [] };
 const DEFAULT_COMMIT_MESSAGE = "Update projects";

@@ -72,6 +72,31 @@
     "visual": "mcp"
   },
   {
+    "id": "676bd3f7-3697-4ac9-84af-c8685e6ecd3c",
+    "slug": "portfolio-website",
+    "title": "This Portfolio and Its Admin Panel",
+    "category": "Full stack · Web",
+    "summary": "The site you are reading. A React and TypeScript portfolio with a hidden admin panel behind a password and an authenticator code, where every save is a GitHub commit that rebuilds and redeploys the site in about a minute.",
+    "coverSeed": "Portfolio",
+    "status": "finished",
+    "startDate": "2026-09",
+    "endDate": "2026-10",
+    "tech": [
+      "React",
+      "TypeScript",
+      "Vite",
+      "Tailwind CSS",
+      "Netlify Functions",
+      "GitHub API",
+      "AWS S3"
+    ],
+    "links": {
+      "codeUrl": "https://github.com/MariMachaidze/Portfolio_website"
+    },
+    "visual": "portfolio",
+    "featured": true
+  },
+  {
     "id": "fc56eab1-4d4f-453a-9ef8-145534b138d3",
     "slug": "pointing-based-robot-teleoperation",
     "title": "Pointing-Based Robot Teleoperation",

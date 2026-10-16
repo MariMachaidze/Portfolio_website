@@ -1,0 +1,338 @@
+/*
+ * Fig. for this site itself (PortfolioFigure.tsx): a save travelling from the admin panel to the
+ * live page. Same paper, ink and grid as the Robo-mcp figure; the page stripes use the site's own
+ * navy and light blue. Text stays at 11px or more, and the red is darkened for small text so it
+ * clears 4.5:1 on the cards.
+ */
+.projects-showcase .portfolio-figure {
+  --pf-paper: #f7f5ef;
+  --pf-card: color-mix(in srgb, var(--surface) 82%, var(--theme));
+  --pf-ink: #3f4140;
+  --pf-copy: #555b61;
+  --pf-line: #8b8e8b;
+  --pf-grid: #d8e1ea;
+  --pf-red: #c95836;
+  --pf-red-text: #9c3d26;
+  --pf-highlight: #eee7d8;
+  --pf-navy: #0b1f3a;
+  --pf-cream: #f5e6d3;
+  --pf-blue: #a8c0db;
+  --pf-gap: 0.6rem;
+  background: var(--pf-paper);
+  border-color: var(--pf-line);
+}
+
+.projects-showcase .project-featured .portfolio-figure {
+  margin-top: 0;
+}
+
+.projects-showcase .portfolio-figure .diagram-caption {
+  border-color: var(--pf-line);
+  background: var(--surface);
+  color: var(--pf-ink);
+}
+
+.projects-showcase .portfolio-map {
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  align-items: center;
+  gap: 1.5rem;
+  border-bottom: 1px solid var(--pf-line);
+  background:
+    linear-gradient(var(--pf-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--pf-grid) 1px, transparent 1px),
+    var(--pf-paper);
+  background-size: 2.5rem 2.5rem;
+}
+
+/* The pipeline: five equal rows on a vertical track, with the save as a dot moving down it. */
+.projects-showcase .portfolio-pipeline {
+  position: relative;
+}
+
+.projects-showcase .portfolio-track {
+  width: 1.5px;
+  position: absolute;
+  left: calc(0.55rem - 0.75px);
+  /* From the first row's centre to the last's: rows are (100% - 4 gaps) / 5 tall. */
+  top: calc(10% - 0.4 * var(--pf-gap));
+  bottom: calc(10% - 0.4 * var(--pf-gap));
+  background: var(--pf-line);
+}
+
+.projects-showcase .portfolio-packet {
+  width: 0.7rem;
+  height: 0.7rem;
+  position: absolute;
+  left: 50%;
+  z-index: 2;
+  margin: -0.35rem 0 0 -0.35rem;
+  border-radius: 50%;
+  background: var(--pf-red);
+  box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--pf-red) 25%, transparent);
+  transition:
+    top 0.6s ease-in-out,
+    opacity 0.25s ease;
+}
+
+/* Fade out at the end, then jump back to the top unseen. */
+.projects-showcase .portfolio-packet.is-arrived {
+  opacity: 0;
+  transition:
+    opacity 0.25s ease,
+    top 0s linear 0.3s;
+}
+
+.projects-showcase .portfolio-stages {
+  margin: 0;
+  padding: 0 0 0 1.7rem;
+  list-style: none;
+  display: grid;
+  grid-auto-rows: 1fr;
+  gap: var(--pf-gap);
+}
+
+.projects-showcase .portfolio-stage {
+  position: relative;
+  padding: 0.6rem 0.8rem;
+  display: grid;
+  grid-template-columns: 3.6rem minmax(0, 1fr);
+  align-content: center;
+  column-gap: 0.5rem;
+  row-gap: 0.1rem;
+  border: 1.5px solid var(--pf-line);
+  border-radius: 0.5rem;
+  background: var(--pf-card);
+  color: var(--pf-copy);
+  font-size: max(11px, 0.72rem);
+  line-height: 1.4;
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.projects-showcase .portfolio-stage b {
+  grid-row: 1 / span 2;
+  color: var(--pf-red-text);
+  font-family: var(--mono);
+  font-weight: 400;
+}
+
+.projects-showcase .portfolio-stage strong {
+  color: var(--pf-ink);
+  font-size: max(12px, 0.84rem);
+  font-weight: 600;
+}
+
+.projects-showcase .portfolio-stage span {
+  grid-column: 2;
+}
+
+.projects-showcase .portfolio-stage.is-active {
+  border-color: var(--pf-ink);
+  background: var(--pf-highlight);
+}
+
+/* Each row's stop on the track: empty, then red while the save is there, then ink once passed. */
+.projects-showcase .portfolio-node {
+  width: 0.7rem;
+  height: 0.7rem;
+  position: absolute;
+  left: -1.5rem;
+  top: 50%;
+  z-index: 1;
+  margin-top: -0.35rem;
+  border: 1.5px solid var(--pf-line);
+  border-radius: 50%;
+  background: var(--pf-paper);
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.projects-showcase .portfolio-stage.is-active .portfolio-node {
+  border-color: var(--pf-red);
+  background: var(--pf-red);
+}
+
+.projects-showcase .portfolio-stage.is-done .portfolio-node {
+  border-color: var(--pf-ink);
+  background: var(--pf-ink);
+}
+
+/* The site itself, drawn as its section stripes. */
+.projects-showcase .portfolio-site {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.projects-showcase .portfolio-browser {
+  border: 1.5px solid var(--pf-ink);
+  border-radius: 0.5rem;
+  background: var(--pf-paper);
+  overflow: hidden;
+}
+
+.projects-showcase .portfolio-browser-bar {
+  height: 1.4rem;
+  padding: 0 0.55rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  border-bottom: 1.5px solid var(--pf-ink);
+  background: var(--pf-card);
+}
+
+.projects-showcase .portfolio-browser-bar i {
+  width: 0.45rem;
+  height: 0.45rem;
+  border: 1.2px solid var(--pf-ink);
+  border-radius: 50%;
+}
+
+.projects-showcase .portfolio-page {
+  position: relative;
+  overflow: hidden;
+}
+
+.projects-showcase .portfolio-band {
+  min-height: 1.75rem;
+  padding: 0.2rem 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  font-family: var(--mono);
+  font-size: max(11px, 0.68rem);
+}
+
+.projects-showcase .portfolio-band.band-navy {
+  background: var(--pf-navy);
+  color: var(--pf-cream);
+}
+
+.projects-showcase .portfolio-band.band-light {
+  background: var(--pf-blue);
+  color: var(--ink);
+}
+
+.projects-showcase .portfolio-band em {
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  background: var(--pf-paper);
+  color: var(--pf-red-text);
+  font-style: normal;
+  white-space: nowrap;
+}
+
+/* A light sweep down the page when the deploy goes live, like a refresh. */
+.projects-showcase .portfolio-reload {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(transparent, rgb(255 255 255 / 0.6) 50%, transparent);
+}
+
+.projects-showcase .portfolio-figure.is-live .portfolio-reload {
+  animation: prj-pf-reload 0.9s ease-out;
+}
+
+.projects-showcase .portfolio-status {
+  min-height: 3.2rem;
+  padding: 0.55rem 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: 1.5px solid var(--pf-line);
+  border-radius: 0.5rem;
+  background: var(--pf-card);
+  color: var(--pf-ink);
+  font-family: var(--mono);
+  font-size: max(11px, 0.68rem);
+  line-height: 1.4;
+}
+
+.projects-showcase .portfolio-status i {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid var(--pf-red);
+  border-top-color: transparent;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 11px;
+  font-style: normal;
+  line-height: 1;
+  animation: prj-pf-spin 0.9s linear infinite;
+}
+
+.projects-showcase .portfolio-figure.is-live .portfolio-status {
+  border-color: var(--success);
+}
+
+.projects-showcase .portfolio-figure.is-live .portfolio-status i {
+  border-color: var(--success);
+  background: var(--success);
+  animation: none;
+}
+
+.projects-showcase .portfolio-source-caption {
+  padding: 0.85rem 1.25rem 1rem;
+  background: var(--surface);
+  color: var(--pf-copy);
+  font-size: max(11px, 0.68rem);
+  line-height: 1.55;
+}
+
+@keyframes prj-pf-reload {
+  from {
+    opacity: 1;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(100%);
+  }
+}
+
+@keyframes prj-pf-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Phones: the pipeline, then the page and its status underneath. */
+@media (max-width: 680px) {
+  .projects-showcase .portfolio-map {
+    padding: 1rem;
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Narrow phones: the verb sits above the title instead of beside it. */
+@media (max-width: 420px) {
+  .projects-showcase .portfolio-stage {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .projects-showcase .portfolio-stage b {
+    grid-row: auto;
+  }
+
+  .projects-showcase .portfolio-stage span {
+    grid-column: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .projects-showcase .portfolio-figure *,
+  .projects-showcase .portfolio-figure *::before,
+  .projects-showcase .portfolio-figure *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

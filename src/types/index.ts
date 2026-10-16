@@ -73,7 +73,7 @@ export interface ProjectLinks {
   thesisUrl?: string;
 }
 /** Which animated figure the Projects section draws next to the card. */
-export type ProjectVisual = "sorter" | "mcp" | "jobs" | "pointing" | "trust" | "duckie";
+export type ProjectVisual = "sorter" | "mcp" | "jobs" | "pointing" | "trust" | "duckie" | "portfolio";
 
 export type ShowcaseWidget =
   | { id: string; x: number; y: number; w: number; h: number; type: "text"; heading?: string; body: string }

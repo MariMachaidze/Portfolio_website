@@ -152,7 +152,7 @@ export const ProjectsSchema = z
       endDate: z.string(),
       tech: z.array(z.string()),
       links: ProjectLinksSchema,
-      visual: z.enum(["sorter", "mcp", "jobs", "pointing", "trust", "duckie"]).optional(),
+      visual: z.enum(["sorter", "mcp", "jobs", "pointing", "trust", "duckie", "portfolio"]).optional(),
       featured: z.boolean().optional(),
       description: z.string().optional(),
       gallery: z.array(ProjectGalleryImageSchema).optional(),
