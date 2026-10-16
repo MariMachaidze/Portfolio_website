@@ -1,40 +1,105 @@
 [
   {
     "id": "northwind-labs",
-    "role": "AI Applications Engineer",
+    "role": "Software Developer – AI Application Development",
     "company": "SAP SE",
-    "companyUrl": "https://example.com",
     "startDate": "2025-06",
     "endDate": "2026-06",
     "location": "Walldorf, Germany",
-    "locationType": "Hybrid",
-    "summary": "Needs summary",
+    "summary": "Built AI apps, agentic workflows and RAG over 1,500+ enterprise docs.",
     "bullets": [
-      "Needs point adding"
+      "Built and deployed AI applications for internal stakeholders, covering Python/FastAPI backend services, LLM workflows and a React chat interface that cut manual effort by 50%.",
+      "Designed human-in-the-loop agentic workflows that integrated MCP, knowledge graphs and models from OpenAI, Anthropic, Gemini and Hugging Face through REST APIs.",
+      "Developed RAG applications over 1,500+ enterprise documents on AWS S3 and Azure, reaching 80% answer accuracy as measured by LLM-as-a-judge evaluation and user feedback.",
+      "Shipped production-ready AI microservices to Microsoft Azure using Docker, Kubernetes and Git-based CI/CD, secured with IAM, authentication scopes and role-based access control."
     ],
     "tech": [
-      "SAP AI Core",
       "Python",
-      "Yaml",
-      "SAP BTP",
-      "SAP Joule"
+      "FastAPI",
+      "React",
+      "JavaScript",
+      "LLMs",
+      "Agentic AI",
+      "LangChain",
+      "LangGraph",
+      "n8n",
+      "Prompt Engineering",
+      "Model Context Protocol (MCP)",
+      "Knowledge Graphs",
+      "Retrieval-Augmented Generation (RAG)",
+      "LLM Evaluation",
+      "REST APIs",
+      "Microsoft Azure",
+      "AWS S3",
+      "Docker",
+      "Kubernetes",
+      "Linux",
+      "CI/CD",
+      "Git",
+      "IAM",
+      "RBAC"
     ]
   },
   {
     "id": "bright-path-analytics",
-    "role": "Software Engineer Intern/Researcher",
+    "role": "ML Research Intern – Software Engineering",
     "company": "Constructor Tech",
     "startDate": "2024-07",
     "endDate": "2025-05",
-    "location": "Remote",
-    "locationType": "Remote",
-    "summary": "Write Summary",
+    "location": "Bremen, Germany",
+    "summary": "ML defect detection for micro-cracks; MLP models at 80% accuracy.",
     "bullets": [
-      "Write points"
+      "Developed a machine-learning defect detection algorithm to identify micro-cracks in conductive composite materials.",
+      "Modelled crack propagation as an electrical resistor-grid network and generated synthetic training data with LTspice, NumPy and Pandas.",
+      "Built preprocessing and feature-extraction pipelines that turned voltage, current and capacitance measurements into training-ready datasets.",
+      "Trained and evaluated MLP models in PyTorch, TensorFlow and scikit-learn to localise faulty resistors, reaching 80% accuracy on held-out simulated data."
     ],
     "tech": [
-      "ML",
-      "skit-learn"
+      "Machine Learning",
+      "Deep Learning",
+      "PyTorch",
+      "TensorFlow",
+      "scikit-learn",
+      "Python",
+      "NumPy",
+      "Pandas",
+      "Feature Engineering",
+      "Data Preprocessing",
+      "Synthetic Data Generation",
+      "LTspice",
+      "Circuit Simulation",
+      "Defect Detection",
+      "Model Evaluation"
+    ]
+  },
+  {
+    "id": "komarovi-campus-school",
+    "role": "STEM Teacher",
+    "company": "Komarovi Campus School",
+    "startDate": "2023-03",
+    "endDate": "2023-06",
+    "location": "Tbilisi, Georgia",
+    "locationType": "Remote",
+    "summary": "Taught 15 students electrical engineering and Arduino, remotely.",
+    "bullets": [
+      "Ran bi-weekly remote classes for 15 students on electrical engineering fundamentals and Arduino programming using Tinkercad.",
+      "Designed structured, hands-on lessons so students learned concepts by building and simulating circuits themselves rather than through theory alone.",
+      "Evaluated assignments and gave regular, individual feedback to track and support each student’s progress."
+    ],
+    "tech": [
+      "STEM Education",
+      "Teaching",
+      "Curriculum Design",
+      "Lesson Planning",
+      "Electrical Engineering",
+      "Arduino",
+      "Tinkercad",
+      "Circuit Design",
+      "Embedded Systems",
+      "Student Assessment",
+      "Mentoring",
+      "Public Speaking",
+      "Remote Teaching"
     ]
   }
 ]
