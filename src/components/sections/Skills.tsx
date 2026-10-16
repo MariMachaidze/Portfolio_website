@@ -221,7 +221,6 @@ export function Skills() {
       </header>
 
       <div className="caption">
-        <span>Fig. 6</span>
         <strong>Pinout, {pinnedSkills.length} pins</strong>
       </div>
 
