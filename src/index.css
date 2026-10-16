@@ -9,10 +9,37 @@
   --color-muted: #6b6355;
   --color-primary: #146b5d;
   --color-primary-hover: #0e4f44;
+  --color-on-primary: #ffffff;
   --color-accent: #e8873a;
   --color-accent-2: #c1443c;
   --color-success: #2f9e44;
   --color-archived: #8a8578;
+}
+
+/*
+ * Deep-navy palette for sections that sit on the Hero's navy (currently
+ * Contact). Re-pointing the theme tokens on the section, rather than
+ * hard-coding hex on every element, lets the shared Card / Button /
+ * SectionHeading pick up the navy look unchanged. Colors come from the Hero:
+ * cream headline + light-blue body text, the social-link tile fill and its
+ * sketch-stroke teal, the availability pill's border, the mobile badge's
+ * green and the sun's gold. Fixed regardless of site theme, like the Hero.
+ */
+.theme-navy {
+  --color-bg: #0b1f3a;
+  --color-surface: #102944;
+  --color-surface-alt: #13203a;
+  --color-border: #1e3a5f;
+  --color-text: #f5e6d3;
+  --color-muted: #d7e3f0;
+  --color-primary: #82afbf;
+  --color-primary-hover: #adc4da;
+  --color-on-primary: #0b1f3a;
+  --color-accent: #e6cc90;
+  /* Light coral so validation errors stay legible on navy (7:1+). */
+  --color-accent-2: #ff9a8f;
+  --color-success: #3dd6a3;
+  --color-archived: #7a96ba;
 }
 
 @theme {
@@ -24,6 +51,7 @@
   --color-muted: var(--color-muted);
   --color-primary: var(--color-primary);
   --color-primary-hover: var(--color-primary-hover);
+  --color-on-primary: var(--color-on-primary);
   --color-accent: var(--color-accent);
   --color-accent-2: var(--color-accent-2);
   --color-success: var(--color-success);

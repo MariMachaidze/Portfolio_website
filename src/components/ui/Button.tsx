@@ -6,7 +6,7 @@ const base =
   "inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:pointer-events-none";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-primary text-white hover:bg-primary-hover hover:-translate-y-0.5 shadow-sm",
+  primary: "bg-primary text-on-primary hover:bg-primary-hover hover:-translate-y-0.5 shadow-sm",
   secondary:
     "bg-surface text-text border border-border hover:border-primary hover:-translate-y-0.5",
   ghost: "text-text hover:bg-surface-alt",
