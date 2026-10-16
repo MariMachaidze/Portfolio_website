@@ -3529,6 +3529,15 @@
   white-space: nowrap;
 }
 
+/* The export caps these drawings at 15rem tall, which shrinks them below their design size on
+   wide cards (and the 11px-minimum labels then outgrow their boxes). Let them scale with the
+   card's width instead, up to a little over their design size. */
+.projects-showcase .trust-blueprint,
+.projects-showcase .duckie-blueprint {
+  height: auto;
+  max-height: 22rem;
+}
+
 /* Wide figures: on phones they keep a readable drawing size and scroll sideways. */
 .projects-showcase .figure-scroll {
   overflow-x: auto;

@@ -232,8 +232,8 @@ export function ProjectDiagram({
             ["bad", 4],
           ].map(([quality, slot]) => (
             <g className={`classification-badge badge-${quality} slot-${slot}`} key={`badge-${slot}`}>
-              <rect x="638" y="38" width="70" height="25" rx="12" />
-              <text x="673" y="55">
+              <rect x="638" y="35.5" width="70" height="30" rx="13" />
+              <text x="673" y="50.5" dominantBaseline="central">
                 {quality === "good" ? "GOOD" : "BAD"}
               </text>
             </g>

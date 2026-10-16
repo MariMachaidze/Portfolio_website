@@ -16,6 +16,7 @@ type SimTrip = {
 
 const TABLE = { x: 55, y: 45, width: 850, height: 600 };
 const HAND = { x: 480, y: 705 };
+const ROBOT_START: SimPoint = { x: 120, y: 105 };
 
 function simToSvg(point: SimPoint) {
   return { x: TABLE.x + point.x, y: TABLE.y + point.y };
@@ -65,7 +66,7 @@ function headingOnCurve(start: SimPoint, control: SimPoint, end: SimPoint, progr
 
 export function PointingSimulation({ figure, sourceHref }: { figure: number; sourceHref: string }) {
   const svgRef = useRef<SVGSVGElement>(null);
-  const robotRef = useRef<SimPoint>({ x: 120, y: 105 });
+  const robotRef = useRef<SimPoint>(ROBOT_START);
   const activeTripRef = useRef<SimTrip | null>(null);
   const userStarted = useRef(false);
   const autoTimer = useRef<number | null>(null);
@@ -76,7 +77,7 @@ export function PointingSimulation({ figure, sourceHref }: { figure: number; sou
     }>
   >([]);
   const [cursor, setCursor] = useState<SimPoint>({ x: 372, y: 302 });
-  const [robotBase, setRobotBase] = useState<SimPoint>(robotRef.current);
+  const [robotBase, setRobotBase] = useState<SimPoint>(ROBOT_START);
   const [trip, setTrip] = useState<SimTrip | null>(null);
   const [previousPath, setPreviousPath] = useState<string | null>(null);
   const [queuedTargets, setQueuedTargets] = useState<SimPoint[]>([]);
@@ -313,11 +314,12 @@ export function PointingSimulation({ figure, sourceHref }: { figure: number; sou
             className="aim-crosshair"
             d={`M${cursorSvg.x - 10} ${cursorSvg.y}H${cursorSvg.x + 10}M${cursorSvg.x} ${cursorSvg.y - 10}V${cursorSvg.y + 10}`}
           />
+          {/* Sized for the label at the 11px minimum on the smallest desktop layout (the export's tag was 116 × 24). */}
           <g
             className="aim-tag-group"
-            transform={`translate(${clamp(cursorSvg.x + 12, 70, 790)} ${clamp(cursorSvg.y - 31, 55, 610)})`}>
-            <rect className="aim-tag" width="116" height="24" rx="4" />
-            <text className="aim-tag-text" x="58" y="16">
+            transform={`translate(${clamp(cursorSvg.x + 12, 70, 736)} ${clamp(cursorSvg.y - 37, 55, 604)})`}>
+            <rect className="aim-tag" width="170" height="30" rx="4" />
+            <text className="aim-tag-text" x="85" y="15" dominantBaseline="central">
               x {cursor.x}　y {cursor.y}
             </text>
           </g>

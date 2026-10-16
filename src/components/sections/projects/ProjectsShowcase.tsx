@@ -95,39 +95,39 @@ function ProjectCard({ project, number, figure }: { project: Project; number: st
   );
 }
 
+/** Each card's first figure number, so captions number on across the section in data order. */
+const FIRST_FIGURE = projects.map((_, index) =>
+  projects.slice(0, index).reduce((count, p) => count + (p.visual ? FIGURE_COUNT[p.visual] : 0), 1),
+);
+
 export function ProjectsShowcase() {
   const rootRef = useRef<HTMLDivElement>(null);
   useReadableSvgText(rootRef, projects, FIGURE_FINE_TEXT);
-  let nextFigure = 1;
   return (
     <div className="projects-showcase" ref={rootRef}>
       {/* component-gallery stands in for the export's <main>, which tightens the section padding. */}
       <div className="component-gallery">
         <div className="projects-section">
-        <div className="components-heading">
-          <div>
-            <span>Recent work</span>
-            <h2>Projects</h2>
+          <div className="components-heading">
+            <div>
+              <span>Recent work</span>
+              <h2>Projects</h2>
+            </div>
+            <p>A selection of things I've built, from shipped products to in-progress experiments.</p>
           </div>
-          <p>A selection of things I've built, from shipped products to in-progress experiments.</p>
-        </div>
-        <div className="project-list">
-          {projects.map((project, index) => {
-            const figure = nextFigure;
-            if (project.visual) nextFigure += FIGURE_COUNT[project.visual];
-            return (
+          <div className="project-list">
+            {projects.map((project, index) => (
               <ProjectCard
                 key={project.id}
                 project={project}
                 number={String(index + 1).padStart(2, "0")}
-                figure={figure}
+                figure={FIRST_FIGURE[index]}
               />
-            );
-          })}
-        </div>
-        <div className="all-repositories">
-          <ExternalLink href={`${GITHUB_PROFILE}?tab=repositories`}>All repositories on GitHub</ExternalLink>
-        </div>
+            ))}
+          </div>
+          <div className="all-repositories">
+            <ExternalLink href={`${GITHUB_PROFILE}?tab=repositories`}>All repositories on GitHub</ExternalLink>
+          </div>
         </div>
       </div>
     </div>
