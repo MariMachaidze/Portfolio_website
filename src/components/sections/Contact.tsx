@@ -82,13 +82,12 @@ export function Contact() {
     }
   }
 
-  // theme-navy (index.css) re-points the theme tokens to the Hero's navy
-  // palette, so Contact matches Hero/Experience while everything below stays
-  // on the shared token classes. Fields sit in a darker navy well with a
-  // muted/45 outline (3:1 against both the card and the field) and turn
-  // cream on focus.
+  // theme-light-blue (index.css) re-points the theme tokens to the Projects
+  // section's light blue, while everything below stays on the shared token
+  // classes. Fields sit in a slightly darker blue well with a muted/60 outline
+  // (3:1 against the card) and turn ink on focus.
   return (
-    <section id="contact" className="theme-navy scroll-mt-16 bg-bg py-20">
+    <section id="contact" className="theme-light-blue scroll-mt-16 bg-bg py-20">
       <Container className="max-w-4xl">
         <SectionHeading
           eyebrow="Get in touch"
@@ -133,7 +132,7 @@ export function Contact() {
                   type="text"
                   value={form.name}
                   onChange={(e) => handleChange("name", e.target.value)}
-                  className="w-full rounded-lg border border-muted/45 bg-bg px-3.5 py-2.5 text-sm text-text outline-none transition-colors duration-200 focus:border-text"
+                  className="w-full rounded-lg border border-muted/60 bg-bg px-3.5 py-2.5 text-sm text-text outline-none transition-colors duration-200 focus:border-text"
                 />
                 {errors.name && <p className="mt-1 text-xs text-accent-2">{errors.name}</p>}
               </div>
@@ -147,7 +146,7 @@ export function Contact() {
                   type="email"
                   value={form.email}
                   onChange={(e) => handleChange("email", e.target.value)}
-                  className="w-full rounded-lg border border-muted/45 bg-bg px-3.5 py-2.5 text-sm text-text outline-none transition-colors duration-200 focus:border-text"
+                  className="w-full rounded-lg border border-muted/60 bg-bg px-3.5 py-2.5 text-sm text-text outline-none transition-colors duration-200 focus:border-text"
                 />
                 {errors.email && <p className="mt-1 text-xs text-accent-2">{errors.email}</p>}
               </div>
@@ -161,7 +160,7 @@ export function Contact() {
                   type="text"
                   value={form.subject}
                   onChange={(e) => handleChange("subject", e.target.value)}
-                  className="w-full rounded-lg border border-muted/45 bg-bg px-3.5 py-2.5 text-sm text-text outline-none transition-colors duration-200 focus:border-text"
+                  className="w-full rounded-lg border border-muted/60 bg-bg px-3.5 py-2.5 text-sm text-text outline-none transition-colors duration-200 focus:border-text"
                 />
                 {errors.subject && <p className="mt-1 text-xs text-accent-2">{errors.subject}</p>}
               </div>
@@ -175,7 +174,7 @@ export function Contact() {
                   rows={5}
                   value={form.message}
                   onChange={(e) => handleChange("message", e.target.value)}
-                  className="w-full resize-none rounded-lg border border-muted/45 bg-bg px-3.5 py-2.5 text-sm text-text outline-none transition-colors duration-200 focus:border-text"
+                  className="w-full resize-none rounded-lg border border-muted/60 bg-bg px-3.5 py-2.5 text-sm text-text outline-none transition-colors duration-200 focus:border-text"
                 />
                 {errors.message && <p className="mt-1 text-xs text-accent-2">{errors.message}</p>}
               </div>

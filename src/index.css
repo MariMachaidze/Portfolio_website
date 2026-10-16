@@ -18,7 +18,7 @@
 
 /*
  * Deep-navy palette for sections that sit on the Hero's navy (currently
- * Contact). Re-pointing the theme tokens on the section, rather than
+ * GitHub Activity). Re-pointing the theme tokens on the section, rather than
  * hard-coding hex on every element, lets the shared Card / Button /
  * SectionHeading pick up the navy look unchanged. Colors come from the Hero:
  * cream headline + light-blue body text, the social-link tile fill and its
@@ -40,6 +40,28 @@
   --color-accent-2: #ff9a8f;
   --color-success: #3dd6a3;
   --color-archived: #7a96ba;
+}
+
+/*
+ * Light-blue palette matching the Projects section and the footer (paper
+ * #a8c0db, ink #11120f, muted #3f4d5b), used by Contact. Cards use the Skills
+ * section's light card blue. Primary, error and success are darkened shades so
+ * they clear 4.5:1 on the paper / cards. Fixed regardless of site theme.
+ */
+.theme-light-blue {
+  --color-bg: #a8c0db;
+  --color-surface: #d5e2ef;
+  --color-surface-alt: #bccfe3;
+  --color-border: #8ba7c1;
+  --color-text: #11120f;
+  --color-muted: #3f4d5b;
+  --color-primary: #2f4a66;
+  --color-primary-hover: #233a52;
+  --color-on-primary: #ffffff;
+  --color-accent: #3e5975;
+  --color-accent-2: #9b2c25;
+  --color-success: #1d6b3a;
+  --color-archived: #4b5c6d;
 }
 
 @theme {

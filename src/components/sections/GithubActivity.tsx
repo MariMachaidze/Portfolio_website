@@ -5,7 +5,8 @@ import { useGithubActivity } from "../../hooks/useGithubActivity";
 import { Container } from "../ui/Container";
 import { SectionHeading } from "../ui/SectionHeading";
 
-const LEVEL_CLASSES = ["bg-surface-alt", "bg-primary/25", "bg-primary/50", "bg-primary/75", "bg-primary"];
+// Empty days use the border tone: on the navy, surface-alt is too close to the background to read.
+const LEVEL_CLASSES = ["bg-border", "bg-primary/25", "bg-primary/50", "bg-primary/75", "bg-primary"];
 
 function levelFor(count: number, max: number): number {
   if (count === 0) return 0;
@@ -44,7 +45,8 @@ export function GithubActivity() {
   if (loading || error || !data) return null;
 
   return (
-    <section className="pt-20">
+    // theme-navy (index.css) gives this section the Hero's navy; the id lets the navbar match it.
+    <section id="github-activity" className="theme-navy bg-bg py-20">
       <Container>
         <SectionHeading
           eyebrow="Code activity"

@@ -13,21 +13,22 @@ const NAV_ITEMS = [
   { label: "Contact", id: "contact" },
 ];
 
-const SECTION_IDS = NAV_ITEMS.map((item) => item.id);
-
-// Each homepage section's own background color, so the sticky navbar can
-// match whatever's currently scrolled underneath it. Keep this in sync with
-// each section's actual background (Hero, Experience and Contact share the
-// same navy; Skills and Projects share the same light blue). Baked in at 90%
-// alpha to match the navbar's previous `bg-bg/90` look.
+// Each homepage section's own background color, in page order, so the sticky
+// navbar can match whatever's currently scrolled underneath it. Keep this in
+// sync with each section's actual background (Hero, Experience and GitHub
+// Activity share the same navy; Skills, Projects and Contact share the same
+// light blue). GitHub Activity isn't a nav link but still needs its color.
+// Baked in at 90% alpha to match the navbar's previous `bg-bg/90` look.
 const SECTION_BG: Record<string, string> = {
   hero: "rgba(11, 31, 58, 0.9)",
   skills: "rgba(168, 192, 219, 0.9)",
   experience: "rgba(11, 31, 58, 0.9)",
   projects: "rgba(168, 192, 219, 0.9)",
-  contact: "rgba(11, 31, 58, 0.9)",
+  "github-activity": "rgba(11, 31, 58, 0.9)",
+  contact: "rgba(168, 192, 219, 0.9)",
 };
-const NAVY_SECTIONS = new Set(["hero", "experience", "contact"]);
+const SECTION_IDS = Object.keys(SECTION_BG);
+const NAVY_SECTIONS = new Set(["hero", "experience", "github-activity"]);
 // Before the first scroll measurement resolves, the page is at the top —
 // i.e. still showing the (navy) Hero section — so default to its color
 // rather than flashing the light default first.
@@ -48,7 +49,7 @@ export function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b backdrop-blur transition-colors duration-300 ${navbarBg ? "" : "bg-bg/90 border-border"} ${onNavy ? "border-[#1e3a5f]" : ""}`}
+      className={`sticky top-0 z-50 border-b backdrop-blur transition-colors duration-300 ${navbarBg ? "" : "bg-bg/90 border-border"} ${onNavy ? "border-[#1e3a5f]" : navbarBg ? "border-[#738394]" : ""}`}
       style={navbarBg ? { backgroundColor: navbarBg } : undefined}
     >
       <Container className="flex h-16 items-center justify-between">
