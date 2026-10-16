@@ -60,8 +60,16 @@ export function GithubActivity() {
           align="center"
         />
 
-        <div className="flex justify-center overflow-x-auto pb-2">
-          <div className="grid grid-rows-7 gap-1">
+        {/* Shrinks to fit instead of scrolling: each week is an equal share of the width, capped
+            at the desktop size of 10px cells with 4px gaps. */}
+        <div className="flex justify-center">
+          <div
+            className="grid w-full grid-rows-7 gap-[2px] sm:gap-1"
+            style={{
+              gridTemplateColumns: `repeat(${data.weeks.length}, minmax(0, 1fr))`,
+              maxWidth: `${data.weeks.length * 14 - 4}px`,
+            }}
+          >
             {data.weeks.map((week, weekIndex) =>
               week.days.map((day) => {
                 // GitHub's edge weeks (the start of the year-long window, and
@@ -75,7 +83,7 @@ export function GithubActivity() {
                     key={day.date}
                     style={{ gridColumn: weekIndex + 1, gridRow: dayOfWeek + 1 }}
                     title={`${day.count} contribution${day.count === 1 ? "" : "s"} on ${day.date}`}
-                    className={`h-2.5 w-2.5 rounded-sm ${LEVEL_CLASSES[levelFor(day.count, maxCount)]}`}
+                    className={`aspect-square w-full rounded-[2px] sm:rounded-sm ${LEVEL_CLASSES[levelFor(day.count, maxCount)]}`}
                   />
                 );
               }),
