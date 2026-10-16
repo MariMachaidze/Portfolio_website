@@ -3538,40 +3538,159 @@
   max-height: 22rem;
 }
 
-/* Wide figures: on phones they keep a readable drawing size and scroll sideways. */
-.projects-showcase .figure-scroll {
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
+.projects-showcase .trust-phone,
+.projects-showcase .duckie-phone {
+  display: none;
 }
 
-.projects-showcase .figure-scroll-hint {
+/* Phone versions of the figures (shown at 680px and below). */
+.projects-showcase .sorter-phone {
   display: none;
 }
 
 @media (max-width: 680px) {
-  .projects-showcase .sorter-system {
-    min-width: 600px;
+  /* Box sorter, phone version: a portrait drawing with its own travel distances. */
+  .projects-showcase .sorter-system:not(.sorter-phone) {
+    display: none;
   }
 
-  .projects-showcase .trust-blueprint,
-  .projects-showcase .duckie-blueprint {
-    min-width: 560px;
+  .projects-showcase .sorter-phone {
+    display: block;
   }
 
+  .projects-showcase .sorter-phone .belt-chevrons {
+    animation-name: prj-phone-belt-scroll;
+  }
+
+  .projects-showcase .sorter-phone .moving-box-good {
+    animation-name: prj-phone-good-box-travel;
+  }
+
+  .projects-showcase .sorter-phone .moving-box-bad {
+    animation-name: prj-phone-bad-box-travel;
+  }
+
+  .projects-showcase .sorter-phone .wifi-dot {
+    offset-path: path("M125 160V118");
+  }
+
+  .projects-showcase .sorter-phone .punch-glove {
+    animation-name: prj-phone-glove-punch;
+  }
+
+  .projects-showcase .sorter-phone .reject-path-pulse {
+    animation-name: prj-phone-reject-signal;
+  }
+
+  .projects-showcase .sorter-phone .servo-path-pulse {
+    stroke-dasharray: 24 120;
+    animation-name: prj-phone-servo-signal;
+  }
+
+  .projects-showcase .sorter-phone .belt-power-pulse {
+    stroke-dasharray: 16 100;
+    animation-name: prj-phone-belt-power;
+  }
+
+  /* DuckieTown, phone version: the road cropped to the action, states stacked below. */
+  .projects-showcase .duckie-wide {
+    display: none;
+  }
+
+  .projects-showcase .duckie-phone {
+    display: block;
+    height: auto;
+    max-height: none;
+  }
+
+  /* Trust study, phone version: the same animated parts rearranged into a column. */
+  .projects-showcase .trust-wide {
+    display: none;
+  }
+
+  .projects-showcase .trust-phone {
+    display: block;
+    height: auto;
+    max-height: none;
+  }
+
+  /* Agent loop, phone version: a smaller ring (8.5rem, radius 68px) with the four side steps
+     beside their dots, so every label fits the phone width at its normal size. */
   .projects-showcase .agent-loop {
-    min-width: 26rem;
+    height: 17rem;
     margin: 0;
     transform: none;
   }
 
-  .projects-showcase .figure-scroll-hint {
-    display: block;
-    margin: 0;
-    padding: 0.4rem 1rem 0.6rem;
-    color: var(--muted);
-    font-family: var(--mono);
-    font-size: 11px;
+  .projects-showcase .loop-ring,
+  .projects-showcase .loop-particles {
+    width: 8.5rem;
+    height: 8.5rem;
+  }
+
+  .projects-showcase .loop-particles i {
+    offset-path: path("M68 0A68 68 0 1 1 68 136A68 68 0 1 1 68 0");
+  }
+
+  .projects-showcase .loop-node-dot-1 { left: 50%; top: calc(50% - 4.25rem); }
+  .projects-showcase .loop-node-dot-2 { left: calc(50% + 3.68rem); top: calc(50% - 2.125rem); }
+  .projects-showcase .loop-node-dot-3 { left: calc(50% + 3.68rem); top: calc(50% + 2.125rem); }
+  .projects-showcase .loop-node-dot-4 { left: 50%; top: calc(50% + 4.25rem); }
+  .projects-showcase .loop-node-dot-5 { left: calc(50% - 3.68rem); top: calc(50% + 2.125rem); }
+  .projects-showcase .loop-node-dot-6 { left: calc(50% - 3.68rem); top: calc(50% - 2.125rem); }
+
+  .projects-showcase .loop-node-1,
+  .projects-showcase .loop-node-4 {
+    width: 10rem;
+    left: calc(50% - 5rem);
+  }
+
+  .projects-showcase .loop-node-2,
+  .projects-showcase .loop-node-3,
+  .projects-showcase .loop-node-5,
+  .projects-showcase .loop-node-6 {
+    width: calc(50% - 4.4rem);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .projects-showcase .loop-node-2 :is(strong, span),
+  .projects-showcase .loop-node-3 :is(strong, span),
+  .projects-showcase .loop-node-5 :is(strong, span),
+  .projects-showcase .loop-node-6 :is(strong, span) {
+    grid-column: 1;
+  }
+
+  .projects-showcase .loop-node-2,
+  .projects-showcase .loop-node-3 {
+    left: calc(50% + 4.3rem);
+    right: auto;
+    text-align: left;
+  }
+
+  .projects-showcase .loop-node-5,
+  .projects-showcase .loop-node-6 {
+    left: auto;
+    right: calc(50% + 4.3rem);
     text-align: right;
+  }
+
+  .projects-showcase .loop-node-2,
+  .projects-showcase .loop-node-6 {
+    top: calc(50% - 2.65rem);
+    bottom: auto;
+  }
+
+  .projects-showcase .loop-node-3,
+  .projects-showcase .loop-node-5 {
+    top: calc(50% + 1.6rem);
+    bottom: auto;
+  }
+
+  .projects-showcase .score-equation,
+  .projects-showcase .learn-neuron,
+  .projects-showcase .loop-documents,
+  .projects-showcase .track-status {
+    display: none !important;
   }
 
   /* The simulation stays fitted to the screen: drop the labels that can't fit at a readable size. */
@@ -3579,6 +3698,50 @@
   .projects-showcase .sim-y-label {
     display: none;
   }
+}
+
+@keyframes prj-phone-belt-scroll {
+  to { transform: translateX(60px); }
+}
+
+@keyframes prj-phone-good-box-travel {
+  0% { opacity: 0; transform: translateX(0); }
+  4% { opacity: 1; }
+  64% { opacity: 1; transform: translateX(250px); }
+  69%, 100% { opacity: 0; transform: translateX(270px); }
+}
+
+@keyframes prj-phone-bad-box-travel {
+  0% { opacity: 0; transform: translate(0, 0); }
+  4% { opacity: 1; }
+  48% { opacity: 1; transform: translate(250px, 0); }
+  54% { opacity: 1; transform: translate(250px, -128px); }
+  59%, 100% { opacity: 0; transform: translate(250px, -140px); }
+}
+
+@keyframes prj-phone-glove-punch {
+  0%, 47%, 59%, 100% { opacity: 0; transform: translateY(0); }
+  48% { opacity: 1; transform: translateY(0); }
+  51%, 54% { opacity: 1; transform: translateY(-56px); }
+  58% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes prj-phone-reject-signal {
+  0%, 30% { opacity: 0; stroke-dashoffset: 0; }
+  31% { opacity: 1; }
+  46% { opacity: 1; stroke-dashoffset: -680; }
+  47%, 100% { opacity: 0; stroke-dashoffset: -680; }
+}
+
+@keyframes prj-phone-servo-signal {
+  0%, 43% { opacity: 0; stroke-dashoffset: 0; }
+  44% { opacity: 1; }
+  49% { opacity: 1; stroke-dashoffset: -110; }
+  50%, 100% { opacity: 0; stroke-dashoffset: -110; }
+}
+
+@keyframes prj-phone-belt-power {
+  to { stroke-dashoffset: -116; }
 }
 
 /* Readouts wrap instead of cutting values off with an ellipsis. */

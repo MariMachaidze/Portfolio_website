@@ -1,17 +1,168 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ProjectVisual } from "../../../types";
 import { PointingSimulation } from "./PointingSimulation";
 import { clamp, type SimPoint } from "./simGeometry";
 
-/** Wide figures keep a readable size on phones and scroll sideways inside their frame. */
-function ScrollFigure({ children }: { children: ReactNode }) {
+/**
+ * Portrait version of the box sorter for phones: the same parts, classes and timing as the wide
+ * drawing, rearranged into a column so its labels stay readable at phone width. The CSS gives it
+ * its own travel distances (see .sorter-phone in projectsShowcase.css).
+ */
+function SorterPhone() {
+  const boxes: Array<["good" | "bad", number]> = [
+    ["good", 0],
+    ["good", 1],
+    ["bad", 2],
+    ["good", 3],
+    ["bad", 4],
+  ];
   return (
-    <>
-      <div className="figure-scroll">{children}</div>
-      <p className="figure-scroll-hint" aria-hidden="true">
-        Swipe to see more →
-      </p>
-    </>
+    <svg
+      className="sorter-system sorter-phone"
+      viewBox="0 0 400 724"
+      role="img"
+      aria-label="ESP32 vision-language box sorter architecture"
+    >
+      <defs>
+        <marker id="prj-arrow-ink-phone" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+          <path d="M0 0L8 4L0 8" className="arrow-ink" />
+        </marker>
+        <marker id="prj-arrow-accent-phone" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+          <path d="M0 0L8 4L0 8" className="arrow-accent" />
+        </marker>
+      </defs>
+
+      <path className="flow-line" markerEnd="url(#prj-arrow-ink-phone)" d="M125 160V118" />
+      <text className="sorter-label" x="135" y="143">
+        MJPEG over WiFi
+      </text>
+      <path className="signal-line" markerEnd="url(#prj-arrow-accent-phone)" d="M360 68H388V520H200V536" />
+      <text className="sorter-label" x="200" y="510" textAnchor="middle">
+        HTTP /punch + delay
+      </text>
+
+      <g className="system-node">
+        <rect x="40" y="20" width="320" height="96" rx="16" />
+        <text className="node-title" x="200" y="50">
+          Laptop
+        </text>
+        <text x="200" y="78">
+          CLIP ViT-B/32 on CPU
+        </text>
+        <text x="200" y="102">
+          Text prompts: good / bad
+        </text>
+      </g>
+
+      <g className="system-node">
+        <rect x="40" y="160" width="170" height="64" rx="14" />
+        <text className="node-title" x="125" y="200">
+          ESP32-CAM
+        </text>
+      </g>
+      <path className="camera-cone" d="M125 224L80 300H170Z" />
+      {[0, 1, 2, 3, 4].map((slot) => (
+        <path className={`camera-flash slot-${slot}`} d="M125 224L80 300H170Z" key={`flash-${slot}`} />
+      ))}
+      {[0, 1, 2, 3, 4].map((slot) => (
+        <circle className={`wifi-dot slot-${slot}`} cx="0" cy="0" r="5" key={`wifi-${slot}`} />
+      ))}
+
+      <g className="system-node dashed-node">
+        <rect x="230" y="160" width="140" height="64" rx="14" />
+        <text className="node-title" x="300" y="200">
+          Reject bin
+        </text>
+      </g>
+
+      <g className="conveyor">
+        <rect x="10" y="300" width="360" height="72" rx="36" />
+        <g className="belt-chevrons">
+          <path d="M40 324L53 336L40 348M100 324L113 336L100 348M160 324L173 336L160 348M220 324L233 336L220 348M280 324L293 336L280 348M340 324L353 336L340 348" />
+        </g>
+      </g>
+
+      {boxes.map(([quality, slot]) => (
+        <g className={`moving-box moving-box-${quality} slot-${slot}`} key={`box-${slot}`}>
+          <rect className={`${quality}-box`} x="28" y="314" width="44" height="44" rx="7" />
+          {quality === "bad" && <path className="box-crack" d="M45 322L57 333L49 341L58 352" />}
+        </g>
+      ))}
+
+      {boxes.map(([quality, slot]) => (
+        <g className={`classification-badge badge-${quality} slot-${slot}`} key={`badge-${slot}`}>
+          <rect x="278" y="32" width="70" height="30" rx="13" />
+          <text x="313" y="47" dominantBaseline="central">
+            {quality === "good" ? "GOOD" : "BAD"}
+          </text>
+        </g>
+      ))}
+
+      <path className="signal-line" markerEnd="url(#prj-arrow-accent-phone)" d="M300 296V230" />
+      <g className="servo-arm">
+        <rect x="276" y="382" width="48" height="30" rx="13" />
+        <path d="M300 382V372" />
+      </g>
+      {[2, 4].map((slot) => (
+        <g className={`punch-glove slot-${slot}`} key={`glove-${slot}`}>
+          <rect x="276" y="382" width="48" height="30" rx="13" />
+          <path d="M300 382V372" />
+        </g>
+      ))}
+
+      <path className="flow-line" d="M60 372V430" />
+      <g className="system-node">
+        <rect x="20" y="430" width="160" height="60" rx="13" />
+        <text className="node-title" x="100" y="468">
+          Belt servo
+        </text>
+      </g>
+
+      <path className="flow-line" d="M300 412V430" />
+      <g className="system-node">
+        <rect x="220" y="430" width="160" height="60" rx="13" />
+        <text className="node-title" x="300" y="468">
+          Glove servo
+        </text>
+      </g>
+
+      <g className="system-node">
+        <rect x="80" y="540" width="240" height="72" rx="14" />
+        <text className="node-title" x="200" y="570">
+          ESP32 #2
+        </text>
+        <text x="200" y="596">
+          HTTP server, servos
+        </text>
+      </g>
+      <path className="flow-line" markerEnd="url(#prj-arrow-ink-phone)" d="M80 576H60V496" />
+      <path className="belt-power-pulse" d="M80 576H60V496" />
+      <path className="flow-line" markerEnd="url(#prj-arrow-ink-phone)" d="M320 576H340V496" />
+      {[2, 4].map((slot) => (
+        <g key={`reject-pulse-${slot}`}>
+          <path className={`reject-path-pulse slot-${slot}`} d="M360 68H388V520H200V536" />
+          <path className={`servo-path-pulse slot-${slot}`} d="M320 576H340V496" />
+        </g>
+      ))}
+
+      <g className="sorter-legend">
+        <rect className="good-box" x="20" y="642" width="18" height="14" rx="3" />
+        <text x="48" y="654">
+          Good box
+        </text>
+        <rect className="bad-box" x="200" y="642" width="18" height="14" rx="3" />
+        <text x="228" y="654">
+          Bad box
+        </text>
+        <path className="signal-line" d="M20 677H60" />
+        <text x="70" y="682">
+          Reject signal path
+        </text>
+        <text x="20" y="710">
+          Servos on separate 5V
+        </text>
+      </g>
+    </svg>
   );
 }
 
@@ -140,7 +291,6 @@ export function ProjectDiagram({
         <div className="diagram-caption">
           <span>Fig. {figure}</span> Vision-language sorting architecture
         </div>
-        <ScrollFigure>
         <svg
           className="sorter-system"
           viewBox="0 0 900 650"
@@ -304,7 +454,7 @@ export function ProjectDiagram({
             </text>
           </g>
         </svg>
-        </ScrollFigure>
+        <SorterPhone />
       </div>
     );
   }
@@ -399,7 +549,6 @@ export function ProjectDiagram({
         <div className="diagram-caption">
           <span>Fig. {figure}</span> The loop it runs
         </div>
-        <ScrollFigure>
         <div className="agent-loop">
           <div className="loop-ring" aria-hidden="true">
             <svg className="loop-direction" viewBox="0 0 200 200">
@@ -468,7 +617,6 @@ export function ProjectDiagram({
             <span className="status-interview">interview</span>
           </div>
         </div>
-        </ScrollFigure>
         <div className="jobs-source-caption">
           Runs on a schedule. Jobs are filtered before any LLM call; Gemini is only used to score and tailor.
         </div>
@@ -477,6 +625,129 @@ export function ProjectDiagram({
   }
 
   if (type === "trust") {
+    // The drawing is split into parts so the phone layout can rearrange the same (animated) pieces.
+    const trustKeys = (
+      <>
+        <g className="trust-keys">
+          {[
+            ["Q", 35, 35, "neutral"],
+            ["W", 82, 35, "exact"],
+            ["A", 35, 82, "exact"],
+            ["S", 82, 82, "exact"],
+            ["D", 129, 82, "exact"],
+            ["C", 105, 129, "noisy"],
+          ].map(([label, x, y, tone]) => (
+            <g className={`key-${tone} trust-key key-${String(label).toLowerCase()}`} key={label}>
+              <rect x={x} y={y} width="38" height="38" rx="7" />
+              <text x={Number(x) + 19} y={Number(y) + 25}>
+                {label}
+              </text>
+            </g>
+          ))}
+        </g>
+        <text className="trust-heading" x="84" y="205">
+          Keyboard teleop
+        </text>
+        <text className="trust-copy" x="84" y="225">
+          WASD move 3 cm
+        </text>
+        <text className="trust-copy" x="84" y="243">
+          C pick, Q quit
+        </text>
+      </>
+    );
+    const trustArm = (
+      <>
+        <g className="robot-arm">
+          <rect className="arm-base" x="250" y="236" width="62" height="34" rx="6" />
+          <path className="arm-segment" d={`M${armBase.x} ${armBase.y}L${elbow.x} ${elbow.y}`} />
+          <path className="arm-segment" d={`M${elbow.x} ${elbow.y}L${armTarget.x} ${armTarget.y}`} />
+          <circle className="base-joint" cx={armBase.x} cy={armBase.y} r="11" />
+          <circle cx={elbow.x} cy={elbow.y} r="11" />
+          <circle cx={armTarget.x} cy={armTarget.y} r="11" />
+          <g className="attached-gripper" transform={`translate(${armTarget.x} ${armTarget.y})`}>
+            <path className="gripper-stem" d="M0 11V23" />
+            <rect x="-14" y="18" width="28" height="8" rx="3" />
+            <path className="gripper-finger" d={`M${-9 + gripAmount * 4} 25V49`} />
+            <path className="gripper-finger" d={`M${9 - gripAmount * 4} 25V49`} />
+          </g>
+          <path className="table-line" d="M220 280H490" />
+          <rect className="study-box noisy-box" x="360" y="251" width="22" height="22" rx="4" />
+          <rect className="study-box noisy-box" x="397" y="251" width="22" height="22" rx="4" />
+          <rect
+            className="study-box noisy-box pick-block"
+            x={trustBlock.x}
+            y={trustBlock.y}
+            width="22"
+            height="22"
+            rx="4"
+            opacity={trustBlock.opacity}
+          />
+          <rect className="discard-tray" x="495" y="246" width="25" height="29" rx="3" />
+          <text className="discard-label" x="503" y="239">
+            Discard
+          </text>
+          <text className="gripper-question" x="480" y="210">
+            ?
+          </text>
+        </g>
+        <text className="trust-heading" x="355" y="303">
+          Franka Panda arm
+        </text>
+        <text className="trust-copy" x="355" y="321">
+          ROS, MoveIt, RViz
+        </text>
+      </>
+    );
+    const trustGrid = (
+      <>
+        <g className="trust-grid">
+          <text className="trust-heading" x="556" y="30">
+            Top view
+          </text>
+          <rect x="500" y="44" width="112" height="96" rx="3" />
+          {Array.from({ length: 8 }, (_, index) => (
+            <line x1={500 + index * 16} x2={500 + index * 16} y1="44" y2="140" key={`gx-${index}`} />
+          ))}
+          {Array.from({ length: 7 }, (_, index) => (
+            <line x1="500" x2="612" y1={44 + index * 16} y2={44 + index * 16} key={`gy-${index}`} />
+          ))}
+          <circle className="home-dot" cx="516" cy="124" r="3" />
+          <path className="exact-path" d="M516 124V92H564V76H596" />
+          <path className="noisy-path" d="M516 124V92H548L564 76H596" />
+        </g>
+      </>
+    );
+    const trustResults = (
+      <>
+        {/* Cards are a little wider than the export's, and the noisy result takes two lines, so the
+    text still fits once useReadableSvgText enlarges it to the 11px minimum. */}
+        <g className="trust-results">
+          <g className="exact-result-card">
+            <rect className="result-exact" x="526" y="166" width="100" height="50" rx="7" />
+            <text className="result-title" x="533" y="188">
+              Group B exact
+            </text>
+            <text x="533" y="205">
+              {exactTimer} s average
+            </text>
+          </g>
+          <g className="noisy-result-card">
+            <rect className="result-noisy" x="526" y="224" width="100" height="64" rx="7" />
+            <text className="result-title" x="533" y="246">
+              Group A noisy
+            </text>
+            <text x="533" y="263">
+              {noisyTimer} s
+            </text>
+            <text x="533" y="279">
+              lower trust
+            </text>
+          </g>
+        </g>
+      </>
+    );
+
     return (
       <div
         className="reference-figure trust-figure"
@@ -485,119 +756,42 @@ export function ProjectDiagram({
         <div className="diagram-caption">
           <span>Fig. {figure}</span> Predictability and trust study
         </div>
-        <ScrollFigure>
-        <svg className="trust-blueprint" viewBox="0 0 640 330" role="img">
-          <g className="trust-keys">
-            {[
-              ["Q", 35, 35, "neutral"],
-              ["W", 82, 35, "exact"],
-              ["A", 35, 82, "exact"],
-              ["S", 82, 82, "exact"],
-              ["D", 129, 82, "exact"],
-              ["C", 105, 129, "noisy"],
-            ].map(([label, x, y, tone]) => (
-              <g className={`key-${tone} trust-key key-${String(label).toLowerCase()}`} key={label}>
-                <rect x={x} y={y} width="38" height="38" rx="7" />
-                <text x={Number(x) + 19} y={Number(y) + 25}>
-                  {label}
-                </text>
-              </g>
-            ))}
-          </g>
-          <text className="trust-heading" x="84" y="205">
-            Keyboard teleop
-          </text>
-          <text className="trust-copy" x="84" y="225">
-            WASD move 3 cm
-          </text>
-          <text className="trust-copy" x="84" y="243">
-            C pick, Q quit
-          </text>
+        <svg className="trust-blueprint trust-wide" viewBox="0 0 640 330" role="img">
+          {trustKeys}
           <path className="trust-arrow" d="M166 113H218m-10-7l10 7l-10 7" />
-
-          <g className="robot-arm">
-            <rect className="arm-base" x="250" y="236" width="62" height="34" rx="6" />
-            <path className="arm-segment" d={`M${armBase.x} ${armBase.y}L${elbow.x} ${elbow.y}`} />
-            <path className="arm-segment" d={`M${elbow.x} ${elbow.y}L${armTarget.x} ${armTarget.y}`} />
-            <circle className="base-joint" cx={armBase.x} cy={armBase.y} r="11" />
-            <circle cx={elbow.x} cy={elbow.y} r="11" />
-            <circle cx={armTarget.x} cy={armTarget.y} r="11" />
-            <g className="attached-gripper" transform={`translate(${armTarget.x} ${armTarget.y})`}>
-              <path className="gripper-stem" d="M0 11V23" />
-              <rect x="-14" y="18" width="28" height="8" rx="3" />
-              <path className="gripper-finger" d={`M${-9 + gripAmount * 4} 25V49`} />
-              <path className="gripper-finger" d={`M${9 - gripAmount * 4} 25V49`} />
-            </g>
-            <path className="table-line" d="M220 280H490" />
-            <rect className="study-box noisy-box" x="360" y="251" width="22" height="22" rx="4" />
-            <rect className="study-box noisy-box" x="397" y="251" width="22" height="22" rx="4" />
-            <rect
-              className="study-box noisy-box pick-block"
-              x={trustBlock.x}
-              y={trustBlock.y}
-              width="22"
-              height="22"
-              rx="4"
-              opacity={trustBlock.opacity}
-            />
-            <rect className="discard-tray" x="495" y="246" width="25" height="29" rx="3" />
-            <text className="discard-label" x="503" y="239">
-              Discard
-            </text>
-            <text className="gripper-question" x="480" y="210">
-              ?
-            </text>
-          </g>
-          <text className="trust-heading" x="355" y="303">
-            Franka Panda arm
-          </text>
-          <text className="trust-copy" x="355" y="321">
-            ROS, MoveIt, RViz
-          </text>
-
-          <g className="trust-grid">
-            <text className="trust-heading" x="556" y="30">
-              Top view
-            </text>
-            <rect x="500" y="44" width="112" height="96" rx="3" />
-            {Array.from({ length: 8 }, (_, index) => (
-              <line x1={500 + index * 16} x2={500 + index * 16} y1="44" y2="140" key={`gx-${index}`} />
-            ))}
-            {Array.from({ length: 7 }, (_, index) => (
-              <line x1="500" x2="612" y1={44 + index * 16} y2={44 + index * 16} key={`gy-${index}`} />
-            ))}
-            <circle className="home-dot" cx="516" cy="124" r="3" />
-            <path className="exact-path" d="M516 124V92H564V76H596" />
-            <path className="noisy-path" d="M516 124V92H548L564 76H596" />
-          </g>
-
-          {/* Cards are a little wider than the export's, and the noisy result takes two lines, so the
-              text still fits once useReadableSvgText enlarges it to the 11px minimum. */}
+          {trustArm}
+          {trustGrid}
+          {trustResults}
+        </svg>
+        {/* Phone layout: keys and top view side by side, the arm below, and the results in a wide row. */}
+        <svg className="trust-blueprint trust-phone" viewBox="0 0 340 580" role="img">
+          {trustKeys}
+          <g transform="translate(-300 0)">{trustGrid}</g>
+          <g transform="translate(-200 140)">{trustArm}</g>
           <g className="trust-results">
             <g className="exact-result-card">
-              <rect className="result-exact" x="526" y="166" width="100" height="50" rx="7" />
-              <text className="result-title" x="533" y="188">
+              <rect className="result-exact" x="10" y="486" width="155" height="76" rx="7" />
+              <text className="result-title" x="20" y="510">
                 Group B exact
               </text>
-              <text x="533" y="205">
+              <text x="20" y="532">
                 {exactTimer} s average
               </text>
             </g>
             <g className="noisy-result-card">
-              <rect className="result-noisy" x="526" y="224" width="100" height="64" rx="7" />
-              <text className="result-title" x="533" y="246">
+              <rect className="result-noisy" x="175" y="486" width="155" height="76" rx="7" />
+              <text className="result-title" x="185" y="510">
                 Group A noisy
               </text>
-              <text x="533" y="263">
+              <text x="185" y="532">
                 {noisyTimer} s
               </text>
-              <text x="533" y="279">
+              <text x="185" y="552">
                 lower trust
               </text>
             </g>
           </g>
         </svg>
-        </ScrollFigure>
         <div className="trust-footer">
           <span>Exact steps were faster and earned more trust than noisy diagonal motion.</span>
         </div>
@@ -606,55 +800,62 @@ export function ProjectDiagram({
   }
 
   if (type === "duckie") {
+    // The road scene is shared; the phone layout crops it to where the action happens, with larger
+    // tags and the three states stacked underneath.
+    const duckRoad = (
+      <>
+        <rect className="duckie-verge" x="20" y="24" width="600" height="44" rx="8" />
+        <rect className="duckie-road" x="20" y="68" width="600" height="160" />
+        <rect className="duckie-verge" x="20" y="228" width="600" height="44" rx="8" />
+        <path className="road-edge" d="M20 78H620M20 218H620" />
+        <path className="lane-dashes" d="M20 148H620" />
+
+        <g className="duckiebot" transform="translate(126 165)">
+          <rect className="bot-wheel" x="-26" y="-30" width="17" height="60" rx="4" />
+          <rect className="bot-wheel" x="9" y="-30" width="17" height="60" rx="4" />
+          <rect className="bot-body" x="-36" y="-25" width="64" height="50" rx="9" />
+          <rect className="bot-panel" x="-28" y="-17" width="42" height="34" rx="5" />
+          <g className="rubber-duck bot-rubber-duck" transform="translate(-4 1) scale(.68)">
+            <path
+              className="rubber-duck-body"
+              d="M-25 6C-24-2-17-8-7-8C0-7 4-3 10 0C16 3 21 0 25-4C29 1 29 9 25 14C20 21 8 23-6 22C-19 22-26 17-25 6Z"
+            />
+            <circle className="rubber-duck-head" cx="8" cy="-10" r="12" />
+            <path className="rubber-duck-wing" d="M-17 7C-12 1-2 0 5 7C0 14-10 17-17 7Z" />
+            <path className="rubber-duck-beak" d="M18-12C24-11 28-8 31-5C27-2 23-1 17-3Z" />
+            <circle className="rubber-duck-eye" cx="11" cy="-13" r="2.2" />
+            <circle className="rubber-duck-eye-glint" cx="11.7" cy="-13.8" r=".65" />
+          </g>
+          <circle className="bot-camera" cx="34" cy="0" r="5" />
+        </g>
+
+        <path className="vision-cone" d="M165 165L354 127V203Z" />
+        <path className="vision-outline" d="M165 165L354 127M165 165L354 203" />
+
+        <g className="crossing-duck" transform="translate(300 165)">
+          <g className="rubber-duck" transform="scale(.7)">
+            <path
+              className="rubber-duck-body"
+              d="M-25 6C-24-2-17-8-7-8C0-7 4-3 10 0C16 3 21 0 25-4C29 1 29 9 25 14C20 21 8 23-6 22C-19 22-26 17-25 6Z"
+            />
+            <circle className="rubber-duck-head" cx="8" cy="-10" r="12" />
+            <path className="rubber-duck-wing" d="M-17 7C-12 1-2 0 5 7C0 14-10 17-17 7Z" />
+            <path className="rubber-duck-beak" d="M18-12C24-11 28-8 31-5C27-2 23-1 17-3Z" />
+            <circle className="rubber-duck-eye" cx="11" cy="-13" r="2.2" />
+            <circle className="rubber-duck-eye-glint" cx="11.7" cy="-13.8" r=".65" />
+          </g>
+        </g>
+        <rect className="detection-box" x="276" y="130" width="50" height="72" rx="4" />
+      </>
+    );
+
     return (
       <div className="reference-figure duckie-figure" aria-label="DuckieTown autonomous vehicle obstacle detection">
         <div className="diagram-caption">
           <span>Fig. {figure}</span> Detect, stop, resume
         </div>
-        <ScrollFigure>
-        <svg className="duckie-blueprint" viewBox="0 0 640 330" role="img">
-          <rect className="duckie-verge" x="20" y="24" width="600" height="44" rx="8" />
-          <rect className="duckie-road" x="20" y="68" width="600" height="160" />
-          <rect className="duckie-verge" x="20" y="228" width="600" height="44" rx="8" />
-          <path className="road-edge" d="M20 78H620M20 218H620" />
-          <path className="lane-dashes" d="M20 148H620" />
-
-          <g className="duckiebot" transform="translate(126 165)">
-            <rect className="bot-wheel" x="-26" y="-30" width="17" height="60" rx="4" />
-            <rect className="bot-wheel" x="9" y="-30" width="17" height="60" rx="4" />
-            <rect className="bot-body" x="-36" y="-25" width="64" height="50" rx="9" />
-            <rect className="bot-panel" x="-28" y="-17" width="42" height="34" rx="5" />
-            <g className="rubber-duck bot-rubber-duck" transform="translate(-4 1) scale(.68)">
-              <path
-                className="rubber-duck-body"
-                d="M-25 6C-24-2-17-8-7-8C0-7 4-3 10 0C16 3 21 0 25-4C29 1 29 9 25 14C20 21 8 23-6 22C-19 22-26 17-25 6Z"
-              />
-              <circle className="rubber-duck-head" cx="8" cy="-10" r="12" />
-              <path className="rubber-duck-wing" d="M-17 7C-12 1-2 0 5 7C0 14-10 17-17 7Z" />
-              <path className="rubber-duck-beak" d="M18-12C24-11 28-8 31-5C27-2 23-1 17-3Z" />
-              <circle className="rubber-duck-eye" cx="11" cy="-13" r="2.2" />
-              <circle className="rubber-duck-eye-glint" cx="11.7" cy="-13.8" r=".65" />
-            </g>
-            <circle className="bot-camera" cx="34" cy="0" r="5" />
-          </g>
-
-          <path className="vision-cone" d="M165 165L354 127V203Z" />
-          <path className="vision-outline" d="M165 165L354 127M165 165L354 203" />
-
-          <g className="crossing-duck" transform="translate(300 165)">
-            <g className="rubber-duck" transform="scale(.7)">
-              <path
-                className="rubber-duck-body"
-                d="M-25 6C-24-2-17-8-7-8C0-7 4-3 10 0C16 3 21 0 25-4C29 1 29 9 25 14C20 21 8 23-6 22C-19 22-26 17-25 6Z"
-              />
-              <circle className="rubber-duck-head" cx="8" cy="-10" r="12" />
-              <path className="rubber-duck-wing" d="M-17 7C-12 1-2 0 5 7C0 14-10 17-17 7Z" />
-              <path className="rubber-duck-beak" d="M18-12C24-11 28-8 31-5C27-2 23-1 17-3Z" />
-              <circle className="rubber-duck-eye" cx="11" cy="-13" r="2.2" />
-              <circle className="rubber-duck-eye-glint" cx="11.7" cy="-13.8" r=".65" />
-            </g>
-          </g>
-          <rect className="detection-box" x="276" y="130" width="50" height="72" rx="4" />
+        <svg className="duckie-blueprint duckie-wide" viewBox="0 0 640 330" role="img">
+          {duckRoad}
           <g className="stopped-tag">
             <rect x="82" y="93" width="72" height="28" rx="14" />
             <text x="118" y="112">
@@ -667,7 +868,6 @@ export function ProjectDiagram({
               Duck crossing
             </text>
           </g>
-
           <g className="duckie-flow">
             <g className="flow-state flow-driving">
               <rect className="flow-safe" x="45" y="282" width="150" height="42" rx="7" />
@@ -700,7 +900,52 @@ export function ProjectDiagram({
             </g>
           </g>
         </svg>
-        </ScrollFigure>
+        <svg className="duckie-blueprint duckie-phone" viewBox="50 20 400 470" role="img">
+          {duckRoad}
+          <g className="stopped-tag">
+            <rect x="70" y="86" width="96" height="36" rx="18" />
+            <text x="118" y="109">
+              Stopped
+            </text>
+          </g>
+          <g className="crossing-tag">
+            <rect x="318" y="128" width="128" height="36" rx="6" />
+            <text x="382" y="151">
+              Duck crossing
+            </text>
+          </g>
+          <g className="duckie-flow">
+            <g className="flow-state flow-driving">
+              <rect className="flow-safe" x="70" y="292" width="360" height="52" rx="7" />
+              <text x="250" y="314">
+                Driving
+              </text>
+              <text className="flow-note" x="250" y="334">
+                Lane following
+              </text>
+            </g>
+            <path d="M250 346v12m-5-5l5 5l5-5" />
+            <g className="flow-state flow-detected">
+              <rect className="flow-stop" x="70" y="362" width="360" height="52" rx="7" />
+              <text x="250" y="384">
+                Duck in view
+              </text>
+              <text className="flow-note" x="250" y="404">
+                Brake and wait
+              </text>
+            </g>
+            <path d="M250 416v12m-5-5l5 5l5-5" />
+            <g className="flow-state flow-clear">
+              <rect className="flow-safe" x="70" y="432" width="360" height="52" rx="7" />
+              <text x="250" y="454">
+                Path clear
+              </text>
+              <text className="flow-note" x="250" y="474">
+                Resume driving
+              </text>
+            </g>
+          </g>
+        </svg>
         <div className="duckie-footer">
           <span>Camera detection slows the Duckiebot, waits for a clear lane, then resumes the route.</span>
         </div>
