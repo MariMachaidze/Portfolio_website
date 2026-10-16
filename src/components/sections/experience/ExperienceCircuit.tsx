@@ -3,7 +3,7 @@ import { experience } from "../../../data/experience";
 import { formatDateRange } from "../../../lib/dateRange";
 import type { ExperienceEntry } from "../../../types";
 import "./experienceCircuit.css";
-import { useReadableSvgText } from "./useReadableSvgText";
+import { useReadableSvgText } from "../../../hooks/useReadableSvgText";
 
 type Bit = 0 | 1;
 /** A circuit "input" slot — null when fewer than 3 real experience entries exist. */

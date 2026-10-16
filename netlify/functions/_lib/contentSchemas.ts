@@ -61,6 +61,7 @@ export const ExperienceSchema = z.array(
 
 const ProjectLinksSchema = z.object({
   codeUrl: z.string().optional(),
+  thesisUrl: z.string().optional(),
 });
 
 const ShowcasePositionSchema = {
@@ -143,6 +144,7 @@ export const ProjectsSchema = z
         .min(1)
         .regex(/^[a-z0-9-]+$/, "slug must be lowercase letters, numbers, and hyphens only"),
       title: z.string().min(1),
+      category: z.string().optional(),
       summary: z.string(),
       coverSeed: z.string(),
       status: z.enum(["in-progress", "finished", "paused"]),
@@ -150,6 +152,8 @@ export const ProjectsSchema = z
       endDate: z.string(),
       tech: z.array(z.string()),
       links: ProjectLinksSchema,
+      visual: z.enum(["sorter", "mcp", "jobs", "pointing", "trust", "duckie"]).optional(),
+      featured: z.boolean().optional(),
       description: z.string().optional(),
       gallery: z.array(ProjectGalleryImageSchema).optional(),
       video: ProjectVideoSchema.optional(),

@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import type { Project, ProjectGalleryImage, ProjectStatus, ProjectVideo } from "../../../types";
+import type { Project, ProjectGalleryImage, ProjectStatus, ProjectVideo, ProjectVisual } from "../../../types";
 import { useContentEditor } from "../../../hooks/useContentEditor";
 import { SaveStatusIndicator } from "../SaveStatusIndicator";
 import { ReorderableList } from "../ReorderableList";
@@ -10,6 +10,14 @@ import { ShowcaseGridEditor } from "../ShowcaseGridEditor";
 import { SaveIssuesList } from "../SaveIssuesList";
 
 const STATUS_OPTIONS: ProjectStatus[] = ["in-progress", "finished", "paused"];
+const VISUAL_OPTIONS: { value: ProjectVisual; label: string }[] = [
+  { value: "sorter", label: "Box sorter conveyor" },
+  { value: "mcp", label: "MCP lookup map" },
+  { value: "jobs", label: "Agent loop" },
+  { value: "pointing", label: "Pointing simulation + pipeline" },
+  { value: "trust", label: "Robot arm trust study" },
+  { value: "duckie", label: "Duckiebot road" },
+];
 const EMPTY_SHOWCASE = { widgets: [], stickers: [] };
 const DEFAULT_COMMIT_MESSAGE = "Update projects";
 
@@ -76,7 +84,10 @@ export function ProjectsForm() {
   }
 
   function removeGalleryImage(project: Project, id: string) {
-    setGallery(project.id, (project.gallery ?? []).filter((img) => img.id !== id));
+    setGallery(
+      project.id,
+      (project.gallery ?? []).filter((img) => img.id !== id),
+    );
   }
 
   function setVideoKind(id: string, kind: VideoKind) {
@@ -125,8 +136,16 @@ export function ProjectsForm() {
               onChange={(e) => update(project.id, { title: e.target.value })}
             />
             <TextField
+              label="Category"
+              htmlFor={`proj-category-${project.id}`}
+              hint='small label above the title, e.g. "Embedded AI · Robotics"'
+              value={project.category ?? ""}
+              onChange={(e) => update(project.id, { category: e.target.value || undefined })}
+            />
+            <TextField
               label="Summary"
               htmlFor={`proj-summary-${project.id}`}
+              hint="shown on the homepage card"
               value={project.summary}
               onChange={(e) => update(project.id, { summary: e.target.value })}
             />
@@ -185,8 +204,48 @@ export function ProjectsForm() {
               label="Code URL"
               htmlFor={`proj-codeUrl-${project.id}`}
               value={project.links.codeUrl ?? ""}
-              onChange={(e) => update(project.id, { links: { codeUrl: e.target.value || undefined } })}
+              onChange={(e) =>
+                update(project.id, { links: { ...project.links, codeUrl: e.target.value || undefined } })
+              }
             />
+            <TextField
+              label="Thesis / report URL"
+              htmlFor={`proj-thesisUrl-${project.id}`}
+              hint="optional, adds a second link on the card"
+              value={project.links.thesisUrl ?? ""}
+              onChange={(e) =>
+                update(project.id, { links: { ...project.links, thesisUrl: e.target.value || undefined } })
+              }
+            />
+
+            <div className="mb-4">
+              <label htmlFor={`proj-visual-${project.id}`} className="mb-1.5 block text-sm font-medium text-text">
+                Animated figure
+              </label>
+              <select
+                id={`proj-visual-${project.id}`}
+                value={project.visual ?? ""}
+                onChange={(e) =>
+                  update(project.id, { visual: (e.target.value || undefined) as ProjectVisual | undefined })
+                }
+                className="w-full rounded-lg border border-border bg-bg px-3.5 py-2.5 text-sm text-text outline-none focus:border-primary"
+              >
+                <option value="">None (text only)</option>
+                {VISUAL_OPTIONS.map((v) => (
+                  <option key={v.value} value={v.value}>
+                    {v.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <label className="mb-4 flex items-center gap-2 text-sm text-text">
+              <input
+                type="checkbox"
+                checked={project.featured ?? false}
+                onChange={(e) => update(project.id, { featured: e.target.checked || undefined })}
+              />
+              Featured (wide card, text and figure side by side)
+            </label>
 
             <h4 className="mb-2 mt-4 text-sm font-semibold text-text">
               Project page content <span className="font-normal text-muted">(shown on this project's own page)</span>
@@ -235,10 +294,7 @@ export function ProjectsForm() {
 
             <h5 className="mb-2 text-sm font-medium text-text">Video</h5>
             <div className="mb-4">
-              <label
-                htmlFor={`proj-video-kind-${project.id}`}
-                className="mb-1.5 block text-sm font-medium text-text"
-              >
+              <label htmlFor={`proj-video-kind-${project.id}`} className="mb-1.5 block text-sm font-medium text-text">
                 Video type
               </label>
               <select

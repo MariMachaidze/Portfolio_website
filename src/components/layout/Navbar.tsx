@@ -18,14 +18,13 @@ const SECTION_IDS = NAV_ITEMS.map((item) => item.id);
 // Each homepage section's own background color, so the sticky navbar can
 // match whatever's currently scrolled underneath it. Keep this in sync with
 // each section's actual background (Hero, Experience and Contact share the
-// same navy; Skills has its own fixed chip color; Projects uses
-// --color-surface-alt). Baked in at 90% alpha to match the navbar's previous
-// `bg-bg/90` look.
+// same navy; Skills and Projects share the same light blue). Baked in at 90%
+// alpha to match the navbar's previous `bg-bg/90` look.
 const SECTION_BG: Record<string, string> = {
   hero: "rgba(11, 31, 58, 0.9)",
   skills: "rgba(168, 192, 219, 0.9)",
   experience: "rgba(11, 31, 58, 0.9)",
-  projects: "rgba(242, 236, 224, 0.9)",
+  projects: "rgba(168, 192, 219, 0.9)",
   contact: "rgba(11, 31, 58, 0.9)",
 };
 const NAVY_SECTIONS = new Set(["hero", "experience", "contact"]);

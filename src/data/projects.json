@@ -1,22 +1,96 @@
 [
   {
+    "id": "9b6c59f3-0fd4-4131-b142-84292a8dcaba",
+    "slug": "esp32-vision-language-box-sorter",
+    "title": "ESP32 Vision-Language Box Sorter",
+    "category": "Embedded AI · Robotics",
+    "summary": "A conveyor system that reads an ESP32-CAM stream, classifies boxes with CLIP zero-shot vision, and routes them through servo-actuated gates.",
+    "coverSeed": "BoxSorter",
+    "status": "in-progress",
+    "startDate": "2026-10",
+    "endDate": "Present",
+    "tech": [
+      "ESP32",
+      "Arduino / C++",
+      "Python",
+      "OpenCV",
+      "CLIP",
+      "ROS 2"
+    ],
+    "links": {
+      "codeUrl": "https://github.com/MariMachaidze/Conveyor_Belt_Project"
+    },
+    "visual": "sorter",
+    "featured": true
+  },
+  {
+    "id": "703cdbd8-66b5-4efa-ab91-446d98848eae",
+    "slug": "smart-job-search-engine",
+    "title": "Smart Job Search Engine",
+    "category": "Applied AI · Web",
+    "summary": "An agent that discovers relevant roles, scores the fit, and tailors resumes—while keeping the full application trail visible and reviewable.",
+    "coverSeed": "JobSearch",
+    "status": "in-progress",
+    "startDate": "2026-09",
+    "endDate": "Present",
+    "tech": [
+      "Python",
+      "FastAPI",
+      "LangGraph",
+      "Gemini 2.5",
+      "React",
+      "TypeScript",
+      "AWS",
+      "Playwright"
+    ],
+    "links": {
+      "codeUrl": "https://github.com/MariMachaidze/Smart-Job-Search-Engine"
+    },
+    "visual": "jobs"
+  },
+  {
+    "id": "1ee234fe-4632-421e-aed4-c81ceeb0622c",
+    "slug": "robo-mcp",
+    "title": "Robo-mcp",
+    "category": "Open source · Developer tools",
+    "summary": "An MCP server for verified robotics pinouts and wiring diagrams—built to give AI systems facts they can check instead of hardware details they have to guess.",
+    "coverSeed": "RoboMcp",
+    "status": "in-progress",
+    "startDate": "2026-09",
+    "endDate": "Present",
+    "tech": [
+      "Python",
+      "LLM",
+      "JSON Schema",
+      "schemdraw",
+      "pytest",
+      "GitHub Actions"
+    ],
+    "links": {
+      "codeUrl": "https://github.com/MariMachaidze/robo_mcp"
+    },
+    "visual": "mcp"
+  },
+  {
     "id": "fc56eab1-4d4f-453a-9ef8-145534b138d3",
     "slug": "pointing-based-robot-teleoperation",
     "title": "Pointing-Based Robot Teleoperation",
-    "summary": "Gesture-Based Teleoperation with Hand Pointing and Sphero BOLT for Bachelor Thesis.",
+    "summary": "Point at a spot on the table and a Sphero BOLT drives there, no joystick or controller needed. An Intel RealSense D435i watches your hand, the index finger becomes a 3D ray, and the ray is intersected with a calibrated 850 × 600 mm workspace. Built on ROS 1 Noetic.",
     "coverSeed": "RobotTeleoperation",
     "status": "finished",
     "startDate": "2026-02",
-    "endDate": "2006-05",
+    "endDate": "2026-05",
     "tech": [
-      "Python",
       "ROS",
+      "Python",
+      "CMake",
       "MediaPipe",
       "Intel RealSense",
-      "Computer Vision"
+      "Computer vision"
     ],
     "links": {
-      "codeUrl": "https://github.com/MariMachaidze/Thesis"
+      "codeUrl": "https://github.com/MariMachaidze/Thesis",
+      "thesisUrl": "https://github.com/MariMachaidze/Thesis/blob/master/Mariam_Machaidze_Thesis.pdf"
     },
     "description": "Designed intuitively interactive system to control the robots which opens up more research opportunities in Human Robot Intersection research. This thesis project investigates whether natural pointing gestures can provide an accessible and effective way for people to control a mobile robot without requiring conventional controllers. A gesture-driven interaction system was developed that allows users to direct\na robot simply by pointing toward a target location. The system was evaluated through experimental testing focusing on interaction accuracy, responsiveness, and navigation reliability. The results demonstrated that the robot consistently responded to user gestures with high navigation reliability while maintaining responsive real-time behavior. The system achieved accurate target selection and stable robot movement across the evaluated interaction scenarios, supporting the feasibility of gesture-driven robot control. These findings suggest that natural pointing interaction can provide an intuitive communication method between humans and robots, particularly for entertainment-oriented and educational robotic experiences designed for non-expert users. The work contributes toward creating more accessible and engaging Human Robot Interaction systems that reduce reliance on specialized control devices while supporting more natural forms of interaction.",
     "gallery": [
@@ -75,62 +149,52 @@
           "stickerKey": "sparkle"
         }
       ]
-    }
+    },
+    "category": "Bachelor thesis · Human-robot interaction",
+    "visual": "pointing",
+    "featured": true
   },
   {
-    "id": "317f9696-95fa-413f-af3a-b4ae6db41f07",
-    "slug": "recipe-radar",
-    "title": "Recipe Radar",
-    "summary": "AI-assisted recipe recommendations from what's already in your pantry.",
-    "coverSeed": "recipe-radar",
-    "status": "in-progress",
-    "startDate": "",
-    "endDate": "",
-    "tech": [
-      "Next.js",
-      "OpenAI API",
-      "Prisma",
-      "Tailwind CSS"
-    ],
-    "links": {
-      "codeUrl": "https://github.com/alexrivera-dev/recipe-radar"
-    }
-  },
-  {
-    "id": "0320699d-b5ef-4ceb-a692-dd194282799f",
-    "slug": "trailmate",
-    "title": "TrailMate",
-    "summary": "Offline-first hiking companion with GPS tracking and trail maps.",
-    "coverSeed": "trailmate",
+    "id": "8bf3b1b9-fffc-4856-a173-68dd782bc30b",
+    "slug": "hri-predictability-and-trust",
+    "title": "Human-Robot Interaction: Predictability and Trust",
+    "category": "Research study · Team project",
+    "summary": "A claw-machine-style trust study on a Franka Panda arm, combining WASD/C teleoperation, repeatable automated tasks, and HMI evaluation.",
+    "coverSeed": "TrustStudy",
     "status": "finished",
-    "startDate": "",
-    "endDate": "",
+    "startDate": "2025-09",
+    "endDate": "2025-12",
     "tech": [
-      "React",
-      "Service Workers",
-      "Mapbox",
-      "IndexedDB"
+      "ROS",
+      "Bash",
+      "RViz",
+      "rosbag",
+      "HMI evaluation"
     ],
     "links": {
-      "codeUrl": "https://github.com/alexrivera-dev/trailmate"
-    }
+      "codeUrl": "https://github.com/hrigrp5-commits/claw_machine"
+    },
+    "visual": "trust"
   },
   {
-    "id": "1d0c93d0-a4bf-4e66-a055-4c1e9b159dde",
-    "slug": "task-forge",
-    "title": "TaskForge",
-    "summary": "An early Kanban tool for small teams, since sunset in favor of Pulseboard.",
-    "coverSeed": "task-forge",
-    "status": "paused",
-    "startDate": "",
-    "endDate": "",
+    "id": "826d003d-7f47-4f1f-a0e5-c1c23a190612",
+    "slug": "duckietown-autonomous-vehicle",
+    "title": "DuckieTown Autonomous Vehicle",
+    "category": "Autonomous systems · Team of three",
+    "summary": "Speed control and obstacle detection for a Duckiebot, developed in Python on ROS and shipped in a reproducible Docker environment.",
+    "coverSeed": "DuckieTown",
+    "status": "finished",
+    "startDate": "2025-02",
+    "endDate": "2025-05",
     "tech": [
-      "Vue.js",
-      "Firebase",
-      "Vuetify"
+      "Python",
+      "ROS",
+      "Docker",
+      "Linux"
     ],
     "links": {
-      "codeUrl": "https://github.com/alexrivera-dev/task-forge"
-    }
+      "codeUrl": "https://github.com/MariMachaidze/Ferduckie_Mariam_Machaidze"
+    },
+    "visual": "duckie"
   }
 ]

@@ -69,7 +69,11 @@ export type ProjectStatus = "in-progress" | "finished" | "paused";
 
 export interface ProjectLinks {
   codeUrl?: string;
+  /** Optional written report (e.g. a thesis PDF), linked next to the repository. */
+  thesisUrl?: string;
 }
+/** Which animated figure the Projects section draws next to the card. */
+export type ProjectVisual = "sorter" | "mcp" | "jobs" | "pointing" | "trust" | "duckie";
 
 export type ShowcaseWidget =
   | { id: string; x: number; y: number; w: number; h: number; type: "text"; heading?: string; body: string }
@@ -132,6 +136,8 @@ export interface Project {
   id: string;
   slug: string;
   title: string;
+  /** Small label above the title, e.g. "Embedded AI · Robotics". */
+  category?: string;
   summary: string;
   /** Seed used to deterministically generate the placeholder cover art */
   coverSeed: string;
@@ -141,6 +147,10 @@ export interface Project {
   endDate: string | "Present";
   tech: string[];
   links: ProjectLinks;
+  /** Animated figure drawn on the card; cards without one show text only. */
+  visual?: ProjectVisual;
+  /** Wide card with the text and figure side by side. */
+  featured?: boolean;
   /** Write-up shown next to the gallery on the project's own page. */
   description?: string;
   /** Photo dump, laid out 2-per-row next to the description. */

@@ -5,7 +5,8 @@ const MIN_SCREEN_PX = 12; // the OLED display's job details
 const MIN_LABEL_PX = 11; // every other functional label
 const MIN_FINE_PX = 10; // purely decorative PCB silkscreen
 
-const FINE_TEXT = [
+/** The Experience circuit's decorative labels (the default). */
+const CIRCUIT_FINE_TEXT = [
   ".component-id",
   ".component-ref",
   ".encoder-refs text",
@@ -30,8 +31,15 @@ function ownsText(el: Element) {
  * label is 12px on a wide monitor and 4px on a phone. This measures how much
  * each visible SVG is actually scaled and enlarges any text that would render
  * below a readable minimum, so labels stay legible at every screen size.
+ *
+ * `fineText` selects decorative labels: they get a lower minimum and hide
+ * rather than overlap other text.
  */
-export function useReadableSvgText(rootRef: RefObject<HTMLElement | null>, contentKey: unknown) {
+export function useReadableSvgText(
+  rootRef: RefObject<HTMLElement | null>,
+  contentKey: unknown,
+  fineText: string = CIRCUIT_FINE_TEXT,
+) {
   useLayoutEffect(() => {
     const root = rootRef.current;
     if (!root) return;
@@ -40,17 +48,18 @@ export function useReadableSvgText(rootRef: RefObject<HTMLElement | null>, conte
       const jobs: { el: HTMLElement | SVGElement; minUnits: number }[] = [];
 
       for (const svg of root.querySelectorAll("svg")) {
-        const box = svg.getBoundingClientRect();
         const viewBox = svg.viewBox.baseVal;
-        if (box.width === 0 || !viewBox?.width) continue;
+        const ctm = svg.getScreenCTM();
+        if (svg.getBoundingClientRect().width === 0 || !viewBox?.width || !ctm) continue;
+        // The screen transform excludes any border/padding on the <svg>, unlike its bounding box.
         // Text distorts with non-uniform scaling; the smaller axis decides legibility.
-        const scale = Math.min(box.width / viewBox.width, box.height / viewBox.height);
+        const scale = Math.min(Math.hypot(ctm.a, ctm.b), Math.hypot(ctm.c, ctm.d));
 
         for (const el of svg.querySelectorAll<HTMLElement | SVGElement>("text, foreignObject *")) {
           if (el.tagName.toLowerCase() !== "text" && !ownsText(el)) continue;
           el.style.removeProperty("font-size");
           el.style.removeProperty("visibility");
-          const minPx = el.closest("foreignObject") ? MIN_SCREEN_PX : el.matches(FINE_TEXT) ? MIN_FINE_PX : MIN_LABEL_PX;
+          const minPx = el.closest("foreignObject") ? MIN_SCREEN_PX : el.matches(fineText) ? MIN_FINE_PX : MIN_LABEL_PX;
           jobs.push({ el, minUnits: minPx / scale });
         }
       }
@@ -58,7 +67,8 @@ export function useReadableSvgText(rootRef: RefObject<HTMLElement | null>, conte
       // Read every size before writing any, so the browser lays out once.
       const designUnits = jobs.map(({ el }) => parseFloat(getComputedStyle(el).fontSize));
       jobs.forEach(({ el, minUnits }, i) => {
-        if (designUnits[i] < minUnits) el.style.setProperty("font-size", `${minUnits.toFixed(2)}px`, "important");
+        // Round up so the rendered size never lands a hair under the minimum.
+        if (designUnits[i] < minUnits) el.style.setProperty("font-size", `${Math.ceil(minUnits * 100) / 100}px`, "important");
       });
 
       // Enlarged decorative labels can run into real ones; decoration gives way.
@@ -66,11 +76,11 @@ export function useReadableSvgText(rootRef: RefObject<HTMLElement | null>, conte
       const boxes = labels.map((el) => el.getBoundingClientRect());
       const kept: DOMRect[] = [];
       labels.forEach((el, i) => {
-        if (el.matches(FINE_TEXT)) return;
+        if (el.matches(fineText)) return;
         if (boxes[i].width) kept.push(boxes[i]);
       });
       labels.forEach((el, i) => {
-        if (!el.matches(FINE_TEXT) || !boxes[i].width) return;
+        if (!el.matches(fineText) || !boxes[i].width) return;
         if (kept.some((box) => overlaps(box, boxes[i]))) el.style.setProperty("visibility", "hidden");
         else kept.push(boxes[i]);
       });
@@ -80,5 +90,5 @@ export function useReadableSvgText(rootRef: RefObject<HTMLElement | null>, conte
     const observer = new ResizeObserver(apply);
     for (const svg of root.querySelectorAll("svg")) observer.observe(svg);
     return () => observer.disconnect();
-  }, [rootRef, contentKey]);
+  }, [rootRef, contentKey, fineText]);
 }
