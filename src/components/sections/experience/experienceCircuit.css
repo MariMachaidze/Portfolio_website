@@ -2320,3 +2320,41 @@
     margin: 0 auto !important;
   }
 }
+
+/*
+ * WebKit (every iPhone browser, and Safari) paints positioned or layered
+ * elements inside an SVG <foreignObject> without the SVG's scaling, so on
+ * iPhones the screen text was drawn ~4% too big and shifted, spilling past the
+ * display. Keep everything on the screen in normal flow: no positioned or
+ * z-indexed children, the scanline and vignette overlays become the screen's
+ * own background and inset shadow (same strength: the scanlines were drawn at
+ * 55% opacity), and the animations avoid transform/opacity layers.
+ */
+.experience-circuit .screen-copy,
+.experience-circuit .screen-copy > * {
+  position: static;
+  z-index: auto;
+}
+
+.experience-circuit .screen-copy::before,
+.experience-circuit .screen-copy::after {
+  content: none;
+}
+
+.experience-circuit .screen-copy {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 3px, rgba(128, 229, 217, .014) 3px 4px),
+    linear-gradient(90deg, rgba(255, 255, 255, .01), transparent 35%);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, .34);
+  animation-name: exp-content-fade;
+}
+
+.experience-circuit .blink {
+  animation-name: exp-blink-visibility;
+}
+
+@keyframes exp-content-fade {
+  from { color: transparent; text-shadow: none; }
+}
+
+@keyframes exp-blink-visibility { 50% { visibility: hidden; } }
