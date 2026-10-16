@@ -5,8 +5,10 @@ import { useGithubActivity } from "../../hooks/useGithubActivity";
 import { Container } from "../ui/Container";
 import { SectionHeading } from "../ui/SectionHeading";
 
-// Empty days use the border tone: on the navy, surface-alt is too close to the background to read.
-const LEVEL_CLASSES = ["bg-border", "bg-primary/25", "bg-primary/50", "bg-primary/75", "bg-primary"];
+// The section is always navy, so the ramp is fixed: deep blue -> teal -> aqua -> the Hero's sun
+// gold. Each step is at least 1.5x brighter than the last, so levels stay apart by lightness
+// as well as hue (empty days are 1.4:1 on the navy, the busiest 13.8:1).
+const LEVEL_CLASSES = ["bg-[#1d3a5c]", "bg-[#2a6680]", "bg-[#3f9aa3]", "bg-[#86c9bb]", "bg-[#ffe9b0]"];
 
 function levelFor(count: number, max: number): number {
   if (count === 0) return 0;
@@ -79,6 +81,14 @@ export function GithubActivity() {
               }),
             )}
           </div>
+        </div>
+
+        <div className="mt-3 flex items-center justify-center gap-1.5 text-xs text-muted" aria-hidden="true">
+          Less
+          {LEVEL_CLASSES.map((level) => (
+            <span key={level} className={`h-2.5 w-2.5 rounded-sm ${level}`} />
+          ))}
+          More
         </div>
 
         <div className="mt-6 flex justify-center">
