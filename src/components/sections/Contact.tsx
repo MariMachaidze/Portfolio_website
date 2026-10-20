@@ -29,11 +29,12 @@ export function Contact() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
+  // Cards with no value (e.g. the phone, left blank in the admin panel) are hidden.
   const infoCards = [
     { icon: Mail, label: "Email", value: profile.email },
     { icon: Phone, label: "Phone", value: profile.phone },
     { icon: MapPin, label: "Location", value: profile.location },
-  ];
+  ].filter((card) => card.value.trim());
 
   function validate(values: FormState): Partial<FormState> {
     const next: Partial<FormState> = {};
@@ -96,7 +97,7 @@ export function Contact() {
           align="center"
         />
 
-        <div className="mb-10 grid gap-4 sm:grid-cols-3">
+        <div className={`mb-10 grid gap-4 ${infoCards.length === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
           {infoCards.map(({ icon: Icon, label, value }) => (
             <Card key={label} className="text-center">
               <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
