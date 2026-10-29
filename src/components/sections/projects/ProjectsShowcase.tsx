@@ -1,25 +1,11 @@
-import { useRef, type ReactNode } from "react";
+import { useRef } from "react";
 import { projects } from "../../../data/projects";
 import { useReadableSvgText } from "../../../hooks/useReadableSvgText";
 import { formatDateRange } from "../../../lib/dateRange";
-import type { Project, ProjectStatus, ProjectVisual } from "../../../types";
-import { ProjectDiagram } from "./ProjectDiagram";
+import type { Project, ProjectVisual } from "../../../types";
+import { FIGURE_FINE_TEXT, ProjectDiagram } from "./ProjectDiagram";
+import { ExternalLink, GITHUB_PROFILE, InternalLink, StackLine, Status } from "./ProjectParts";
 import "./projectsShowcase.css";
-
-function ExternalLink({ href, children }: { href: string; children: ReactNode }) {
-  return (
-    <a className="text-link" href={href} target="_blank" rel="noreferrer">
-      {children}
-      <span aria-hidden="true">↗</span>
-    </a>
-  );
-}
-
-const STATUS_LABEL: Record<ProjectStatus, string> = {
-  "in-progress": "In development",
-  finished: "Completed",
-  paused: "Paused",
-};
 
 /** How many figures each project draws, so captions number on across the section. */
 const FIGURE_COUNT: Record<ProjectVisual, number> = {
@@ -30,21 +16,8 @@ const FIGURE_COUNT: Record<ProjectVisual, number> = {
   trust: 1,
   duckie: 1,
   portfolio: 1,
+  fleet: 1,
 };
-
-const GITHUB_PROFILE = "https://github.com/MariMachaidze";
-
-/** Decorative figure labels: smaller minimum, and they hide rather than overlap. */
-const FIGURE_FINE_TEXT = ".sim-axis-label, .sim-hand text, .sorter-legend text, .flow-note, .discard-label";
-
-function Status({ value }: { value: ProjectStatus }) {
-  return (
-    <span className={`status ${value === "finished" ? "status-complete" : ""}`}>
-      <span className="status-dot" aria-hidden="true" />
-      {STATUS_LABEL[value]}
-    </span>
-  );
-}
 
 function ProjectCard({ project, number, figure }: { project: Project; number: string; figure: number }) {
   const href = project.links.codeUrl || GITHUB_PROFILE;
@@ -63,17 +36,15 @@ function ProjectCard({ project, number, figure }: { project: Project; number: st
         <h2>{project.title}</h2>
         <p className="description">{project.summary}</p>
         <div className="project-links">
+          {project.detailPage && (
+            <InternalLink to={`/projects/${project.slug}`} direction="forward">
+              Read the project page
+            </InternalLink>
+          )}
           <ExternalLink href={href}>View repository</ExternalLink>
           {project.links.thesisUrl && <ExternalLink href={project.links.thesisUrl}>Read the thesis (PDF)</ExternalLink>}
         </div>
-        <div className="stack-line">
-          <span>Stack</span>
-          <div>
-            {project.tech.map((item) => (
-              <span key={item}>{item}</span>
-            ))}
-          </div>
-        </div>
+        <StackLine tech={project.tech} />
         {project.visual === "pointing" && (
           <div className="project-metrics" aria-label="Pointing project results">
             <div>

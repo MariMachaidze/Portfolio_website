@@ -18,6 +18,7 @@ const VISUAL_OPTIONS: { value: ProjectVisual; label: string }[] = [
   { value: "trust", label: "Robot arm trust study" },
   { value: "duckie", label: "Duckiebot road" },
   { value: "portfolio", label: "Admin save to live site" },
+  { value: "fleet", label: "Fleet diagnosis assistant" },
 ];
 const EMPTY_SHOWCASE = { widgets: [], stickers: [] };
 const DEFAULT_COMMIT_MESSAGE = "Update projects";
@@ -247,6 +248,14 @@ export function ProjectsForm() {
               />
               Featured (wide card, text and figure side by side)
             </label>
+            <label className="mb-4 flex items-center gap-2 text-sm text-text">
+              <input
+                type="checkbox"
+                checked={project.detailPage ?? false}
+                onChange={(e) => update(project.id, { detailPage: e.target.checked || undefined })}
+              />
+              Link the card to this project's own page
+            </label>
 
             <h4 className="mb-2 mt-4 text-sm font-semibold text-text">
               Project page content <span className="font-normal text-muted">(shown on this project's own page)</span>
@@ -255,7 +264,8 @@ export function ProjectsForm() {
             <TextAreaField
               label="Description"
               htmlFor={`proj-description-${project.id}`}
-              rows={4}
+              hint="## heading, ### subheading, - list item, **bold**, [link](https://...)"
+              rows={12}
               value={project.description ?? ""}
               onChange={(e) => update(project.id, { description: e.target.value || undefined })}
             />

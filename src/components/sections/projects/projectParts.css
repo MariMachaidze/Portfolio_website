@@ -1,0 +1,13 @@
+/* Links within the site nudge their arrow sideways on hover (external links nudge it up-right). */
+.projects-showcase .text-link-forward:hover span {
+  transform: translateX(0.16rem);
+}
+
+.projects-showcase .text-link-back:hover span {
+  transform: translateX(-0.16rem);
+}
+
+/* "All projects" on a project page scrolls back to its card; keep the card clear of the navbar. */
+.projects-showcase .project-card {
+  scroll-margin-top: 5rem;
+}

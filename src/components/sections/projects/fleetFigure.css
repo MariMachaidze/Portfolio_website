@@ -1,0 +1,277 @@
+/*
+ * Fig. for the robot fleet monitor (FleetFigure.tsx): a question fanning out to three lookups and
+ * coming back as a cited answer plus a draft that waits for a person. Same paper, ink and grid as
+ * the Robo-mcp and portfolio figures; text stays at 11px or more, and the red is darkened for small
+ * text so it clears 4.5:1 on the cards.
+ */
+.projects-showcase .fleet-figure {
+  --fl-paper: #f7f5ef;
+  --fl-card: color-mix(in srgb, var(--surface) 82%, var(--theme));
+  --fl-ink: #3f4140;
+  --fl-copy: #555b61;
+  --fl-line: #8b8e8b;
+  --fl-grid: #d8e1ea;
+  --fl-red: #c95836;
+  --fl-red-text: #9c3d26;
+  --fl-highlight: #eee7d8;
+  --fl-gap: 0.75rem;
+  background: var(--fl-paper);
+  border-color: var(--fl-line);
+}
+
+.projects-showcase .project-featured .fleet-figure {
+  margin-top: 0;
+}
+
+.projects-showcase .fleet-figure .diagram-caption {
+  border-color: var(--fl-line);
+  background: var(--surface);
+  color: var(--fl-ink);
+}
+
+.projects-showcase .fleet-map {
+  padding: 1.5rem;
+  display: grid;
+  border-bottom: 1px solid var(--fl-line);
+  background:
+    linear-gradient(var(--fl-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--fl-grid) 1px, transparent 1px),
+    var(--fl-paper);
+  background-size: 2.5rem 2.5rem;
+}
+
+.projects-showcase .fleet-figure b {
+  color: var(--fl-red-text);
+  font-family: var(--mono);
+  font-size: max(11px, 0.68rem);
+  font-weight: 400;
+}
+
+.projects-showcase .fleet-question {
+  max-width: 100%;
+  padding: 0.55rem 1rem;
+  justify-self: center;
+  display: grid;
+  gap: 0.1rem;
+  border: 1.5px solid var(--fl-ink);
+  border-radius: 0.9rem 0.9rem 0.9rem 0.2rem;
+  background: var(--fl-card);
+  text-align: center;
+}
+
+.projects-showcase .fleet-question p {
+  margin: 0;
+  color: var(--fl-ink);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* Connectors from the question to the three lookups and back. Wider than the row by one gap so
+   the branch lines land on the column centres. */
+.projects-showcase .fleet-fan {
+  width: calc(100% + var(--fl-gap));
+  height: 1.75rem;
+  margin: 0 calc(var(--fl-gap) / -2);
+  display: block;
+  overflow: visible;
+}
+
+.projects-showcase .fleet-fan path {
+  fill: none;
+  stroke: var(--fl-line);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.projects-showcase .fleet-tools {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--fl-gap);
+}
+
+.projects-showcase .fleet-tool {
+  position: relative;
+  padding: 0.65rem 1.6rem 0.7rem 0.75rem;
+  display: grid;
+  align-content: start;
+  gap: 0.2rem;
+  border: 1.5px solid var(--fl-line);
+  border-radius: 0.5rem;
+  background: var(--fl-card);
+  color: var(--fl-copy);
+  font-size: max(11px, 0.72rem);
+  line-height: 1.4;
+  opacity: 0.45;
+  transition:
+    opacity 0.35s ease,
+    background-color 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.projects-showcase .fleet-tool strong {
+  color: var(--fl-ink);
+  font-size: max(12px, 0.84rem);
+  font-weight: 600;
+}
+
+.projects-showcase .fleet-tool.is-active {
+  opacity: 1;
+  border-color: var(--fl-ink);
+  background: var(--fl-highlight);
+}
+
+.projects-showcase .fleet-tool.is-done {
+  opacity: 1;
+}
+
+.projects-showcase .fleet-tool.is-done::after {
+  content: "✓";
+  position: absolute;
+  top: 0.55rem;
+  right: 0.65rem;
+  color: var(--success);
+  font-size: 12px;
+}
+
+/* The answer and the draft share one box, which the lookups feed into. */
+.projects-showcase .fleet-result {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 1.5px solid var(--fl-ink);
+  border-radius: 0.55rem;
+  background: var(--fl-card);
+  overflow: hidden;
+}
+
+.projects-showcase .fleet-answer,
+.projects-showcase .fleet-draft {
+  padding: 0.75rem 0.85rem 0.85rem;
+  display: grid;
+  align-content: start;
+  gap: 0.3rem;
+  color: var(--fl-copy);
+  font-size: max(11px, 0.72rem);
+  line-height: 1.45;
+  opacity: 0.35;
+  transition: opacity 0.4s ease;
+}
+
+.projects-showcase .fleet-draft {
+  border-left: 1.5px dashed var(--fl-line);
+}
+
+.projects-showcase :is(.fleet-answer, .fleet-draft).is-shown {
+  opacity: 1;
+}
+
+.projects-showcase .fleet-answer p,
+.projects-showcase .fleet-draft p {
+  margin: 0;
+  color: var(--fl-ink);
+  font-size: max(12px, 0.84rem);
+  font-weight: 500;
+}
+
+.projects-showcase .fleet-answer sup {
+  color: var(--fl-red-text);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 0;
+}
+
+.projects-showcase .fleet-answer small {
+  font-family: var(--mono);
+  font-size: max(11px, 0.66rem);
+}
+
+.projects-showcase .fleet-approval {
+  margin-top: 0.3rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.6rem;
+}
+
+.projects-showcase .fleet-wait {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--fl-ink);
+  font-family: var(--mono);
+  font-size: max(11px, 0.66rem);
+}
+
+.projects-showcase .fleet-wait::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  flex: none;
+  border-radius: 50%;
+  background: var(--fl-red);
+}
+
+.projects-showcase .fleet-draft.is-shown .fleet-wait::before {
+  animation: prj-fl-pulse 1.2s ease-in-out infinite;
+}
+
+.projects-showcase .fleet-buttons {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.projects-showcase .fleet-buttons i {
+  padding: 0.15rem 0.55rem;
+  border: 1.5px solid var(--fl-ink);
+  border-radius: 999px;
+  color: var(--fl-ink);
+  font-size: max(11px, 0.68rem);
+  font-style: normal;
+}
+
+.projects-showcase .fleet-source-caption {
+  padding: 0.85rem 1.25rem 1rem;
+  background: var(--surface);
+  color: var(--fl-copy);
+  font-size: max(11px, 0.68rem);
+  line-height: 1.55;
+}
+
+@keyframes prj-fl-pulse {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* Phones: everything in one column; the branching connectors don't apply, so gaps replace them. */
+@media (max-width: 680px) {
+  .projects-showcase .fleet-map {
+    padding: 1rem;
+    gap: var(--fl-gap);
+  }
+
+  .projects-showcase .fleet-fan {
+    display: none;
+  }
+
+  .projects-showcase .fleet-tools,
+  .projects-showcase .fleet-result {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .projects-showcase .fleet-draft {
+    border-left: 0;
+    border-top: 1.5px dashed var(--fl-line);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .projects-showcase .fleet-figure *,
+  .projects-showcase .fleet-figure *::before,
+  .projects-showcase .fleet-figure *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

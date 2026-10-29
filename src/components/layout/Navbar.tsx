@@ -40,7 +40,15 @@ export function Navbar() {
   const isHome = pathname === "/";
   const [menuOpen, setMenuOpen] = useState(false);
   const activeSection = useActiveSection(SECTION_IDS, NAVBAR_HEIGHT_PX, isHome);
-  const navbarBg = isHome ? (activeSection ? SECTION_BG[activeSection] : DEFAULT_BG) : undefined;
+  // Project pages use the Projects section's light blue, like the page underneath.
+  const isProjectPage = pathname.startsWith("/projects/");
+  const navbarBg = isHome
+    ? activeSection
+      ? SECTION_BG[activeSection]
+      : DEFAULT_BG
+    : isProjectPage
+      ? SECTION_BG.projects
+      : undefined;
   const onNavy = isHome && NAVY_SECTIONS.has(activeSection ?? "hero");
   const textClass = onNavy ? "text-[#f5e6d3]" : "text-text";
   const linkClass = onNavy

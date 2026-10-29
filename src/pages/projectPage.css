@@ -1,0 +1,299 @@
+/*
+ * A project's own page (ProjectDetailPage.tsx). It sits inside .projects-showcase, so it shares the
+ * Projects section's paper, ink, fonts, card details (meta row, links, stack line) and figures.
+ */
+.projects-showcase.project-page {
+  min-height: calc(100vh - 4rem);
+}
+
+.project-page .page-inner {
+  width: calc(100% - 3rem);
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 2.5rem 0 4rem;
+}
+
+.project-page .page-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: max(11px, 0.72rem);
+  text-decoration: none;
+}
+
+.project-page .page-back:hover {
+  color: var(--ink);
+}
+
+.project-page .page-header {
+  max-width: 50rem;
+  margin: 2.5rem 0;
+}
+
+.project-page .page-header h1 {
+  margin: 1.5rem 0 1.25rem;
+  font-size: clamp(2.3rem, 5vw, 4rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.project-page .page-lead {
+  max-width: 44rem;
+  margin: 0 0 1.5rem;
+  font-size: 1.15rem;
+  line-height: 1.6;
+}
+
+.project-page .page-header .stack-line {
+  margin-top: 0;
+  padding-top: 1.5rem;
+}
+
+.project-page .page-figure {
+  max-width: 56rem;
+  margin-bottom: 3.5rem;
+}
+
+.project-page .page-figure .reference-figure {
+  margin-top: 0;
+}
+
+/* The write-up, with a sticky section menu beside it on wide screens. */
+.project-page .page-body {
+  display: grid;
+  gap: 2rem;
+}
+
+.project-page .page-menu {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .project-page .page-body.has-menu {
+    grid-template-columns: 12rem minmax(0, 44rem);
+    gap: 4rem;
+  }
+
+  .project-page .page-menu {
+    position: sticky;
+    top: 6rem;
+    align-self: start;
+    display: block;
+  }
+}
+
+.project-page .page-menu > span {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: max(11px, 0.68rem);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.project-page .page-menu ol {
+  margin: 0.8rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-left: 1px solid var(--line);
+}
+
+.project-page .page-menu a {
+  display: block;
+  padding: 0.3rem 0 0.3rem 0.9rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.project-page .page-menu a:hover {
+  color: var(--ink);
+}
+
+.project-page .page-main {
+  max-width: 44rem;
+  counter-reset: page-section;
+}
+
+/* Every section heading (write-up, photos, video) gets a running 01, 02... like the card numbers. */
+.project-page .page-main h2 {
+  margin: 3.25rem 0 1rem;
+  scroll-margin-top: 5.5rem;
+  font-size: clamp(1.5rem, 2.4vw, 1.9rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.project-page .page-main h2::before {
+  counter-increment: page-section;
+  content: counter(page-section, decimal-leading-zero);
+  display: block;
+  margin-bottom: 0.55rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: max(11px, 0.7rem);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+}
+
+.project-page .page-main > :first-child > h2:first-child,
+.project-page .page-main > h2:first-child {
+  margin-top: 0;
+}
+
+.project-page .write-up h3 {
+  margin: 2rem 0 0.6rem;
+  scroll-margin-top: 5.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.project-page .write-up p,
+.project-page .write-up li {
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.project-page .write-up p {
+  margin: 0 0 1rem;
+}
+
+.project-page .write-up ul {
+  margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.project-page .write-up li {
+  position: relative;
+  padding-left: 1.25rem;
+}
+
+.project-page .write-up li::before {
+  content: "";
+  width: 0.4rem;
+  height: 0.4rem;
+  position: absolute;
+  left: 0.1rem;
+  top: 0.72em;
+  border-radius: 1px;
+  background: var(--accent);
+}
+
+.project-page .write-up strong {
+  font-weight: 600;
+}
+
+.project-page .write-up code {
+  padding: 0.1em 0.35em;
+  border-radius: 0.25rem;
+  background: var(--surface);
+  font-family: var(--mono);
+  font-size: 0.9em;
+}
+
+.project-page .write-up a {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* Photos keep their own shape (screenshots and robot photos shouldn't be cropped). */
+.project-page .page-gallery {
+  columns: 2 15rem;
+  column-gap: 1rem;
+}
+
+.project-page .page-gallery a {
+  margin-bottom: 1rem;
+  display: block;
+  break-inside: avoid;
+  border: 1px solid var(--line);
+  border-radius: 0.55rem;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.project-page .page-gallery img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.project-page .page-photo-placeholder {
+  padding: 2rem 1.5rem;
+  border: 1.5px dashed var(--line-strong);
+  border-radius: 0.55rem;
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: max(11px, 0.75rem);
+  line-height: 1.6;
+  text-align: center;
+}
+
+.project-page .page-video {
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line);
+  border-radius: 0.55rem;
+  background: var(--ink);
+  overflow: hidden;
+}
+
+.project-page .page-video :is(video, iframe) {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+}
+
+.project-page .page-end {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  border-top: 1px solid var(--line);
+}
+
+.project-page .page-missing {
+  min-height: 50vh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.project-page .page-missing h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+.project-page .page-missing p {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* Phones: the site's 16px side gutter. */
+@media (max-width: 680px) {
+  .project-page .page-inner {
+    width: calc(100% - 2rem);
+    padding-top: 1.75rem;
+  }
+
+  .project-page .page-header {
+    margin: 1.75rem 0 2rem;
+  }
+
+  .project-page .page-lead {
+    font-size: 1.05rem;
+  }
+}

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useFigureTicker } from "./useFigureTicker";
 import "./portfolioFigure.css";
 
 /** The real save path, in order: what the admin panel does when you press Save. */
@@ -42,25 +42,7 @@ const PAGE = [
  * screen; with reduced motion it shows the finished, live state.
  */
 export function PortfolioFigure({ figure }: { figure: number }) {
-  const rootRef = useRef<HTMLDivElement>(null);
-  const reduced = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const [tick, setTick] = useState(reduced ? TIMELINE.length - 1 : 0);
-
-  useEffect(() => {
-    const root = rootRef.current;
-    if (reduced || !root) return;
-    let timer = 0;
-    const observer = new IntersectionObserver(([entry]) => {
-      window.clearInterval(timer);
-      if (entry.isIntersecting) timer = window.setInterval(() => setTick((t) => (t + 1) % TIMELINE.length), TICK_MS);
-    });
-    observer.observe(root);
-    return () => {
-      observer.disconnect();
-      window.clearInterval(timer);
-    };
-  }, [reduced]);
-
+  const { rootRef, tick } = useFigureTicker(TIMELINE.length, TICK_MS);
   const { stage, status } = TIMELINE[tick];
   const live = stage >= LIVE_STAGE;
 

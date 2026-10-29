@@ -73,7 +73,7 @@ export interface ProjectLinks {
   thesisUrl?: string;
 }
 /** Which animated figure the Projects section draws next to the card. */
-export type ProjectVisual = "sorter" | "mcp" | "jobs" | "pointing" | "trust" | "duckie" | "portfolio";
+export type ProjectVisual = "sorter" | "mcp" | "jobs" | "pointing" | "trust" | "duckie" | "portfolio" | "fleet";
 
 export type ShowcaseWidget =
   | { id: string; x: number; y: number; w: number; h: number; type: "text"; heading?: string; body: string }
@@ -151,7 +151,9 @@ export interface Project {
   visual?: ProjectVisual;
   /** Wide card with the text and figure side by side. */
   featured?: boolean;
-  /** Write-up shown next to the gallery on the project's own page. */
+  /** Card links to the project's own page (/projects/<slug>) as well as its repository. */
+  detailPage?: boolean;
+  /** Write-up on the project's own page. Supports ## headings, ### subheadings, - lists, **bold**, `code` and [links](https://...). */
   description?: string;
   /** Photo dump, laid out 2-per-row next to the description. */
   gallery?: ProjectGalleryImage[];

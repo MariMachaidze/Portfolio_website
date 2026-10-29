@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import type { ProjectVisual } from "../../../types";
+import { FleetFigure } from "./FleetFigure";
 import { PointingSimulation } from "./PointingSimulation";
 import { PortfolioFigure } from "./PortfolioFigure";
 import { clamp, type SimPoint } from "./simGeometry";
+
+/** Decorative figure labels: smaller minimum, and they hide rather than overlap (useReadableSvgText). */
+export const FIGURE_FINE_TEXT = ".sim-axis-label, .sim-hand text, .sorter-legend text, .flow-note, .discard-label";
 
 /**
  * Portrait version of the box sorter for phones: the same parts, classes and timing as the wide
@@ -461,6 +465,8 @@ export function ProjectDiagram({
   }
 
   if (type === "portfolio") return <PortfolioFigure figure={figure} />;
+
+  if (type === "fleet") return <FleetFigure figure={figure} />;
 
   if (type === "pointing") {
     return (
