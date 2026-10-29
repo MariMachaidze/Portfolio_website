@@ -3751,3 +3751,28 @@
   white-space: normal;
   overflow-wrap: anywhere;
 }
+
+/* Robo-mcp on the narrowest phones: beside its verb, the server's description column was too
+   narrow for words like "components" and "compatibility", which ran past the box. Each verb now
+   sits above its description, and the row highlight covers the description line. */
+@media (max-width: 400px) {
+  .projects-showcase .mcp-action {
+    grid-template-columns: minmax(0, 1fr) 0.8rem;
+    row-gap: 0.05rem;
+  }
+
+  .projects-showcase .mcp-action b {
+    grid-column: 1 / -1;
+  }
+
+  .projects-showcase .mcp-action + .mcp-action {
+    margin-top: 0.35rem;
+  }
+
+  .projects-showcase .mcp-row-highlight {
+    height: auto;
+    left: -0.25rem;
+    top: 1rem;
+    bottom: -0.15rem;
+  }
+}
